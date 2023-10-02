@@ -1,0 +1,29 @@
+############Experiment Generation#############
+UTC TIME:  1684535204
+Initial samples stats   : mean = 25.0633 stdv = 139.1404
+True zero samples stats : mean = -0.0000 stdv = 139.1404
+Scaled samples stats    : mean = -0.0000 stdv = 126.0000
+SERVER SENTENCE
+
+python3 fl_testbed/version2/client/datasplit.py -ml 2 -cm 4 -dfn combined_offset_misalignment.csv -ip 172.19.0.5 -l  317 24 36 87 12 24 47 7 226 178 97 158 75 26 81 64 285 44 70 52  -fq  0.010201898200473902 0.8729155170641917 0.02986502458961049 1  > out_server_4.txt1 && python3 fl_testbed/version2/client/centralized.py  -ml 1 -lr 0.001 -cn 4 -cm 4 -e 400 -dfn   'combined_offset_misalignment.csv'  -ip 172.19.0.5> out_server_4.txt2 && python3 fl_testbed/version2/server/federated_server.py  -ml 1 -lr 0.001 -cm 4 -e 400 --rounds 200 -ip 172.19.0.5 --comparative_path_y_test 400_0.001_1_4_4_combined_offset_misalignment.csv__client_centralizedy_test.pkl --comparative_path_X_test 400_0.001_1_4_4_combined_offset_misalignment.csv__client_centralizedX_test.pkl > out_server_4.txt3
+
+
+CLIENT SENTENCE: 0
+ALLINONE
+python3 fl_testbed/version2/client/centralized.py -ml 1 -lr 0.001 -cn 0 -cm 4 -e 400 -dfn   'combined_offset_misalignment.csv'  -ip '172.19.0.6' > out_client_0.txt1 && python3 fl_testbed/version2/client/independent.py  -ml 1  -lr 0.001 -e 400 -cm 4 -cn 0  -dfn  DATASET_0.csv -ip '172.19.0.6' --comparative_path_y_test 400_0.001_1_4_0_combined_offset_misalignment.csv__client_centralizedy_test.pkl --comparative_path_X_test 400_0.001_1_4_0_combined_offset_misalignment.csv__client_centralizedX_test.pkl  > out_client_0.txt2 && python3 fl_testbed/version2/client/federated_client.py  -ml 1  -lr 0.001 -e 1 -cm 4 -cn 0 -dfn  'DATASET_0.csv' -ip '172.19.0.6' > out_client_0.txt3
+
+CLIENT SENTENCE: 1
+ALLINONE
+python3 fl_testbed/version2/client/centralized.py -ml 1 -lr 0.001 -cn 1 -cm 4 -e 400 -dfn   'combined_offset_misalignment.csv'  -ip '172.19.0.7' > out_client_1.txt1 && python3 fl_testbed/version2/client/independent.py  -ml 1  -lr 0.001 -e 400 -cm 4 -cn 1  -dfn  DATASET_1.csv -ip '172.19.0.7' --comparative_path_y_test 400_0.001_1_4_1_combined_offset_misalignment.csv__client_centralizedy_test.pkl --comparative_path_X_test 400_0.001_1_4_1_combined_offset_misalignment.csv__client_centralizedX_test.pkl  > out_client_1.txt2 && python3 fl_testbed/version2/client/federated_client.py  -ml 1  -lr 0.001 -e 1 -cm 4 -cn 1 -dfn  'DATASET_1.csv' -ip '172.19.0.7' > out_client_1.txt3
+
+CLIENT SENTENCE: 2
+ALLINONE
+python3 fl_testbed/version2/client/centralized.py -ml 1 -lr 0.001 -cn 2 -cm 4 -e 400 -dfn   'combined_offset_misalignment.csv'  -ip '172.19.0.8' > out_client_2.txt1 && python3 fl_testbed/version2/client/independent.py  -ml 1  -lr 0.001 -e 400 -cm 4 -cn 2  -dfn  DATASET_2.csv -ip '172.19.0.8' --comparative_path_y_test 400_0.001_1_4_2_combined_offset_misalignment.csv__client_centralizedy_test.pkl --comparative_path_X_test 400_0.001_1_4_2_combined_offset_misalignment.csv__client_centralizedX_test.pkl  > out_client_2.txt2 && python3 fl_testbed/version2/client/federated_client.py  -ml 1  -lr 0.001 -e 1 -cm 4 -cn 2 -dfn  'DATASET_2.csv' -ip '172.19.0.8' > out_client_2.txt3
+
+CLIENT SENTENCE: 3
+ALLINONE
+python3 fl_testbed/version2/client/centralized.py -ml 1 -lr 0.001 -cn 3 -cm 4 -e 400 -dfn   'combined_offset_misalignment.csv'  -ip '172.19.0.9' > out_client_3.txt1 && python3 fl_testbed/version2/client/independent.py  -ml 1  -lr 0.001 -e 400 -cm 4 -cn 3  -dfn  DATASET_3.csv -ip '172.19.0.9' --comparative_path_y_test 400_0.001_1_4_3_combined_offset_misalignment.csv__client_centralizedy_test.pkl --comparative_path_X_test 400_0.001_1_4_3_combined_offset_misalignment.csv__client_centralizedX_test.pkl  > out_client_3.txt2 && python3 fl_testbed/version2/client/federated_client.py  -ml 1  -lr 0.001 -e 1 -cm 4 -cn 3 -dfn  'DATASET_3.csv' -ip '172.19.0.9' > out_client_3.txt3
+
+
+
+

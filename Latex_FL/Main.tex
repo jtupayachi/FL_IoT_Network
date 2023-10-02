@@ -1,0 +1,417 @@
+
+
+
+\documentclass[9pt]{beamer}
+\usetheme{utk}
+\setbeamerfont{footnote}{size=\tiny}
+\title[Federated Learning RUL]{Federated Learning and Preventive Maintenance:
+Motor-Bearing Experimental Study  }
+\author{J. Tupayachi, X. Li}
+
+% \institute{My Workplace}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Importance}
+%Why/How is your topic important? Problem?
+% Topic Importance:
+
+
+\textbf{Offset Recognition:}
+\begin{enumerate}
+    \item \textbf{Prevention of Excessive Load} Prevents uneven loading on the bearing and prolongs the bearing's lifespan
+    \item \textbf{Vibration and Noise Reduction} Reduction in the performance and efficiency of the system.
+    \item \textbf{Energy Efficiency:} Increased energy consumption due to additional friction and resistance .
+    \item \textbf{Cost Savings} Timely detection and correction of offset issues can help prevent replacements of bearings, motors, or associated components.
+    \item \textbf{Early Warning of Misalignment} Detection of conditions such as thermal expansion or improper installation prevents further damage to the bearing and motor components.
+
+
+
+\end{enumerate}
+ 
+\end{frame}
+
+\begin{frame}
+\frametitle{Importance}
+
+\textbf{Remaining Useful Life (RUL):}
+
+\begin{enumerate}
+    
+    \item \textbf{Proactive maintenance} Minimizes unexpected downtime and reduces the risk of secondary damages.
+    \item \textbf{Cost Optimization} Saves unnecessary maintenance costs and optimizes the use of resources. % over scheduled maintenance plans
+    \item \textbf{Risk Mitigation} Avoids costly damages and safety hazards (risks associated with bearing failures)
+    \item \textbf{Condition-Based Decision Making} Allows making informed decisions regarding maintenance intervals and replacement strategies.
+    
+
+ 
+
+
+
+\end{enumerate}
+
+
+
+
+
+
+\end{frame}
+\begin{frame}
+\frametitle{Importance}
+
+\textbf{Why Federated Learning?}
+
+
+\begin{enumerate}
+
+    \item \textbf{Data Privacy} Data from bearing-motor assemblies may contain sensitive or proprietary information. FL enables the training of models directly on the edge devices or local servers where the data is generated, eliminating the need to transfer or centralize the data preserving data confidentially.
+    
+    \item \textbf{Decentralized Data} different assemblies or locations may exhibit variations due to environmental conditions, load characteristics, or specific operational factors capturing these unique variations and enabling more accurate and robust predictions tailored to individual assembly conditions
+
+    
+    \item \textbf{Reduced Data Transfer} time-consuming, resource-intensive, and subject to network limitations as data is trained on local data sources
+
+    
+    \item \textbf{Real-Time Adaptability} Federated Learning, models can be trained locally on the edge devices or servers in real-time, allowing them to adapt and update based on the latest data. This enables the models to capture the evolving behavior of the assemblies and maintain accurate predictions
+
+    
+    \item \textbf{Scalability and Efficiency} leverages the computational power available at the edge devices or local servers  enables scalability, as more devices can contribute to the training process. It also reduces the burden on the central server
+    
+    
+    \item \textbf{Collaborative Knowledge Sharing} facilitates collaboration between different stakeholders involved in bearing-motor assemblies. Local models can be aggregated to create a global model, which represents the collective knowledge from various sources. promotes knowledge sharing, enabling the identification of common patterns
+
+\end{enumerate}
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Background}
+\subtitle{Federated Algorithm}
+
+\begin{enumerate}
+    \item McMahan et. al. 2016 elaborates a strategy "FedAvg" for training deep neural networks (DNN) on distributed data between several clients while reducing device communication transactions. 
+
+\end{enumerate}
+
+
+\subtitle{Fault detection}
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Research Question}
+% And this is my content
+
+% utilize  sensory inputs such as vibrational data that can guarantee cost-effective recognition of offset setups and predict the remaining useful life-rotating components.
+
+% Preventive 
+
+\textbf{Hypothesis:}
+
+% By using a federated approach, a more accurate and generalizable RUL predictor can be developed. This will lead to an effective and rapid of identifying excessive wear conditions or defective/damaged products before they materialize, resulting in improved efficiency and cost savings for businesses.
+
+
+
+\begin{enumerate}
+    \item Is it feasible to employ federated learning two build a 2 stage condition-based machine faulty configuration detection and time-based degradation detector?
+
+    
+\end{enumerate}
+
+\textbf{Objective:}
+
+\begin{enumerate}
+    \item Privacy preservation: Learning from multiple sources without sharing raw data.
+
+    
+\end{enumerate}
+
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Methods and exploratory design}
+In this study, deep neural networks will
+be utilized to identify faulty settings in a motor-bearing system
+
+
+ \begin{figure}
+
+
+\includegraphics[height=2.3cm,width=4.5cm,]{Untitled Diagram.drawio (2).png}
+
+    \caption{Time series signals of the different segments of a 20-second test sample.}\label{fig:Signal_Amplitude}
+
+
+
+
+
+
+
+
+
+
+
+\end{figure}
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Architecture}
+
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Federated Learning}
+
+\textbf{Fed Avg}
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Experimental Setup}
+The experimental setup consists of 6 probes and 4 temperature sensors. Series of 6.25 mm, 3 mm, 12.7 mm, 1 mm, and baseline measures misalignment instances.
+
+\includegraphics[height=2.8cm,width=4.5cm]{Picture1.png}
+\includegraphics[height=2.8cm,width=3cm]{Screenshot 2023-05-17 at 7.26.24 PM.png}
+\end{frame}
+\begin{frame}
+
+
+
+
+\frametitle{Dataset}
+
+\begin{center}
+    
+
+\includegraphics[height=1.3cm,width=4.5cm,]{Untitled Diagram.drawio (3).png}
+\end{center}
+\textbf{Definitions: }
+
+\begin{enumerate}
+    \item Crest Factor: Ratio of the peak amplitude of a signal to its RMS $Peak_g$ / $RMS_g$
+    \item Derived Peak: The highest value of the signal is obtained by calculating the peak values over a given time period.
+    \item Peak
+    \item RMS: root mean square value of a signal over a given time period. The square root of the mean of the squares of all the instantaneous values of the signal.
+    \item True Peak: It is the highest instantaneous peak value of a signal, including any inter-sample peaks that may occur when the signal is converted from a digital to an analog format.
+    \item High Frequency: It is the root mean square value of the high-frequency content of a signal, typically above 10 kHz.
+    \item Kurtosis It is a statistical measure that describes the shape of a distribution, specifically how peaked or flat it is. It is calculated as the fourth standardized moment of a distribution, relative to the square of the second moment (variance).
+
+
+\end{enumerate}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Offset Problem Definition}
+
+\begin{enumerate}
+    \item   \textbf{Problem Type}
+    \item   \textbf{Input Data}
+    \item  \textbf{Problem Type:}
+    \item \textbf{Problem Type:}
+    \item \textbf{Problem Type:}
+    
+\end{enumerate}
+ The problem is a supervised learning problem, specifically a regression or classification task, depending on the desired output representation.
+
+Input Data: The input data consists of relevant features or measurements from the motor-bearing setup. These features can include sensor readings such as vibration data, temperature, electrical current, or any other relevant signals that can capture the behavior of the system.
+
+Output: The output of the machine learning model is the prediction or estimation of the offset between the motor and bearing. This can be represented as a continuous value (regression) indicating the magnitude of the offset or as discrete classes (classification) representing different levels of offset (e.g., low, medium, high).
+
+Training Data: The training dataset consists of paired examples where each input sample is associated with the corresponding ground truth offset value. These examples are typically generated by measuring the system under different known offset conditions or by manually inducing offsets during data collection.
+
+Model Development: The machine learning model is trained using the labeled training data to learn the relationship between the input features and the offset. Various algorithms can be employed, such as linear regression, decision trees, support vector machines, or more advanced techniques like deep neural networks.
+
+Model Evaluation: The trained model is evaluated using a separate set of labeled data called the validation or test dataset. Performance metrics such as mean squared error (MSE) for regression or accuracy, precision, and recall for classification can be used to assess the model's performance and compare different models.
+
+Deployment and Prediction: Once the model achieves satisfactory performance, it can be deployed to make predictions on new, unseen data. The model takes the input features from the motor-bearing setup and outputs an estimated offset value or class, pro
+
+
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Results Offset 2 Clients}
+
+\textbf{Independent Identically Distributed (iiD) }
+
+\textbf{Light Non-iiD}
+
+\textbf{Hard Non-iiD}
+
+% Each of the 5 experimental round the data unbalancement is increased (get more highly unbalanced!)
+
+
+% Results offset consists of probe 5 and temperature sensor 3
+
+% federater 2 clients, 4 clients and 20 clients 
+% diffferent NIID data
+% all witgh best model
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Results Offset 4 Clients}
+
+
+\textbf{Independent Identically Distributed (iiD) }
+
+\textbf{Light Non-iiD}
+
+1684436970
+
+
+total No_Offset  79205
+1mm_Offset       73082
+3mm_Offset       36248
+6.25mm_Offset    29588
+12.7mm_Offset    20599
+
+
+
+No_Offset        34034
+6.25mm_Offset    10648
+3mm_Offset       31633
+1mm_Offset       13420
+12.7mm_Offset    10460
+
+No_Offset        2959
+6.25mm_Offset    3435
+3mm_Offset        304
+1mm_Offset       6828
+12.7mm_Offset     707
+
+No_Offset        13053
+6.25mm_Offset     4032
+3mm_Offset        2218
+1mm_Offset        1264
+12.7mm_Offset     2114
+
+No_Offset         7638
+6.25mm_Offset     3169
+3mm_Offset          90
+1mm_Offset       16850
+12.7mm_Offset     2236
+
+
+
+
+\textbf{Hard Non-iiD}
+
+
+% Each of the 5 experimental round the data unbalancement is increased (get more highly unbalanced!)
+
+
+% Results offset consists of probe 5 and temperature sensor 3
+
+% federater 2 clients, 4 clients and 20 clients 
+% diffferent NIID data
+% all witgh best model
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Results Offset 20 Clients}
+
+\textbf{iiD and NiiD - Generalization}
+
+
+
+% Each of the 5 experimental round the data unbalancement is increased (get more highly unbalanced!)
+
+
+% Results offset consists of probe 5 and temperature sensor 3
+
+% federater 2 clients, 4 clients and 20 clients 
+% diffferent NIID data
+% all witgh best model
+
+
+
+\end{frame}
+
+
+
+
+\begin{frame}
+\frametitle{Results RUL}
+WIP - Still under development
+\end{frame}
+
+
+% \begin{frame}
+% \frametitle{Methods and exploratory design}
+% And this is my content
+% \end{frame}
+
+
+\begin{frame}
+\frametitle{Future directions}
+\begin{enumerate}
+    \item Data Augmentation: Generative adversarial networks 
+    \item Robust against Byzantine Faults 
+\end{enumerate}
+
+
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Acknowledgments}
+And this is my content
+\end{frame}
+
+\begin{frame}
+\frametitle{Questions?}
+
+\end{frame}
+
+
+
+
+
+
+
+
+\end{document}

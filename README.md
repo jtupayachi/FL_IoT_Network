@@ -1574,4 +1574,11 @@ Median Absolute Error: 9835.65625
 
 #TO FOR
 
-rsync -av --exclude='results' out_* results/tuesep26
+rsync -av --exclude='results' out_* results/tuesep26 && rsync -av --exclude='results' *.txt results/tuesep26
+
+#UNDER THE MAIN FOLDER
+
+rm -f out_* *.txt
+
+
+

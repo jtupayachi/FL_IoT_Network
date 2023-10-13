@@ -164,6 +164,7 @@ for type_data in DATA_TYPE:
             except Exception as e:
                 print(e)
         
+        plt.tight_layout()
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"r2"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)
@@ -184,6 +185,8 @@ for type_data in DATA_TYPE:
             except Exception as e:
                 print(e)
         
+        
+        plt.tight_layout()
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mse"+"LSTM.pdf")
         
         fig, ax = plt.subplots(1)
@@ -206,6 +209,7 @@ for type_data in DATA_TYPE:
                 ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
+        plt.tight_layout()
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mae"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)
@@ -224,6 +228,7 @@ for type_data in DATA_TYPE:
             ax.legend(loc="upper right")
             # except Exception as e:
             #     print(e)
+        plt.tight_layout()
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"loss"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)

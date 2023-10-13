@@ -175,7 +175,7 @@ for type_data in DATA_TYPE:
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('F1-Macro W. Avg')
-                ax.legend(loc="lower right")
+                ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
         
@@ -199,7 +199,7 @@ for type_data in DATA_TYPE:
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('MCS')
-                ax.legend(loc="lower right")
+                ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
         plt.tight_layout()
@@ -218,7 +218,7 @@ for type_data in DATA_TYPE:
             ax.set_xbound(lower=-3, upper=ROUNDS)
             ax.set_xlabel('Rounds')
             ax.set_ylabel('Loss')
-            ax.legend(loc="lower right")
+            ax.legend(loc="upper right")
             # except Exception as e:
             #     print(e)
         plt.tight_layout()

@@ -180,7 +180,7 @@ for type_data in DATA_TYPE:
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('MSE')
-                ax.legend(loc="lower right")
+                ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
         
@@ -203,7 +203,7 @@ for type_data in DATA_TYPE:
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('MAE')
-                ax.legend(loc="lower right")
+                ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mae"+"LSTM.pdf")
@@ -221,7 +221,7 @@ for type_data in DATA_TYPE:
             ax.set_xbound(lower=-3, upper=ROUNDS)
             ax.set_xlabel('Rounds')
             ax.set_ylabel('Loss')
-            ax.legend(loc="lower right")
+            ax.legend(loc="upper right")
             # except Exception as e:
             #     print(e)
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"loss"+"LSTM.pdf")

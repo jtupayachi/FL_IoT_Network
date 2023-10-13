@@ -5,29 +5,29 @@ import os
 import numpy as np
 from scipy.signal import savgol_filter, medfilt
 from sklearn import preprocessing 
-
+import re
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
-ROUNDS=100
+ROUNDS=1000
 FOLDER_PATH=dir_path+"/"+'tuesep26'
-PATH_FIND='MLP_TESLA_'
+PATH_FIND_PART1='LSTM_TESLA_'
+PATH_FIND_PART2='_SEQ40_'
+
 DATA_TYPE=['TYPE1','TYPE2']
-METRICS=['accuracy','weighted_avg','MCS']
+METRICS=['r2','mse','mae']
 COLORS=['b','g','r','c']
 names=[]
 plots_dict=[]
-
-
-
-#FONT SIZE
 plt.rcParams.update({'font.size': 16})
 
 os.chdir(FOLDER_PATH)
 print(FOLDER_PATH)
-files = glob(PATH_FIND+'*')
-print(files)
+files = glob(PATH_FIND_PART1+'*')
+files=[k for k in files if PATH_FIND_PART2 in k]
 
+print(files)
+# input()
 for type_data in DATA_TYPE:
     # I GET THE FILE TYPE I WANT
     files_filtered=filter(lambda c: type_data in c, files)
@@ -36,30 +36,33 @@ for type_data in DATA_TYPE:
         
         data=open(element)
         
-        name_fed=element.split("_")[-2]
+        name_fed=element.split("_")[-3]
         name_full=element
         names.append(name_fed)
 
 
-        accuracy_list=[]
-        weightedavg_list=[]
-        mcs_list=[]
+        r2_list=[]
+        mse_list=[]
+        mae_list=[]
         loss_list=[]
 
         for line in data:
-            if line.startswith("    accuracy"):
-                accuracy_list.append(float(line.split("      ")[-2]))
-                # pair_counter=pair_counter+1
-            elif line.startswith("weighted avg"):
-                weightedavg_list.append(float(line.split(" ")[-7]))
-            elif line.startswith("MCS "):
-                mcs_list.append(float(line.split(" ")[-1].replace("\n","")))
-            elif "| fit progress:" in line :
+            # if line.startswith("    accuracy"):
+            #     accuracy_list.append(float(line.split("      ")[-2]))
+            #     # pair_counter=pair_counter+1
+            # elif line.startswith("weighted avg"):
+            #     weightedavg_list.append(float(line.split(" ")[-7]))
+            # elif line.startswith("MCS "):
+            #     mcs_list.append(float(line.split(" ")[-1].replace("\n","")))
+            if "| fit progress:" in line :
                 # print(line)
                 # print(line.split(","))
                 # print(len(line.split(",")))
                 # print(float(line.split(",")[-6]))
-                loss_list.append(float(line.split(",")[-6]))
+                r2_list.append(float(re.findall("\d+\.\d+", line.split(",")[-2])[0]) )
+                mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
+                mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
+                loss_list.append(float(line.split(",")[-5]))
         
                 
 
@@ -69,15 +72,16 @@ for type_data in DATA_TYPE:
                 
         
         
-        print(len(accuracy_list))
-        print(len(weightedavg_list))
-        print(len(mcs_list))
+        print(len(r2_list))
+        print(len(mse_list))
+        print(len(mae_list))
+        print(len(loss_list))
 
-        min_lenght=min(len(accuracy_list),len(weightedavg_list),len(mcs_list))
+        # min_lenght=min(len(accuracy_list),len(weightedavg_list),len(mcs_list))
 
-        accuracy_list=accuracy_list[:min_lenght]
-        weightedavg_list=weightedavg_list[:min_lenght]
-        mcs_list=mcs_list[:min_lenght]
+        # accuracy_list=accuracy_list[:min_lenght]
+        # weightedavg_list=weightedavg_list[:min_lenght]
+        # mcs_list=mcs_list[:min_lenght]
         
 
 
@@ -86,21 +90,21 @@ for type_data in DATA_TYPE:
         
         #CHECK FOR DUPLICATE OUTPUT!!!
         # try:
-        inner_pandas=pd.DataFrame.from_dict({'accuracy':accuracy_list,'weighted_avg':weightedavg_list,'MCS':mcs_list})
-        t = inner_pandas[['accuracy', 'weighted_avg', 'MCS']]     
-        inner_pandas=inner_pandas[(t.ne(t.shift())).any(axis=1)]
+        inner_pandas=pd.DataFrame.from_dict({'r2':r2_list,'mse':mse_list,'mae':mae_list,'loss':loss_list})
+        # t = inner_pandas[['accuracy', 'weighted_avg', 'MCS']]     
+        # inner_pandas=inner_pandas[(t.ne(t.shift())).any(axis=1)]
         
 
 
-        min_lenght=min(inner_pandas.shape[0],len(loss_list))
+        # min_lenght=min(inner_pandas.shape[0],len(loss_list))
         
-        inner_pandas=inner_pandas.iloc[:min_lenght,:]
+        # inner_pandas=inner_pandas.iloc[:min_lenght,:]
 
-        loss_list=loss_list[:min_lenght]
+        # loss_list=loss_list[:min_lenght]
 
         # print(inner_pandas.shape)
         # print(len(loss_list))
-        inner_pandas['loss'] = loss_list
+        # inner_pandas['loss'] = loss_list
         # ,'loss':loss_list
 
 
@@ -114,9 +118,9 @@ for type_data in DATA_TYPE:
         #     print(e)
     
     for i in DATA_TYPE:
-        plot_accuracy=[]
-        plot_weighted_avg=[]
-        plot_MCS=[]
+        plot_r2=[]
+        plot_mse=[]
+        plot_mae=[]
         plot_loss=[]
         
 
@@ -127,14 +131,16 @@ for type_data in DATA_TYPE:
         for x in plots_dict:
             # print(master)
             if x['type'][0] ==i:
-                plot_accuracy.append(x['data'][0]['accuracy'].values)
-                plot_weighted_avg.append(x['data'][0]['weighted_avg'].values)
-                plot_MCS.append(x['data'][0]['MCS'].values)
+                plot_r2.append(x['data'][0]['r2'].values)
+                plot_mse.append(x['data'][0]['mse'].values)
+                plot_mae.append(x['data'][0]['mae'].values)
                 plot_loss.append(x['data'][0]['loss'].values)
 
         
         fig, ax = plt.subplots(1)
         
+        print(plot_r2)
+        print(plot_mse)
         
 
 
@@ -144,7 +150,7 @@ for type_data in DATA_TYPE:
         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
         
 
-        for name,sub,color in zip(list(set(names)),plot_accuracy,COLORS):
+        for name,sub,color in zip(list(set(names)),plot_r2,COLORS):
             print(name)
             try:
                 print("OK")
@@ -152,14 +158,13 @@ for type_data in DATA_TYPE:
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
-                ax.set_ylabel('Accuracy')
+                ax.set_ylabel('R2')
                 ax.legend(loc="lower right")
 
             except Exception as e:
                 print(e)
         
-        plt.tight_layout()
-        plt.savefig(FOLDER_PATH+"/"+i+"accuracy"+"MLP.pdf")
+        plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"r2"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)
 
@@ -167,20 +172,19 @@ for type_data in DATA_TYPE:
 
         # ax.set_title("plot_weighted_avg")
         # print(len(plot_weighted_avg))
-        for name,sub,color in zip(list(set(names)),plot_weighted_avg,COLORS):
+        for name,sub,color in zip(list(set(names)),plot_mse,COLORS):
             try:
                 print("OK")
                 ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
-                ax.set_ylabel('F1-Macro W. Avg')
+                ax.set_ylabel('MSE')
                 ax.legend(loc="lower right")
             except Exception as e:
                 print(e)
         
-        plt.tight_layout()
-        plt.savefig(FOLDER_PATH+"/"+i+"weighted_avg"+"MLP.pdf")
+        plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mse"+"LSTM.pdf")
         
         fig, ax = plt.subplots(1)
         
@@ -189,7 +193,7 @@ for type_data in DATA_TYPE:
 
         # ax.set_title("plot_MCS")  
         # print(len(plot_MCS))
-        for name,sub,color in zip(list(set(names)),plot_MCS,COLORS):
+        for name,sub,color in zip(list(set(names)),plot_mae,COLORS):
             try:
                 
                 ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
@@ -198,12 +202,11 @@ for type_data in DATA_TYPE:
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
-                ax.set_ylabel('MCS')
+                ax.set_ylabel('MAE')
                 ax.legend(loc="lower right")
             except Exception as e:
                 print(e)
-        plt.tight_layout()
-        plt.savefig(FOLDER_PATH+"/"+i+"MCS"+"MLP.pdf")
+        plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mae"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)
 
@@ -221,11 +224,18 @@ for type_data in DATA_TYPE:
             ax.legend(loc="lower right")
             # except Exception as e:
             #     print(e)
-        plt.tight_layout()
-        plt.savefig(FOLDER_PATH+"/"+i+"loss"+"MLP.pdf")
+        plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"loss"+"LSTM.pdf")
 
         fig, ax = plt.subplots(1)
 
+  
+      
+
+
+
+                
+
+           
 
     print("")    
 

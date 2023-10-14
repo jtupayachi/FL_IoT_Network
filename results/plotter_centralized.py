@@ -35,6 +35,9 @@ PATHS=['out_server_14_RULM3_SEQ20_TYPE1.txt2','out_server_14_RULM3_SEQ40_TYPE1.t
 val_mae=[]
 val_mse=[]
 val_loss=[]
+mae=[]
+mse=[]
+loss=[]
 epochs=[]
 for element in PATHS:
         
@@ -44,6 +47,10 @@ for element in PATHS:
             val_mae.append(float(re.findall("\d+\.\d+", line.split("-")[-3])[0]) )
             val_mse.append(float(re.findall("\d+\.\d+",line.split("-")[-4])[0]))
             val_loss.append(float(re.findall("\d+\.\d+",line.split("-")[-5])[0]))
+            
+            mae.append(float(re.findall("\d+\.\d+",line.split("-")[-6])[0]))
+            mse.append(float(re.findall("\d+\.\d+",line.split("-")[-7])[0]))
+            loss.append(float(re.findall("\d+\.\d+",line.split("-")[-8])[0]))
            
         elif "Restoring model weights from the end of the best epoch: " in line :
             print(line)
@@ -56,9 +63,17 @@ for element in PATHS:
     val_mae=val_mae[:cut]
     val_mse=val_mse[:cut]
     val_loss=val_loss[:cut]
+    
+    
+    mae=mae[:cut]
+    mse=mse[:cut]
+    loss=loss[:cut]
+
+
 
     fig, ax = plt.subplots(1)
-    ax.plot(np.arange(len(val_mae)), medfilt(val_mae,51),'b',label=element.split("_")[-2])
+    ax.plot(np.arange(len(val_mae)), val_mae,'b',label="Val "+element.split("_")[-2])
+    ax.plot(np.arange(len(mae)), mae,'r',label="Train "+element.split("_")[-2])
     ax.set_xlim([0, ROUNDS])
     ax.set_xbound(lower=-3, upper=ROUNDS)
     ax.set_xlabel('Rounds')
@@ -68,7 +83,8 @@ for element in PATHS:
     plt.savefig(FOLDER_PATH+"/"+element+"mae"+"LSTM.pdf")
 
     fig, ax = plt.subplots(1)
-    ax.plot(np.arange(len(val_mse)), medfilt(val_mse,51),'b',label=element.split("_")[-2])
+    ax.plot(np.arange(len(val_mse)), val_mse,'b',label="Val "+element.split("_")[-2])
+    ax.plot(np.arange(len(mse)), mse,'r',label="Train "+element.split("_")[-2])
     ax.set_xlim([0, ROUNDS])
     ax.set_xbound(lower=-3, upper=ROUNDS)
     ax.set_xlabel('Rounds')
@@ -78,7 +94,8 @@ for element in PATHS:
     plt.savefig(FOLDER_PATH+"/"+element+"mse"+"LSTM.pdf")
 
     fig, ax = plt.subplots(1)
-    ax.plot(np.arange(len(val_loss)), medfilt(val_loss,51),'b',label=element.split("_")[-2])
+    ax.plot(np.arange(len(val_loss)), val_loss,'b',label="Val "+element.split("_")[-2])
+    ax.plot(np.arange(len(loss)), loss,'r',label="Train "+element.split("_")[-2])
     ax.set_xlim([0, ROUNDS])
     ax.set_xbound(lower=-3, upper=ROUNDS)
     ax.set_xlabel('Rounds')

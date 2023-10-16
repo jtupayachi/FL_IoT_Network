@@ -153,10 +153,16 @@ for type_data in DATA_TYPE:
         for name,sub,color in zip(list(set(names)),plot_r2,COLORS):
             print(name)
             try:
+
+                #MAKE SURE 0 and 1
+                sub=[x if 0 <= x <= 1 else 0 for x in sub]
                 print("OK")
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color ,label=name)
+                ax.plot(np.arange(len(sub)), sub,color ,label=name)
+                # medfilt(scaler.fit_transform(.reshape(-1, 1)).reshape(-1),51)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
+                ax.set_ylim([0, 1])
+                ax.set_ybound(lower=0, upper=1)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('R2')
                 ax.legend(loc="lower right")
@@ -176,15 +182,16 @@ for type_data in DATA_TYPE:
         for name,sub,color in zip(list(set(names)),plot_mse,COLORS):
             try:
                 print("OK")
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
+                ax.plot(np.arange(len(sub)), sub,color,label=name)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
+#                ax.set_ylim([0, 1])
+#                ax.set_ybound(lower=0, upper=1)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('MSE')
                 ax.legend(loc="upper right")
             except Exception as e:
                 print(e)
-        
         
         plt.tight_layout()
         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mse"+"LSTM.pdf")
@@ -199,11 +206,11 @@ for type_data in DATA_TYPE:
         for name,sub,color in zip(list(set(names)),plot_mae,COLORS):
             try:
                 
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
-                
-                # ax.set_aspect('auto')
+                ax.plot(np.arange(len(sub)), sub,color,label=name)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
+#                ax.set_ylim([0, 1])
+#                ax.set_ybound(lower=0, upper=1)
                 ax.set_xlabel('Rounds')
                 ax.set_ylabel('MAE')
                 ax.legend(loc="upper right")
@@ -223,6 +230,8 @@ for type_data in DATA_TYPE:
             # ax.set_aspect('auto')
             ax.set_xlim([0, ROUNDS])
             ax.set_xbound(lower=-3, upper=ROUNDS)
+            # ax.set_ylim([0, 1])
+            # ax.set_ybound(lower=0, upper=1)
             ax.set_xlabel('Rounds')
             ax.set_ylabel('Loss')
             ax.legend(loc="upper right")

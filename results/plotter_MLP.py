@@ -148,7 +148,8 @@ for type_data in DATA_TYPE:
             print(name)
             try:
                 print("OK")
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color ,label=name)
+                ax.plot(np.arange(len(sub)), sub,color ,label=name)
+                # medfilt(scaler.fit_transform(.reshape(-1, 1)).reshape(-1),51)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
@@ -170,7 +171,8 @@ for type_data in DATA_TYPE:
         for name,sub,color in zip(list(set(names)),plot_weighted_avg,COLORS):
             try:
                 print("OK")
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
+                ax.plot(np.arange(len(sub)), sub,color,label=name)
+                # medfilt(scaler.fit_transform(.reshape(-1, 1)).reshape(-1),51)
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)
                 ax.set_xlabel('Rounds')
@@ -192,8 +194,8 @@ for type_data in DATA_TYPE:
         for name,sub,color in zip(list(set(names)),plot_MCS,COLORS):
             try:
                 
-                ax.plot(np.arange(len(sub)), medfilt(scaler.fit_transform(sub.reshape(-1, 1)).reshape(-1),51),color,label=name)
-                
+                ax.plot(np.arange(len(sub)), sub,color,label=name)
+                # medfilt(scaler.fit_transform(.reshape(-1, 1)).reshape(-1),51)
                 # ax.set_aspect('auto')
                 ax.set_xlim([0, ROUNDS])
                 ax.set_xbound(lower=-3, upper=ROUNDS)

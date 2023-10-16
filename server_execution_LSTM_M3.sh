@@ -27,19 +27,19 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #_FedAvg
 echo -n "_FedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ80_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ80_TYPE1.txt
 #_FedAvgM
 
 echo -n "_FedAvgM"
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ80_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ80_TYPE1.txt
 #_FedOpt
 
 echo -n "_FedOpt"
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ80_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ80_TYPE1.txt
 #_QFedAvg
   
 echo -n "_QFedAvg"
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ80_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ80_TYPE1.txt
 
 
 
@@ -70,19 +70,19 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #_FedAvg
 echo -n "_FedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ40_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ40_TYPE1.txt
 #_FedAvgM
 echo -n "_FedAvgM"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ40_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ40_TYPE1.txt
 #_FedOpt
 echo -n "_FedOpt"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ40_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ40_TYPE1.txt
 #_QFedAvg
 echo -n "_QFedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ40_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ40_TYPE1.txt
 
 
 
@@ -115,19 +115,19 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #FEDERATED
 #_FedAvg
 echo -n "_FedAvg"
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ20_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ20_TYPE1.txt
 #_FedAvgM
 echo -n "_FedAvgM"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ20_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ20_TYPE1.txt
 #_FedOpt
 echo -n "_FedOpt"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ20_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ20_TYPE1.txt
 #_QFedAvg
 echo -n "_QFedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ20_TYPE1.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ20_TYPE1.txt
 
 
 
@@ -173,19 +173,19 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #_FedAvg
 echo -n "_FedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ80_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ80_TYPE2.txt
 #_FedAvgM
 
 echo -n "_FedAvgM"
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ80_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ80_TYPE2.txt
 #_FedOpt
 
 echo -n "_FedOpt"
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ80_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ80_TYPE2.txt
 #_QFedAvg
   
 echo -n "_QFedAvg"
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ80_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ80_TYPE2.txt
 
 
 
@@ -216,19 +216,19 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #_FedAvg
 echo -n "_FedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ40_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ40_TYPE2.txt
 #_FedAvgM
 echo -n "_FedAvgM"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ40_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ40_TYPE2.txt
 #_FedOpt
 echo -n "_FedOpt"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ40_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ40_TYPE2.txt
 #_QFedAvg
 echo -n "_QFedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ40_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ40_TYPE2.txt
 
 
 
@@ -261,18 +261,18 @@ python3 fl_testbed/version2/client/independent.py  -ml 2  -cn 15 -cm 15 -e 100 -
 #FEDERATED
 #_FedAvg
 echo -n "_FedAvg"
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ20_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvg_SEQ20_TYPE2.txt
 #_FedAvgM
 echo -n "_FedAvgM"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ20_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedAvgM.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedAvgM_SEQ20_TYPE2.txt
 #_FedOpt
 echo -n "_FedOpt"
 
-python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ20_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_SEQ20_TYPE2.txt
 #_QFedAvg
 echo -n "_QFedAvg"
 
-python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 4000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ20_TYPE2.txt
+python3 fl_testbed/version2/server/federated_server_RUL_QFedAvg.py   -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_4_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_QFedAvg_SEQ20_TYPE2.txt
 
 

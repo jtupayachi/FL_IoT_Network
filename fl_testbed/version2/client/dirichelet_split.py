@@ -43,9 +43,9 @@ class DataSplit:
         self.data_X_vals=data_X_vals #PATH
         self.data_y_train=data_y_train #PATH
         self.data_y_vals=data_y_vals #PATH
-        self.clients_max = clients_max
-        self.alpha=alpha
-        self.beta=beta
+        self.clients_max = clients_max[0]
+        self.alpha=alpha[0]
+        self.beta=beta[0]
         self.motor = motor[0]
         self.type = type[0]
 
@@ -53,7 +53,7 @@ class DataSplit:
         self.concatenated_identifier = (
                                         str(self.motor) + "_" +
 
-                                        str(self.clients_max[0]) + "_")
+                                        str(self.clients_max) + "_")
         
 
         self.DATA_FOLDER = "fl_testbed/version2/data/transformed/"
@@ -158,7 +158,10 @@ class DataSplit:
         #INPUTS TO USE
 
         #DATA_FILE 
-        print(self.df)
+        # print(self.df.y.value_counts()[0]) CAN BE ACCESSED
+        print(self.df.y.value_counts())
+
+        
         #ALPHA
         print(self.alpha)
         #BETA
@@ -167,6 +170,23 @@ class DataSplit:
         print(self.clients_max)
 
         print("END OF READING!")
+
+
+
+
+
+        # Example usage and visualization:
+        N = 5  # Number of classes
+        alpha = 0.2  # Concentration parameter
+        num_clients = 5
+        num_samples_per_client = 5
+        TOTAL_N_DATAPOINTS=1000
+
+
+
+
+
+
 
         # DATA_FOLDER = "/FL_AM_Defect-Detection/fl_testbed/version2/client/"
         # os.chdir(root_path+DATA_FOLDER)
@@ -202,14 +222,14 @@ class DataSplit:
             plt.xlabel('Class')
             plt.ylabel('Probability')
             plt.title('Class Distribution (q) for a Client')
-            plt.savefig("Client: " + str(name))
+            plt.savefig("Client: " + str(name)+ "_("+ str(self.alpha)+")_("+str(self.beta) +").png" )
 
-        # Example usage and visualization:
-        N = 5  # Number of classes
-        alpha = 0.2  # Concentration parameter
-        num_clients = 5
-        num_samples_per_client = 5
-        TOTAL_N_DATAPOINTS=1000
+
+
+
+
+
+
 
         print(np.ones(5)*TOTAL_N_DATAPOINTS)
         # Another useful fact about the Dirichlet distribution is that you naturally get it, if you generate a Gamma-distributed set of random variables and then divide them by their sum.

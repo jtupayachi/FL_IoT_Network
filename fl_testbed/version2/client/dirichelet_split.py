@@ -231,7 +231,6 @@ class DataSplit:
 
 
 
-
                 #THIS SEEMS TO BE GENERATING NUMBERS RAMDOMLY AND NOT ATAKING FORM THE DATA!!
                 
                 num_samples = min(num_samples_per_client, len(df))

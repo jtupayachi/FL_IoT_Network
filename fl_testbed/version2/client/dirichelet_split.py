@@ -21,6 +21,10 @@ import argparse
 import numpy as np
 from scipy.stats import dirichlet
 import matplotlib.pyplot as plt
+from collections import Counter
+
+
+np.random.seed(2)
 
 
 
@@ -175,16 +179,13 @@ class DataSplit:
 
 
 
-        # Example usage and visualization:
+
+        # Example usage:
         N = 5  # Number of classes
-        alpha = 0.2  # Concentration parameter
+        alpha = 0.2  # Concentration parameter (a scalar)
         num_clients = 5
-        num_samples_per_client = 5
-        TOTAL_N_DATAPOINTS=1000
-
-
-
-
+        num_samples_per_client = 100000000 #UYSE A HIGH NUMBER FOR USE ALL
+        p = [0.2, 0.2, 0.2, 0.2, 0.2]  # Prior class distribution (1-dimensional) STARTS WITH SAME NUMBER OF DATAPOITNS PER PARTITION
 
 
 
@@ -192,61 +193,164 @@ class DataSplit:
         # os.chdir(root_path+DATA_FOLDER)
         print(os.getcwd)
 
-        def generate_non_identical_clients(N, alpha, num_clients, num_samples_per_client, p):
+        def split_dataframe_to_non_identical_clients(df, N, alpha, num_clients, num_samples_per_client, p, output_dir):
+            if alpha <= 0:
+                raise ValueError("Alpha must be a positive number.")
+            if len(p) != N or not all(0 <= qi <= 1 for qi in p):
+                raise ValueError("The prior class distribution 'p' must be a 1-dimensional array with values between 0 and 1.")
+            
             clients = []
+            # df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
+            
 
-            for _ in range(num_clients):
-                q = dirichlet.rvs(alpha * np.array(p))
-                print(q)
+            for i in p:
+
+                #THIS SECTION IS FOR CREATING THE EUQLA DATA PARTITIIONS
+                print(i)
+                # sample_df = self.df.groupby(['y'][0]).apply(lambda x: x.sample(frac=i))
+
+                def sample_group(group, frac):
+                    return group.sample(frac=frac)
+
+                # Group the DataFrame by a custom key, e.g., a constant, since we want to sample without grouping
+                grouped = self.df.groupby(lambda x: 0)
+
+                # Use apply to sample rows within each group
+                sampled_df = grouped.apply(sample_group, frac=i)
+
+                print(sampled_df.y.value_counts())
+                # print(sampled_df.X.tail())
+
+
+                # input()
+
+
+
+
+
+
+
+
+
+                #THIS SEEMS TO BE GENERATING NUMBERS RAMDOMLY AND NOT ATAKING FORM THE DATA!!
+                
+                num_samples = min(num_samples_per_client, len(df))
+                data = df.iloc[:num_samples, :].copy()
+                df = df.iloc[num_samples:, :]
+
+                q = dirichlet.rvs([alpha] * N)  # Ensure alpha is a scalar
                 q = np.maximum(q, 0)
                 q /= q.sum()
 
-                data = []
-                for _ in range(num_samples_per_client):
-                    # Generate class labels following a categorical distribution (q)
-                    sample = np.random.choice(N, p=np.squeeze(q))
-                    data.append(sample)
+                split=[np.random.choice(N, p=np.squeeze(q),replace=False) for _ in range(num_samples)]
+                print(split)
 
-                client_info = {
-                    'q': q,
-                    'data': data
-                }
+                # data['label'] = [np.random.choice(N, p=np.squeeze(q)) for _ in range(num_samples)]
+                # client_info = {
+                #     'q': q,
+                #     'data': data
+                # }
+
+                value_counts = Counter(split)
+
+                # Print the value counts
+                for value, count in value_counts.items():
+                    print(f"{value}: {count}")
+
+                    
+                break
                 clients.append(client_info)
 
             return clients
 
-        def plot_class_distribution(client,name):
+        def plot_class_distribution_and_save(client, output_dir, client_index):
             q = client['q']
             plt.bar(range(len(q)), np.squeeze(q))
             plt.xticks(range(len(q)), range(1, len(q) + 1))
             plt.xlabel('Class')
             plt.ylabel('Probability')
-            plt.title('Class Distribution (q) for a Client')
-            plt.savefig("Client: " + str(name)+ "_("+ str(self.alpha)+")_("+str(self.beta) +").png" )
+            plt.title('Class Distribution (q) for Client {}'.format(client_index))
+            
+            # Save the plot as an image file
+            output_file = os.path.join(output_dir, 'client_{}_class_distribution.png'.format(client_index))
+            plt.savefig(output_file)
+            plt.close()  # Close the plot to avoid displaying it
+
+
+
+
+
+        # print(np.ones(5)*TOTAL_N_DATAPOINTS)
+        # # Another useful fact about the Dirichlet distribution is that you naturally get it, if you generate a Gamma-distributed set of random variables and then divide them by their sum.
+        # p=np.random.dirichlet(np.ones(num_clients)*1000.,size=1).reshape((-1,))
+        # print(p) 
+        print("SPLITS!!!")
+
+
+
+
+        # data = {'x': np.random.randn(500), 'y': np.random.randn(500)}
+        # df = pd.DataFrame(data)
 
 
 
 
 
 
+        # Output directory for saving plots
+        output_directory = "client_plots"
+        os.makedirs(output_directory, exist_ok=True)
+
+        non_identical_clients = split_dataframe_to_non_identical_clients(self.df, N, alpha, num_clients, num_samples_per_client, p, output_directory)
+        print(non_identical_clients)
+
+        # Generate and save plots for each client
+        # for i, client in enumerate(non_identical_clients):
+        #     print(f"Client {i + 1} Class Distribution (q):")
+        #     print(client['q'])
+        #     plot_class_distribution_and_save(client, output_directory, i)
+
+        # print("Plots have been saved to the '{}' directory.".format(output_directory))
 
 
-        print(np.ones(5)*TOTAL_N_DATAPOINTS)
-        # Another useful fact about the Dirichlet distribution is that you naturally get it, if you generate a Gamma-distributed set of random variables and then divide them by their sum.
-        p=np.random.dirichlet(np.ones(num_clients)*1000.,size=1).reshape((-1,))
-        # st.dirichlet.pdf(list_of_xs.T, alpha)
-        print(p) #TO BE USED FOR THE REMAINIG PART OF DATA NOW EVERYTHING IS SPLITTED PROPERLY
-        # print(p.dtype)
+        # print(self.df.head())
+
+        # for _split in p:
+        #     # print(_split)
+        #     # sample_df = self.df.groupby(['y'][0]).apply(lambda x: x.sample(frac=_split))
+            
+
+        #     def sample_group(group, frac):
+        #         return group.sample(frac=frac)
 
 
-        # p = [0.8, 0.2, 0.2, 0.2, 0.2]  # Prior class distribution
+        #     # Group the DataFrame by a custom key, e.g., a constant, since we want to sample without grouping
+        #     grouped = self.df.groupby(lambda x: 0)
 
-        non_identical_clients = generate_non_identical_clients(N, alpha, num_clients, num_samples_per_client, p)
+        #     # Use apply to sample rows within each group
+        #     sampled_df = grouped.apply(sample_group, frac=_split)
 
-        # Visualize the class distribution for the first client
-        for i, client in enumerate(non_identical_clients):
-            print(f"Client {i + 1} Class Distribution (q):")
-            plot_class_distribution(client,i)
+        #     print(sampled_df.y.value_counts())
+        #     print(sampled_df.X.tail())
+
+
+
+
+
+            # st.dirichlet.pdf(list_of_xs.T, alpha)
+            #TO BE USED FOR THE REMAINIG PART OF DATA NOW EVERYTHING IS SPLITTED PROPERLY
+            # print(p.dtype)
+
+
+            # p = [0.8, 0.2, 0.2, 0.2, 0.2]  # Prior class distribution
+
+        # non_identical_clients = generate_non_identical_clients(N, alpha, num_clients, num_samples_per_client, p)
+        # print(non_identical_clients)
+
+            # Visualize the class distribution for the first client
+            # for i, client in enumerate(non_identical_clients):
+            #     print(f"Client {i + 1} Class Distribution (q):")
+            #     plot_class_distribution(client,i)
 
 
 

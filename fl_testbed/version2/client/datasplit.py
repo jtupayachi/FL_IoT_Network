@@ -283,9 +283,6 @@ class DataSplit:
 
     def splitdata_2(self):
 
-        # self.create_histogram(self.df, "TOTAL_DATASET",
-        #                       self.TRANSFORMED_FOLDER + "M"+str(self.motor)+"_TOTAL_DATASET")
-
         print(self.df.y)
 
         col = "y"
@@ -329,23 +326,10 @@ class DataSplit:
             
             sample_df.set_index("index")
 
-
-
-
-
-
-
-
-
             sample_index = sample_df.index
-
 
             sample_df_tosave = sample_df[sample_df.columns.drop(list(sample_df.filter(regex="weights")))]
                 
-            
-            
-            
-            
             sample_df_tosave.rename(columns={'y':'to_drop'},inplace=True)
             sample_df_tosave.rename(columns={'z':'y'},inplace=True)
 
@@ -353,9 +337,6 @@ class DataSplit:
 
             # X=sample_df_tosave['X']
             y=sample_df_tosave['y']
-
-
-
 
             #COUTNER!!!
             y_unested=[val for sublist in y for val in sublist]
@@ -378,9 +359,6 @@ class DataSplit:
                 pickle.dump(sample_df_tosave, file)
 
             # sample_df_tosave.to_csv(self.TRANSFORMED_FOLDER +str(self.type)+"_M"+str(self.motor)+"_"+ "DATASET_" + str(counter) +".csv",index=False,)    
-                
-            
-
             # self.create_histogram(sample_df,"CLIENT1",'status')
             # AFTER CREATING HISTOMGRAM
             sample_df = sample_df.drop("weights", axis=1)

@@ -5,7 +5,7 @@
 """
     NEW IMPLEMENTATION!
 
-    MLP M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_train.pkl -data_X_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_vals.pkl -data_y_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_train.pkl -data_y_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_vals.pkl -cm 4 -alpha 0.2 -beta 0.2 -motor 3 -type MLP 
+    MLP M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_train.pkl -data_X_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_vals.pkl -data_y_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_train.pkl -data_y_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_vals.pkl -cm 5 -alpha 0.02 -beta 0.2 -motor 3 -type MLP 
 
 """
 
@@ -22,12 +22,15 @@ from sklearn.preprocessing import normalize
 from sklearn.model_selection import train_test_split
 import argparse
 import numpy as np
+import scipy
 from scipy.stats import dirichlet
 import matplotlib.pyplot as plt
 from collections import Counter
 
 
-np.random.seed(2)
+# Set a random seed for NumPy
+np.random.seed(42)
+
 
 
 
@@ -178,11 +181,6 @@ class DataSplit:
 
         print("END OF READING!")
 
-
-
-
-
-
         # Example usage:
         N = self.clients_max # Number of classes
         alpha = self.alpha  # Concentration parameter (a scalar)
@@ -198,11 +196,6 @@ class DataSplit:
 
         print("STANDARIZED : ",p)
 
-
-
-
-        # DATA_FOLDER = "/FL_AM_Defect-Detection/fl_testbed/version2/client/"
-        # os.chdir(root_path+DATA_FOLDER)
         print(os.getcwd)
 
         def split_dataframe_to_non_identical_clients(df, N, alpha, num_clients, num_samples_per_client, p, output_dir):
@@ -239,7 +232,7 @@ class DataSplit:
 
             
             counter=0
-            aggregated
+            aggregated_probabilities=[]
             #FOR EACH OF MY 0.2 SPLITS OF DATA!
             for i in p:
 
@@ -260,7 +253,7 @@ class DataSplit:
                 data = df.iloc[:num_samples, :].copy()
                 df = df.iloc[num_samples:, :]
 
-                q = dirichlet.rvs([alpha] * N)  # Ensure alpha is a scalar
+                q = dirichlet.rvs([alpha] * N, random_state=42)  # Ensure alpha is a scalar
                 q = np.maximum(q, 0)
                 q /= q.sum()
 
@@ -280,11 +273,7 @@ class DataSplit:
                 #ROUNDING P
 
                 
-
-                print(q)
-
-
-
+                aggregated_probabilities.append(np.squeeze(q))
 
                 #MY MAPPER! FOR EACH DATASPLIT !
                 # class_probabilities=zip(unique_classes_list,np.squeeze(q))
@@ -336,13 +325,10 @@ class DataSplit:
                 # Normalize the values in the column so that they sum up to 1
                 merged_df['weights'] = merged_df['weights'] / column_sum
 
-
-
                 # Extract the weights as a NumPy array
                 weights = merged_df['weights'].values
 
                 # Perform a random choice based on the weights
-                # merged_df_sampled = random.choices(items, weights=weights, k=n_samples)
                 # Perform random sampling without replacement
                 sampled_index = random.choices(merged_df.index, weights=weights, k=min_count_quantity)
 
@@ -351,41 +337,66 @@ class DataSplit:
                 
                 # merged_df.sample(n=min_count_quantity, weights=weights, replace=False)
 
-
-
                 # Combine the selected data from each class with the sampled remaining data
                 merged_df_sampled = pd.concat([selected_data, merged_df_sampled])
 
-
-
-
-
-                # print("second")
                 print(merged_df_sampled.mapper.value_counts().sort_index())
 
+                #SAVING DATAFRAME!
+                #NEW EDITED LINE
+                    
+                #HERE WE SAVE SMALL DATASETS!!!
+                print(self.concatenated_identifier)
+                with open(
+                        self.TRANSFORMED_FOLDER + "M"+self.concatenated_identifier +str(counter)+"_" +
+                        self.FILE_NAME[0] + "df_MLP.pkl",
+                        "wb",
+                ) as file:
+                    pickle.dump(merged_df_sampled, file)
 
-
-                
                 counter=counter+1
-
-
+            
+            to_plot=pd.DataFrame(aggregated_probabilities)#.add_prefix()
+            print(to_plot)
+            plot_class_distribution_and_save(to_plot,N)
+            
 
 
             return clients
 
-        def plot_class_distribution_and_save(client, output_dir, client_index):
-            q = client['q']
-            plt.bar(range(len(q)), np.squeeze(q))
-            plt.xticks(range(len(q)), range(1, len(q) + 1))
-            plt.xlabel('Class')
-            plt.ylabel('Probability')
-            plt.title('Class Distribution (q) for Client {}'.format(client_index))
-            
-            # Save the plot as an image file
-            output_file = os.path.join(output_dir, 'client_{}_class_distribution.png'.format(client_index))
-            plt.savefig(output_file)
-            plt.close()  # Close the plot to avoid displaying it
+        def plot_class_distribution_and_save(to_plot,N):
+            data=to_plot
+            bar_width = 0.2  # Width of each bar
+            num_rows = len(data)
+            x = np.arange(len(data[0]))  # X-axis values
 
+
+            fig, ax = plt.subplots()
+
+            # Initialize a variable to keep track of the bottom position for each bar
+            bottom = np.zeros(N)
+
+            for i in range(num_rows):
+                ax.bar(x, data[i], label=f'Error Type {i + 1}', bottom=bottom)
+                bottom += data[i]  # Update the bottom position for the next row
+
+            ax.set_xlabel('Client')
+            ax.set_ylabel('Class Probability')
+            
+            ax.set_ylim(0, 1)
+
+            ax.set_title("\u03B1 = "+ str(self.alpha))
+
+            # Set the ticks and labels
+            ax.set_xticks(x)
+            # ax.set_xticklabels(['Column 1', 'Column 2', 'Column 3'])
+
+            # Add a legend
+            ax.legend()
+            
+
+            plt.savefig(self.TRANSFORMED_FOLDER + "M"+self.concatenated_identifier +"_" +
+                        self.FILE_NAME[0] + "df_MLP_"+str(self.alpha)+"_PLOT.pdf")
 
 
 

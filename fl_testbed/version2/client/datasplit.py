@@ -143,10 +143,6 @@ class DataSplit:
 
 
 
-
-        # y_train=y_train.values.reshape(-1,1)
-        # y_vals=y_vals.values.reshape(-1,1)
-
         print(X_train.shape)
         print(X_vals.shape)
         print(y_train.shape)

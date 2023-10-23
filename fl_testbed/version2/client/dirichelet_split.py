@@ -6,6 +6,7 @@
     NEW IMPLEMENTATION!
 
     MLP M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_train.pkl -data_X_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_vals.pkl -data_y_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_train.pkl -data_y_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_vals.pkl -cm 5 -alpha 0.02 -beta 0.2 -motor 3 -type MLP 
+   LSTM M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_inputs.pkl -data_X_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_inputs.pkl -data_y_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_out.pkl -data_y_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_out.pkl -cm 5 -alpha 0.02 -beta 0.2 -motor 3 -type LSTM
 
 """
 
@@ -165,7 +166,7 @@ class DataSplit:
         
     def splitdata_1(self):
 
-        #INPUTS TO USE
+        print(self.df.head(5))
 
         #DATA_FILE 
         # print(self.df.y.value_counts()[0]) CAN BE ACCESSED
@@ -218,8 +219,10 @@ class DataSplit:
             # df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
             
             # print(p)
-
+            print("flattened_MLP")
+            print(df['y'])
             flattened_y = np.concatenate(df['y'])
+
             # Get unique classes
             unique_classes = np.unique(flattened_y)
             # Convert the unique classes to a list if needed
@@ -299,7 +302,7 @@ class DataSplit:
 
 
 
-
+ 
                 # Create a DataFrame to store the selected data points for each class
                 selected_data = pd.DataFrame()
 
@@ -398,24 +401,7 @@ class DataSplit:
             plt.savefig(self.TRANSFORMED_FOLDER + "M"+self.concatenated_identifier +"_" +
                         self.FILE_NAME[0] + "df_MLP_"+str(self.alpha)+"_PLOT.pdf")
 
-
-
-
-        # print(np.ones(5)*TOTAL_N_DATAPOINTS)
-        # # Another useful fact about the Dirichlet distribution is that you naturally get it, if you generate a Gamma-distributed set of random variables and then divide them by their sum.
-        # p=np.random.dirichlet(np.ones(num_clients)*1000.,size=1).reshape((-1,))
-        # print(p) 
         print("SPLITS!!!")
-
-
-
-
-        # data = {'x': np.random.randn(500), 'y': np.random.randn(500)}
-        # df = pd.DataFrame(data)
-
-
-
-
 
 
         # Output directory for saving plots
@@ -425,54 +411,246 @@ class DataSplit:
         non_identical_clients = split_dataframe_to_non_identical_clients(self.df, N, alpha, num_clients, num_samples_per_client, p, output_directory)
         print(non_identical_clients)
 
-        # Generate and save plots for each client
-        # for i, client in enumerate(non_identical_clients):
-        #     print(f"Client {i + 1} Class Distribution (q):")
-        #     print(client['q'])
-        #     plot_class_distribution_and_save(client, output_directory, i)
-
-        # print("Plots have been saved to the '{}' directory.".format(output_directory))
 
 
-        # print(self.df.head())
 
-        # for _split in p:
-        #     # print(_split)
-        #     # sample_df = self.df.groupby(['y'][0]).apply(lambda x: x.sample(frac=_split))
+
+
+
+
+
+
+
+
+
+
+    def splitdata_2(self):
+
+        def wrap_with_numpy_array(value):
+            return np.array([value])
+
+        
+        #ONLY FOR LSTM
+        self.df['y'] = self.df['y'].apply(wrap_with_numpy_array)
+
+
+        print(self.df.head(5))
+
+
+        #DATA_FILE 
+        # print(self.df.y.value_counts()[0]) CAN BE ACCESSED
+        print(self.df.y.value_counts())
+
+        
+        #ALPHA
+        print(self.alpha)
+        #BETA
+        print(self.beta)
+        #CM
+        print(self.clients_max)
+
+        print("END OF READING!")
+
+        # Example usage:
+        N = self.clients_max # Number of classes
+        alpha = self.alpha  # Concentration parameter (a scalar)
+        num_clients = self.clients_max
+        num_samples_per_client = 100000000 #UYSE A HIGH NUMBER FOR USE ALL
+
+        p = [self.beta] * N  # Prior class distribution (1-dimensional) STARTS WITH SAME NUMBER OF DATAPOITNS PER PARTITION
+        
+        
+        total = sum(p)
+        # Standardize the numbers to sum to 1
+        p = [x / total for x in p]
+
+        print("STANDARIZED : ",p)
+
+
+        def split_dataframe_to_non_identical_clients(df, N, alpha, num_clients, num_samples_per_client, p, output_dir):
+
             
 
-        #     def sample_group(group, frac):
-        #         return group.sample(frac=frac)
 
 
-        #     # Group the DataFrame by a custom key, e.g., a constant, since we want to sample without grouping
-        #     grouped = self.df.groupby(lambda x: 0)
+            def sample_group(group, frac):
+                return group.sample(frac=frac)
 
-        #     # Use apply to sample rows within each group
-        #     sampled_df = grouped.apply(sample_group, frac=_split)
-
-        #     print(sampled_df.y.value_counts())
-        #     print(sampled_df.X.tail())
+            def unwrap_array(arr):
+                return arr[0] 
 
 
 
 
+            if alpha <= 0:
+                raise ValueError("Alpha must be a positive number.")
+            if len(p) != N or not all(0 <= qi <= 1 for qi in p):
+                raise ValueError("The prior class distribution 'p' must be a 1-dimensional array with values between 0 and 1.")
+            
+            clients = []
+            # df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
+            
 
-            # st.dirichlet.pdf(list_of_xs.T, alpha)
-            #TO BE USED FOR THE REMAINIG PART OF DATA NOW EVERYTHING IS SPLITTED PROPERLY
-            # print(p.dtype)
+
+            # print(p)
+            print(df['y'])
+            print("flattened_LSTM")
+            
+            
+
+            flattened_y = np.concatenate(df['y'].values)
+            # Get unique classes
+            unique_classes = np.unique(flattened_y)
+            # Convert the unique classes to a list if needed
+            unique_classes_list = unique_classes.tolist()
+            
+
+            value_counts = df['y'].value_counts()
+            min_count_class = value_counts.idxmin()[0]
+            min_count_quantity = value_counts.min()
+
+            
+            counter=0
+            aggregated_probabilities=[]
+            #FOR EACH OF MY 0.2 SPLITS OF DATA!
+            for i in p:
+
+                print("This is split: "+str(counter))
+                
+                #DATAFRAME CREATION!
+
+                #THIS SECTION IS FOR CREATING THE EUQLA DATA PARTITIIONS
+                # Group the DataFrame by a custom key, e.g., a constant, since we want to sample without grouping
+                grouped = self.df.groupby(lambda x: 0)
+
+                # Use apply to sample rows within each group
+                sampled_df = grouped.apply(sample_group, frac=i)
+
+    
+                #DISTRIBUTION GENENRATION!
+                num_samples = min(num_samples_per_client, len(df))
+                data = df.iloc[:num_samples, :].copy()
+                df = df.iloc[num_samples:, :]
+
+                q = dirichlet.rvs([alpha] * N, random_state=42)  # Ensure alpha is a scalar
+                q = np.maximum(q, 0)
+                q /= q.sum()
 
 
-            # p = [0.8, 0.2, 0.2, 0.2, 0.2]  # Prior class distribution
 
-        # non_identical_clients = generate_non_identical_clients(N, alpha, num_clients, num_samples_per_client, p)
-        # print(non_identical_clients)
 
-            # Visualize the class distribution for the first client
-            # for i, client in enumerate(non_identical_clients):
-            #     print(f"Client {i + 1} Class Distribution (q):")
-            #     plot_class_distribution(client,i)
+                #ORDENING!!
 
+                # Find the index of the greatest element in the array
+                greatest_index = np.argmax(q)
+
+                # Check if the counter matches the position of the greatest element
+                if counter != greatest_index:
+                    # Rearrange the array so that the counter matches the greatest element's position
+                    rearranged_items = np.roll(q, counter - greatest_index)
+                    q = rearranged_items
+                #ROUNDING P
+
+                
+                aggregated_probabilities.append(np.squeeze(q))
+
+                #MY MAPPER! FOR EACH DATASPLIT !
+                # class_probabilities=zip(unique_classes_list,np.squeeze(q))
+                result_dict = [{'map': item[0], 'weights': item[1]} for item in zip(unique_classes_list,np.squeeze(q))]
+
+                # If you want to convert the result_dict into a DataFrame:
+                class_probabilities= pd.DataFrame(result_dict)
+                class_probabilities['map'] = class_probabilities['map'].apply(lambda x: np.array([x]))
+
+                # Map the DataFrames using the custom function
+                sampled_df['mapper'] = sampled_df['y'].apply(unwrap_array)
+                class_probabilities['mapper'] = class_probabilities['map'].apply(unwrap_array)
+
+                merged_df = pd.merge(sampled_df, class_probabilities, on='mapper',how='inner')
+                # print("FIRST")
+                # print(merged_df.mapper.value_counts().sort_index())
+
+                
+
+
+                #CREATE ANOTHER DATAFRAME JUST FOR THE MINIMUN OF 30 DATAPOITNS TO ENSURE ALL CLASSES ARE REPRESENTED
+                min_data_points_per_class = 30
+
+
+
+ 
+                # Create a DataFrame to store the selected data points for each class
+                selected_data = pd.DataFrame()
+
+
+                # Iterate through unique classes
+                for class_label in merged_df['mapper'].unique():
+                    class_data = merged_df[merged_df['mapper'] == class_label]
+                    
+                    # If there are fewer than 10 data points in the class, select them all
+                    if len(class_data) < min_data_points_per_class:
+                        selected_data = pd.concat([selected_data, class_data])
+                    else:
+                        # Randomly select 10 data points from the class
+                        selected_data = pd.concat([selected_data, class_data.sample(n=min_data_points_per_class, replace=False)])
+
+
+                # Randomly sample the remaining data points if necessary
+                merged_df = merged_df[~merged_df.index.isin(selected_data.index)]
+
+                # Calculate the sum of the specified column
+                column_sum = merged_df['weights'].sum()
+
+                # Normalize the values in the column so that they sum up to 1
+                merged_df['weights'] = merged_df['weights'] / column_sum
+
+                # Extract the weights as a NumPy array
+                weights = merged_df['weights'].values
+
+                # Perform a random choice based on the weights
+                # Perform random sampling without replacement
+                sampled_index = random.choices(merged_df.index, weights=weights, k=min_count_quantity)
+
+                # Get the selected row(s) from the DataFrame
+                merged_df_sampled = merged_df.loc[sampled_index]
+                
+                # merged_df.sample(n=min_count_quantity, weights=weights, replace=False)
+
+                # Combine the selected data from each class with the sampled remaining data
+                merged_df_sampled = pd.concat([selected_data, merged_df_sampled])
+
+                print(merged_df_sampled.mapper.value_counts().sort_index())
+
+                #SAVING DATAFRAME!
+                #NEW EDITED LINE
+                    
+                #HERE WE SAVE SMALL DATASETS!!!
+                print(self.concatenated_identifier)
+                with open(
+                        self.TRANSFORMED_FOLDER + "M"+self.concatenated_identifier +str(counter)+"_" +
+                        self.FILE_NAME[0] + "df_LSTM.pkl",
+                        "wb",
+                ) as file:
+                    pickle.dump(merged_df_sampled, file)
+
+                counter=counter+1
+            
+            to_plot=pd.DataFrame(aggregated_probabilities)#.add_prefix()
+            print(to_plot)
+            # plot_class_distribution_and_save(to_plot,N)
+            
+
+
+            return clients
+
+
+        print("SPLITS!!!")
+        # Output directory for saving plots
+        output_directory = "client_plots"
+        os.makedirs(output_directory, exist_ok=True)
+
+        non_identical_clients = split_dataframe_to_non_identical_clients(self.df, N, alpha, num_clients, num_samples_per_client, p, output_directory)
+        print(non_identical_clients)
 
 
 

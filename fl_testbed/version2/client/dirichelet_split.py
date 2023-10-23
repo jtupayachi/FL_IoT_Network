@@ -1,4 +1,5 @@
 #SIMILAR IMPLEMENTATION AS: arXiv:1909.06335
+#FOR client_max use 5 for 5 cleints it iwll create 0,1,2,3,4 , use 4 for 4 clients it wil create 0,1,2,3  
 
 
 """
@@ -7,6 +8,8 @@
     MLP M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_train.pkl -data_X_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_vals.pkl -data_y_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_train.pkl -data_y_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_vals.pkl -cm 4 -alpha 0.2 -beta 0.2 -motor 3 -type MLP 
 
 """
+
+import random
 import sys
 import pickle
 import numpy as np
@@ -181,11 +184,20 @@ class DataSplit:
 
 
         # Example usage:
-        N = 5  # Number of classes
-        alpha = 0.2  # Concentration parameter (a scalar)
-        num_clients = 5
+        N = self.clients_max # Number of classes
+        alpha = self.alpha  # Concentration parameter (a scalar)
+        num_clients = self.clients_max
         num_samples_per_client = 100000000 #UYSE A HIGH NUMBER FOR USE ALL
-        p = [0.2, 0.2, 0.2, 0.2, 0.2]  # Prior class distribution (1-dimensional) STARTS WITH SAME NUMBER OF DATAPOITNS PER PARTITION
+
+        p = [self.beta] * N  # Prior class distribution (1-dimensional) STARTS WITH SAME NUMBER OF DATAPOITNS PER PARTITION
+        
+        
+        total = sum(p)
+        # Standardize the numbers to sum to 1
+        p = [x / total for x in p]
+
+        print("STANDARIZED : ",p)
+
 
 
 
@@ -194,6 +206,16 @@ class DataSplit:
         print(os.getcwd)
 
         def split_dataframe_to_non_identical_clients(df, N, alpha, num_clients, num_samples_per_client, p, output_dir):
+
+
+
+            def sample_group(group, frac):
+                return group.sample(frac=frac)
+
+            def unwrap_array(arr):
+                return arr[0] 
+
+
             if alpha <= 0:
                 raise ValueError("Alpha must be a positive number.")
             if len(p) != N or not all(0 <= qi <= 1 for qi in p):
@@ -202,37 +224,37 @@ class DataSplit:
             clients = []
             # df = df.sample(frac=1).reset_index(drop=True)  # Shuffle the DataFrame
             
+            # print(p)
 
+            flattened_y = np.concatenate(df['y'])
+            # Get unique classes
+            unique_classes = np.unique(flattened_y)
+            # Convert the unique classes to a list if needed
+            unique_classes_list = unique_classes.tolist()
+            
+
+            value_counts = df['y'].value_counts()
+            min_count_class = value_counts.idxmin()[0]
+            min_count_quantity = value_counts.min()
+
+            
+            counter=0
+            #FOR EACH OF MY 0.2 SPLITS OF DATA!
             for i in p:
 
+                print("This is split: "+str(counter))
+                
+                #DATAFRAME CREATION!
+
                 #THIS SECTION IS FOR CREATING THE EUQLA DATA PARTITIIONS
-                print(i)
-                # sample_df = self.df.groupby(['y'][0]).apply(lambda x: x.sample(frac=i))
-
-                def sample_group(group, frac):
-                    return group.sample(frac=frac)
-
                 # Group the DataFrame by a custom key, e.g., a constant, since we want to sample without grouping
                 grouped = self.df.groupby(lambda x: 0)
 
                 # Use apply to sample rows within each group
                 sampled_df = grouped.apply(sample_group, frac=i)
 
-                print(sampled_df.y.value_counts())
-                # print(sampled_df.X.tail())
-
-
-                # input()
-
-
-
-
-
-
-
-
-                #THIS SEEMS TO BE GENERATING NUMBERS RAMDOMLY AND NOT ATAKING FORM THE DATA!!
-                
+    
+                #DISTRIBUTION GENENRATION!
                 num_samples = min(num_samples_per_client, len(df))
                 data = df.iloc[:num_samples, :].copy()
                 df = df.iloc[num_samples:, :]
@@ -241,24 +263,135 @@ class DataSplit:
                 q = np.maximum(q, 0)
                 q /= q.sum()
 
-                split=[np.random.choice(N, p=np.squeeze(q),replace=False) for _ in range(num_samples)]
-                print(split)
+                #ROUNDING P
 
-                # data['label'] = [np.random.choice(N, p=np.squeeze(q)) for _ in range(num_samples)]
-                # client_info = {
-                #     'q': q,
-                #     'data': data
-                # }
+                # smallest_number = min(q)
+                
+                
+                # q=np.array(q)
+        
+                # # Replace values smaller than 0.01 with the smallest number using np.where
+                # q = np.squeeze(np.where(q < 0.1, smallest_number+0.00000001, q).tolist())
 
-                value_counts = Counter(split)
 
-                # Print the value counts
-                for value, count in value_counts.items():
-                    print(f"{value}: {count}")
+                # aggressiveness_factor = 9999999999999999
 
+                # print(q)
+                # q=[ float(aggressiveness_factor) ** float(w) for w in q]
+
+
+
+
+                # arr = np.array(q)
+
+                # # Replace elements less than 0.000000001 with 0.0001 element-wise
+                # modified_arr = np.where(arr < 0.0001, 0.0001, arr)
+
+                # # Convert the modified array back to a list (if needed)
+                # q = modified_arr.tolist()
+
+                
+
+                print(q)
+
+
+
+
+                #MY MAPPER! FOR EACH DATASPLIT !
+                # class_probabilities=zip(unique_classes_list,np.squeeze(q))
+                result_dict = [{'map': item[0], 'weights': item[1]} for item in zip(unique_classes_list,np.squeeze(q))]
+
+                # If you want to convert the result_dict into a DataFrame:
+                class_probabilities= pd.DataFrame(result_dict)
+                class_probabilities['map'] = class_probabilities['map'].apply(lambda x: np.array([x]))
+
+                # Map the DataFrames using the custom function
+                sampled_df['mapper'] = sampled_df['y'].apply(unwrap_array)
+                class_probabilities['mapper'] = class_probabilities['map'].apply(unwrap_array)
+
+                merged_df = pd.merge(sampled_df, class_probabilities, on='mapper',how='inner')
+                # print("FIRST")
+                # print(merged_df.mapper.value_counts().sort_index())
+
+                
+
+
+                #CREATE ANOTHER DATAFRAME JUST FOR THE MINIMUN OF 30 DATAPOITNS TO ENSURE ALL CLASSES ARE REPRESENTED
+                min_data_points_per_class = 30
+
+
+
+
+                # Create a DataFrame to store the selected data points for each class
+                selected_data = pd.DataFrame()
+
+
+                # Iterate through unique classes
+                for class_label in merged_df['mapper'].unique():
+                    class_data = merged_df[merged_df['mapper'] == class_label]
                     
-                break
-                clients.append(client_info)
+                    # If there are fewer than 10 data points in the class, select them all
+                    if len(class_data) < min_data_points_per_class:
+                        selected_data = pd.concat([selected_data, class_data])
+                    else:
+                        # Randomly select 10 data points from the class
+                        selected_data = pd.concat([selected_data, class_data.sample(n=min_data_points_per_class, replace=False)])
+
+
+                # Randomly sample the remaining data points if necessary
+                merged_df = merged_df[~merged_df.index.isin(selected_data.index)]
+
+                # Calculate the sum of the specified column
+                column_sum = merged_df['weights'].sum()
+
+                # Normalize the values in the column so that they sum up to 1
+                merged_df['weights'] = merged_df['weights'] / column_sum
+
+
+
+                # Extract the weights as a NumPy array
+                weights = merged_df['weights'].values
+
+                # Perform a random choice based on the weights
+                # merged_df_sampled = random.choices(items, weights=weights, k=n_samples)
+                # Perform random sampling without replacement
+                sampled_index = random.choices(merged_df.index, weights=weights, k=min_count_quantity)
+
+                # Get the selected row(s) from the DataFrame
+                merged_df_sampled = merged_df.loc[sampled_index]
+                
+                # merged_df.sample(n=min_count_quantity, weights=weights, replace=False)
+
+
+
+                # Combine the selected data from each class with the sampled remaining data
+                merged_df_sampled = pd.concat([selected_data, merged_df_sampled])
+
+
+
+
+
+                # print("second")
+                print(merged_df_sampled.mapper.value_counts().sort_index())
+
+
+
+
+
+
+                
+                
+
+
+
+                
+
+                
+
+                counter=counter+1
+
+
+
 
             return clients
 

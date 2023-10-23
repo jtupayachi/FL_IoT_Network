@@ -239,6 +239,7 @@ class DataSplit:
 
             
             counter=0
+            aggregated
             #FOR EACH OF MY 0.2 SPLITS OF DATA!
             for i in p:
 
@@ -277,31 +278,6 @@ class DataSplit:
                     rearranged_items = np.roll(q, counter - greatest_index)
                     q = rearranged_items
                 #ROUNDING P
-
-                # smallest_number = min(q)
-                
-                
-                # q=np.array(q)
-        
-                # # Replace values smaller than 0.01 with the smallest number using np.where
-                # q = np.squeeze(np.where(q < 0.1, smallest_number+0.00000001, q).tolist())
-
-
-                # aggressiveness_factor = 9999999999999999
-
-                # print(q)
-                # q=[ float(aggressiveness_factor) ** float(w) for w in q]
-
-
-
-
-                # arr = np.array(q)
-
-                # # Replace elements less than 0.000000001 with 0.0001 element-wise
-                # modified_arr = np.where(arr < 0.0001, 0.0001, arr)
-
-                # # Convert the modified array back to a list (if needed)
-                # q = modified_arr.tolist()
 
                 
 
@@ -389,18 +365,7 @@ class DataSplit:
 
 
 
-
-
-
                 
-                
-
-
-
-                
-
-                
-
                 counter=counter+1
 
 

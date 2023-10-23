@@ -263,6 +263,19 @@ class DataSplit:
                 q = np.maximum(q, 0)
                 q /= q.sum()
 
+
+
+
+                #ORDENING!!
+
+                # Find the index of the greatest element in the array
+                greatest_index = np.argmax(q)
+
+                # Check if the counter matches the position of the greatest element
+                if counter != greatest_index:
+                    # Rearrange the array so that the counter matches the greatest element's position
+                    rearranged_items = np.roll(q, counter - greatest_index)
+                    q = rearranged_items
                 #ROUNDING P
 
                 # smallest_number = min(q)

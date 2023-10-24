@@ -6,6 +6,7 @@
     NEW IMPLEMENTATION!
 
     MLP M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_train.pkl -data_X_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_vals.pkl -data_y_train 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_train.pkl -data_y_vals 100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_vals.pkl -cm 5 -alpha 0.02 -beta 0.2 -motor 3 -type MLP 
+   
    LSTM M3: python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_inputs.pkl -data_X_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_inputs.pkl -data_y_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_out.pkl -data_y_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_out.pkl -cm 5 -alpha 0.02 -beta 0.2 -motor 3 -type LSTM
 
 """
@@ -145,6 +146,15 @@ class DataSplit:
         print(y_train.shape)
         print(y_vals.shape)
 
+
+
+
+
+
+
+
+
+
         self.X=np.vstack((X_train,X_vals))
         self.y=np.vstack((y_train,y_vals))
         # print(self.X)
@@ -159,9 +169,40 @@ class DataSplit:
         ##NEED TO WORK
 
 
+
+
+
+
         self.df=df_X.merge(df_z,left_index=True,right_index=True)
+
+        print("PRINTING DATAFRME")
+        print(self.df.tail())
+        # print(df_X..value_counts())
+        input()
+        print("###############################")
+
+
+
+        # self.df['y'] = int(self.df.X[0][0][-1]) THIS ONLY TAKE THE FIRST ELEMENT AND REPRODUCES IT 
         self.df['y'] = int(self.df.X[0][0][-1])
-        print(self.df)
+
+        # Define a function to access the last element of a NumPy array
+        def get_last_element(arr):
+            return int(arr[-1, -1])
+
+        # Apply the function to the DataFrame
+        self.df['y'] = self.df['X'].apply(get_last_element)
+
+
+
+        print("PRINTING DATAFRME")
+        print(self.df.tail())
+        # print(df_X..value_counts())
+        input()
+        print("###############################")
+
+
+        
         # print(self.df.y.values)
         
     def splitdata_1(self):
@@ -347,6 +388,8 @@ class DataSplit:
 
                 #SAVING DATAFRAME!
                 #NEW EDITED LINE
+
+                merged_df_sampled=merged_df_sampled[['X','y']]
                     
                 #HERE WE SAVE SMALL DATASETS!!!
                 print(self.concatenated_identifier)
@@ -430,6 +473,9 @@ class DataSplit:
             return np.array([value])
 
         
+        print("First!!")
+        print(self.df.y.value_counts())
+
         #ONLY FOR LSTM
         self.df['y'] = self.df['y'].apply(wrap_with_numpy_array)
 
@@ -622,6 +668,7 @@ class DataSplit:
                 print(merged_df_sampled.mapper.value_counts().sort_index())
 
                 #SAVING DATAFRAME!
+                merged_df_sampled=merged_df_sampled[['X','y']]
                 #NEW EDITED LINE
                     
                 #HERE WE SAVE SMALL DATASETS!!!

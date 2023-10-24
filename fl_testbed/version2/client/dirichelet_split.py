@@ -178,7 +178,6 @@ class DataSplit:
         print("PRINTING DATAFRME")
         print(self.df.tail())
         # print(df_X..value_counts())
-        input()
         print("###############################")
 
 
@@ -198,7 +197,6 @@ class DataSplit:
         print("PRINTING DATAFRME")
         print(self.df.tail())
         # print(df_X..value_counts())
-        input()
         print("###############################")
 
 
@@ -668,7 +666,9 @@ class DataSplit:
                 print(merged_df_sampled.mapper.value_counts().sort_index())
 
                 #SAVING DATAFRAME!
-                merged_df_sampled=merged_df_sampled[['X','y']]
+                merged_df_sampled=merged_df_sampled[['X','z']]
+
+                print(merged_df_sampled)
                 #NEW EDITED LINE
                     
                 #HERE WE SAVE SMALL DATASETS!!!

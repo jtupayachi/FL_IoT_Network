@@ -297,14 +297,18 @@ class Centralized:
         X=self.X
         y=self.y
 
+        print("MODELING")
+        print(y)
+
+
 
         # set aside 20% of train and test data for evaluation
         X_train, X_test, y_train, y_test = train_test_split(X, y,
-            test_size=0.2, shuffle = True, random_state = RNDSEED)
+            test_size=0.2, shuffle = True, random_state = RNDSEED,stratify=y)
 
         # Use the same function above for the validation set
         X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-            test_size=0.25, random_state= RNDSEED,shuffle=True) # 0.25 x 0.8 = 0.2
+            test_size=0.25, random_state= RNDSEED,shuffle=True,stratify=y_train) # 0.25 x 0.8 = 0.2
 
 
 
@@ -586,6 +590,8 @@ class Centralized:
         df=self.df
         X=self.X
         y=self.y
+
+
         #FAKE SPLIT!!
         ## true orignal ones
         # data split
@@ -693,6 +699,9 @@ class Centralized:
 
         vals_inputs = np.vstack([gen_seq(X_vals[X_vals['status'] == id], seq_length, columns)
                             for id in X_vals['status'].unique()])
+
+
+
         
 
         #OUTPUTS
@@ -713,17 +722,25 @@ class Centralized:
                             for id in y_vals['status'].unique()])
 
 
+
         #NEW SPLITTING!!!
+        stra_train_inputs=train_inputs[:,:,-1]
+
+
 
         # set aside 20% of train and test data for evaluation HERE WE SHUFFLE OUR SEQUENCES
         train_inputs, test_inputs, train_out, test_out = train_test_split(train_inputs, train_out,
-            test_size=0.25, shuffle = True, random_state = RNDSEED)
+            test_size=0.25, shuffle = True, random_state = RNDSEED,stratify=stra_train_inputs)
+
+
+        stra_train_inputs=train_inputs[:,:,-1]
 
         # Use the same function above for the validation set WE JUST SPLIT IT IN 0.25 and 0.75 OF THE PREVIOUS SPLIT
         train_inputs, vals_inputs, train_out, vals_out = train_test_split(train_inputs, train_out, 
-            test_size=0.25,shuffle=False, random_state= RNDSEED) # 0.25 x 0.8 = 0.2
+            test_size=0.25,shuffle=True, random_state= RNDSEED,stratify=stra_train_inputs) # 0.25 x 0.8 = 0.2
 
-
+        print("TRAIN_INPUT CHECK")
+        print(train_inputs)
 
 
 

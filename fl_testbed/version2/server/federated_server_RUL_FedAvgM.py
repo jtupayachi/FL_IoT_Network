@@ -627,9 +627,12 @@ def model_definition(df,test_inputs,test_out,RNDSEED):
 
     
 
+    stra_train_inputs=train_inputs[:,:,-1]
+
     # Use the same function above for the validation set WE JUST SPLIT IT IN 0.25 and 0.75 OF THE PREVIOUS SPLIT
     train_inputs, vals_inputs, train_out, vals_out = train_test_split(train_inputs, train_out, 
-        test_size=0.25,shuffle=False, random_state= RNDSEED) # 0.25 x 0.8 = 0.2
+        test_size=0.25,shuffle=True, random_state= RNDSEED,stratify=stra_train_inputs) # 0.25 x 0.8 = 0.2
+
 
 
 

@@ -82,7 +82,6 @@ RUNNING_ON_COLAB = False # we assume running on CoLab! Change to False if runnin
 
 
 
-
 from keras.regularizers import l2, l1
 
 # Libraries
@@ -296,14 +295,17 @@ class Centralized:
         X=self.X
         y=self.y
 
+        print("MODELING")
+        print(y)
+
 
         # set aside 20% of train and test data for evaluation
         X_train, X_test, y_train, y_test = train_test_split(X, y,
-            test_size=0.2, shuffle = True, random_state = RNDSEED)
+            test_size=0.2, shuffle = True, random_state = RNDSEED,stratify=y)
 
         # Use the same function above for the validation set
         X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-            test_size=0.25, random_state= RNDSEED,shuffle=True) # 0.25 x 0.8 = 0.2
+            test_size=0.25, random_state= RNDSEED,shuffle=True,stratify=y_train) # 0.25 x 0.8 = 0.2
 
 
 
@@ -591,11 +593,11 @@ class Centralized:
 
         # set aside 20% of train and test data for evaluation
         X_train, X_test, y_train, y_test = train_test_split(X, y,
-            test_size=0.001, shuffle = False, random_state = RNDSEED)
+            test_size=0.001, shuffle = True, random_state = RNDSEED,stratify=True)
 
         # Use the same function above for the validation set
         X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-            test_size=0.001, random_state= RNDSEED,shuffle=False) # 0.25 x 0.8 = 0.2
+            test_size=0.001, random_state= RNDSEED,shuffle=True,stratify=True) # 0.25 x 0.8 = 0.2
 
 
         #CREATING ys UNDER FAKE DATA CONDITIONS
@@ -713,6 +715,7 @@ class Centralized:
 
 
                 #NEW SPLITTING!!!
+
 
                 # set aside 20% of train and test data for evaluation HERE WE SHUFFLE OUR SEQUENCES
                 train_inputs, test_inputs, train_out, test_out = train_test_split(train_inputs, train_out,
@@ -934,12 +937,12 @@ class Centralized:
         es = EarlyStopping(monitor="val_loss",
                 mode="auto",
                 verbose=2,
-                patience=1,
-                min_delta=0.001,
+                patience=10,
+                min_delta=0.0001,
                 restore_best_weights=True)
         # 1420492
         # history = model.fit(train_inputs, train_out, epochs = 20, callbacks = [lr])
-        history=model.fit(train_inputs,train_out,epochs=self.epochs,validation_data= (vals_inputs,vals_out) ,verbose=2,callbacks=[tensorboard_callback,lr,es],)
+        history=model.fit(train_inputs,train_out,epochs=self.epochs,validation_data= (vals_inputs,vals_out) ,verbose=2,callbacks=[tensorboard_callback,es],)#,lr
         plt.plot(history.history['loss'])
         plt.plot(history.history['val_loss'])
         plt.title('model train vs validation loss')

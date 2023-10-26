@@ -1107,7 +1107,7 @@ class Independent:
         #JT CHANANGES
         # Use the same function above for the validation set
         X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-            test_size=0.25, random_state= RNDSEED,shuffle=False) # 0.25 x 0.8 = 0.2
+            test_size=0.25, random_state= RNDSEED,shuffle=True,stratify=y_train) # 0.25 x 0.8 = 0.2
 
 
         # df=self.df
@@ -1581,162 +1581,6 @@ class Independent:
 
     def modeling_2(self):
         
-        # df=self.df
-        # X=self.X
-        # y=self.y
-
-        # self.X_train
-        # self.y_train
-
-
-        # set aside 20% of train and test data for evaluation
-        # X_train, X_test, y_train, y_test = train_test_split(X, y,
-        #     test_size=0.2, shuffle = True, random_state = RNDSEED)
-
-        # # Use the same function above for the validation set
-        # X_train, X_vals, y_train, y_vals = train_test_split(self.X_train, self.y_train, 
-        #     test_size=0.25, random_state= RNDSEED,shuffle=True) # 0.25 x 0.8 = 0.2
-
-
-
-        # import pandas as pd
-        # df=self.df
-        # X=self.X
-        # y=self.y
-        # #FAKE SPLIT!!
-        # ## true orignal ones
-        # # data split
-
-        # # set aside 20% of train and test data for evaluation
-        # X_train, X_test, y_train, y_test = train_test_split(X, y,
-        #     test_size=0.001, shuffle = False, random_state = RNDSEED)
-
-        # # Use the same function above for the validation set
-        # X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-        #     test_size=0.001, random_state= RNDSEED,shuffle=False) # 0.25 x 0.8 = 0.2
-
-
-        # #CREATING ys UNDER FAKE DATA CONDITIONS
-        # y_train=pd.DataFrame(y_train,columns = df.columns[-2:])
-        # y_vals=pd.DataFrame(y_vals,columns = df.columns[-2:])
-        # y_test=pd.DataFrame(y_test,columns = df.columns[-2:])
-
-
-
-        # #NORMALIZING DATA!!!
-        # from sklearn.preprocessing import StandardScaler
-        # from scipy.signal import medfilt
-        # import pandas as pd
-        ######################LAST CHANGE JT #####################
-        
-        #LETS SEE REULTS WITHOUT NORMALIZATION (1) ###################
-        # def NormalizeData(data):
-        #     return 1-(data - np.min(data)) / (np.max(data) - np.min(data))
-        
-        
-        # model = np.poly1d(np.polyfit(range(0,len(y_train['rul'])), y_train['rul'], 1))
-        # polyline = np.array(np.linspace(0,len(y_train['rul']),len(y_train['rul']) ) )
-        # y_train['rul'] = NormalizeData(polyline)
-            
-
-
-        
-
-
-        #LETS SEE REULTS WITHOUT NORMALIZATION (2) ###################
-        ## Using Oldest - current to determine the RUL
-
-        # scaler=StandardScaler()
-        # X_train=pd.DataFrame(scaler.fit_transform(X_train),columns = df.columns[:-1])
-
-
-        
-        #ADDING A FILTER TO SMOOTHEN CURVE
-        ######################LAST CHANGE JT #####################
-        # plt.plot( range(0,len(y_train['rul'])),y_train['rul'] ,color='red')
-
-
-        # print(y_train['rul'] )
-        # print(range(0,len(y_train['rul'])))
-
-
-
-        
-
-        #PLOTTER RUL AND FEATURES REMOVED!
-
-        #DEFYING A SEQUENCE LENGTH!
-
-        
-
-
-        # #SEQUENCE GENERATOR
-
-        # def gen_seq(data, seq_length, columns):
-        #     L=[]
-        #     n = data.shape[0]
-        #     for i in range(0, n - seq_length):
-        #         L.append(data[i:i+seq_length][columns].values)
-        #     return(L)
-        
-
-        # #INCLUSION OF STATUS
-        # columns=df.columns[:-1]
-        # print(columns)
-
-        # #TARGET COLUMN
-        # target=df.columns[-1]
-        # print(target)
-
-
-        # INPUTS
-    
-        #Dynamic SPlit!
-
-        # seq_length=200
-        # worked = False
-        # while not worked:
-        #     try:
-        #         train_inputs = np.concatenate(np.array([gen_seq(X_train[X_train['status'] == id], seq_length, columns)
-        #             for id in X_train['status'].unique()]))
-                
-
-
-
-        #         test_inputs = np.concatenate(np.array([gen_seq(X_test[X_test['status'] == id], seq_length, columns)
-        #                             for id in X_test['status'].unique()]))
-                
-            
-
-        #         vals_inputs = np.concatenate(np.array([gen_seq(X_vals[X_vals['status'] == id], seq_length, columns)
-        #                             for id in X_vals['status'].unique()]))
-                
-
-        #         #OUTPUTS
-        #         def gen_labels(id_df, seq_length, label):
-        #             data_array = id_df[label].values
-        #             num_elements = data_array.shape[0]
-        #             return data_array[seq_length:num_elements]
-                
-
-
-        #         train_out = np.concatenate(np.array([gen_labels(y_train[y_train['status'] == id], seq_length, [target])
-        #                             for id in y_train['status'].unique()]))
-
-        #         test_out = np.concatenate(np.array([gen_labels(y_test[y_test['status'] == id], seq_length, [target])
-        #                             for id in y_test['status'].unique()]))
-                
-        #         vals_out = np.concatenate(np.array([gen_labels(y_vals[y_vals['status'] == id], seq_length, [target])
-        #                             for id in y_vals['status'].unique()]))
-
-
-                #NEW SPLITTING!!!
-
-        # # set aside 20% of train and test data for evaluation HERE WE SHUFFLE OUR SEQUENCES
-        # train_inputs, test_inputs, train_out, test_out = train_test_split(train_inputs, train_out,
-        #     test_size=0.25, shuffle = True, random_state = RNDSEED)
-        
-        
         print("#ASSIGNAMEMNT")
         #MANIN ASSIGNAMENT 
 
@@ -1772,12 +1616,14 @@ class Independent:
         test_out=self.y_test
         
 
+        print("PRINTING TRAIN_TEST_SPLIT")
+        print(train_out)
 
-        
+        stra_train_inputs=train_inputs[:,:,-1]
 
         # Use the same function above for the validation set WE JUST SPLIT IT IN 0.25 and 0.75 OF THE PREVIOUS SPLIT
         train_inputs, vals_inputs, train_out, vals_out = train_test_split(train_inputs, train_out, 
-            test_size=0.25,shuffle=False, random_state= RNDSEED) # 0.25 x 0.8 = 0.2
+            test_size=0.25,shuffle=True, random_state= RNDSEED,stratify=stra_train_inputs) # 0.25 x 0.8 = 0.2
 
 
 

@@ -337,7 +337,7 @@ class DataSplit:
 
 
                 #CREATE ANOTHER DATAFRAME JUST FOR THE MINIMUN OF 30 DATAPOITNS TO ENSURE ALL CLASSES ARE REPRESENTED
-                min_data_points_per_class = 30
+                min_data_points_per_class = 400
 
 
 
@@ -618,7 +618,7 @@ class DataSplit:
 
 
                 #CREATE ANOTHER DATAFRAME JUST FOR THE MINIMUN OF 30 DATAPOITNS TO ENSURE ALL CLASSES ARE REPRESENTED
-                min_data_points_per_class = 30
+                min_data_points_per_class = 400
 
 
 

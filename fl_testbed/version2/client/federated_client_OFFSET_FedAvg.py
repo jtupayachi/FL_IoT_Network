@@ -242,7 +242,7 @@ def model_definition(df,X_test,y_test,RNDSEED):
 
     # Use the same function above for the validation set
     X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-        test_size=0.25, random_state= RNDSEED,shuffle=True) # 0.25 x 0.8 = 0.2
+        test_size=0.25, random_state= RNDSEED,shuffle=True,stratify=y_train) # 0.25 x 0.8 = 0.2
 
 
     from sklearn.preprocessing import StandardScaler,LabelBinarizer

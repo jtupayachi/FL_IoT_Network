@@ -27,33 +27,33 @@ python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_1_15_15
 
 
 #INDEPENDENT
-python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_4_0_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_4_0_OFFSETM3_idp_${var}.txt4 
+python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_5_0_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_5_0_OFFSETM3_idp_${var}.txt4 
 
-python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_4_1_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_4_1_OFFSETM3_idp_${var}.txt4 
+python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_5_1_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_5_1_OFFSETM3_idp_${var}.txt4 
 
-python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_4_2_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_4_2_OFFSETM3_idp_${var}.txt4 
+python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_5_2_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_5_2_OFFSETM3_idp_${var}.txt4 
 
-python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_4_3_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_4_3_OFFSETM3_idp_${var}.txt4
+python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_5_3_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.17.0.8 2>&1 | tee out_server_M3_5_3_OFFSETM3_idp_${var}.txt4
 
-python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_4_4_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.19.0.8 2>&1 | tee out_server_M3_4_4_OFFSETM3_idp_${var}.txt4
+python3 fl_testbed/version2/client/independent.py  -ml 1  -cn 15 -cm 15 -e 30 -dfn   'M3_5_4_ddf_MLP.pkl' -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl'   -ip 172.19.0.8 2>&1 | tee out_server_M3_5_4_OFFSETM3_idp_${var}.txt4
 
 
 #FEDERATED
 #_FedAvg
 echo -n "_FedAvg"
-python3 fl_testbed/version2/server/federated_server_OFFSET_FedAvg.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_4_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedAvg_${var}.txt
+python3 fl_testbed/version2/server/federated_server_OFFSET_FedAvg.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedAvg_${var}.txt
 #_FedAvgM
 
 echo -n "_FedAvgM"
-python3 fl_testbed/version2/server/federated_server_OFFSET_FedAvgM.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_4_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedAvgM_${var}.txt
+python3 fl_testbed/version2/server/federated_server_OFFSET_FedAvgM.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedAvgM_${var}.txt
 #_FedOpt
 
 echo -n "_FedOpt"
-python3 fl_testbed/version2/server/federated_server_OFFSET_FedOpt.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_4_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedOpt_${var}.txt
+python3 fl_testbed/version2/server/federated_server_OFFSET_FedOpt.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_FedOpt_${var}.txt
 #_QFedAvg
   
 echo -n "_QFedAvg"
-python3 fl_testbed/version2/server/federated_server_OFFSET_QFedAvg.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_4_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_QFedAvg_${var}.txt
+python3 fl_testbed/version2/server/federated_server_OFFSET_QFedAvg.py   -cm 5 -e 1 --rounds 100 -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_TESLA_QFedAvg_${var}.txt
 
 
 

@@ -675,7 +675,7 @@ class Centralized:
     
         #Dynamic SPlit!
 
-        seq_length=200
+        seq_length=15
         worked = False
         while not worked:
             try:

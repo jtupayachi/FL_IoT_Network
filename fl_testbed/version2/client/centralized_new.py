@@ -676,7 +676,8 @@ class Centralized:
     
         #Dynamic SPlit!
 
-        seq_length=80
+        seq_length=15
+
 
 
         train_inputs = np.vstack([gen_seq(X_train[X_train['status'] == id], seq_length, columns)

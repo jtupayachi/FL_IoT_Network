@@ -864,7 +864,7 @@ def main() -> None:
     #WE LOAD THE MODEL UP TO MODEL COMPILE
     #JT CHANGES
     del dfn,dfn_test_x,dfn_test_y
-    model, X_train, y_train, X_test, y_test,X_vals,y_vals=model_definition(df,X_test,y_test,RNDSEED)
+    model, X_train,y_train,X_vals,y_vals,X_test,y_test=model_definition(df,X_test,y_test,RNDSEED)
     #JT CHANGES
     del df
 

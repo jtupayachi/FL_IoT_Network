@@ -255,8 +255,6 @@ def model_definition(df,X_test,y_test,RNDSEED):
 
     scaler=StandardScaler()
     X_train=scaler.fit_transform(X_train)
-
-
     y_train=lbz.fit_transform(y_train)
 
 
@@ -418,43 +416,7 @@ class FlowerClient(fl.client.NumPyClient):
         }
         return parameters_prime, num_examples_train, results
 
-    # def get_parameters(self, config):
 
-    #     self.load_data()
-    #     self.model_definition()
-    #     # self.train_cut_split()
-    #     # self.pre_modeling()  # TO DO CHANGES HERE
-    #     # self.modeling()
-
-    #     return self.model.get_weights()
-
-    # def fit(self, parameters, config):
-
-    #     self.load_data()
-    #     self.model_definition()
-    #     # self.train_cut_split()
-    #     # self.pre_modeling()  # TO DO CHANGES HERE
-    #     # self.modeling()
-
-    #     self.model.set_weights(parameters)
-
-    #     self.modeling()  # CHANGES HERE separated same seed
-
-    #     return self.model.get_weights(), len(self.X_train), {}
-
-    # def evaluate(self, parameters, config):
-
-    #     self.model.set_weights(parameters)
-
-    #     self.testing()  # accuracy calculator separated same seed
-
-    #     return (
-    #         self.lst_accu_stratified_l,
-    #         len(self.y_train),
-    #         {
-    #             "accuracy": self.lst_accu_stratified_a
-    #         },
-    #     )
     def evaluate(self, parameters, config):
         #WE THIS IS NEW FUNCTION!
         """Evaluate parameters on the locally held test set."""
@@ -464,6 +426,10 @@ class FlowerClient(fl.client.NumPyClient):
 
         # Get config values
         steps: int = config["val_steps"]
+
+
+        print("CLIENT")
+        print(X_test.shape)
 
         # Evaluate global model parameters on the local test data and return results
         loss, accuracy = self.model.evaluate(self.X_test, self.y_test,32,verbose=0)# #JT 32 is changed to 256
@@ -574,7 +540,7 @@ def main() -> None:
     TRANSFORMED_FOLDER= "fl_testbed/version2/data/transformed/"
     df,X_test,y_test=load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y)
     #WE LOAD THE MODEL UP TO MODEL COMPILE
-    model, X_train, y_train, X_test, y_test,X_vals,y_vals=model_definition(df,X_test,y_test,RNDSEED)
+    model, X_train,y_train,X_vals,y_vals,X_test,y_test=model_definition(df,X_test,y_test,RNDSEED)
 
     
 

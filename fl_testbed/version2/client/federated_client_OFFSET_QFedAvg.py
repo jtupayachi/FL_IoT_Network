@@ -573,7 +573,7 @@ def main() -> None:
     TRANSFORMED_FOLDER= "fl_testbed/version2/data/transformed/"
     df,X_test,y_test=load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y)
     #WE LOAD THE MODEL UP TO MODEL COMPILE
-    model, X_train, y_train, X_test, y_test,X_vals,y_vals=model_definition(df,X_test,y_test,RNDSEED)
+    model, X_train,y_train,X_vals,y_vals,X_test,y_test=model_definition(df,X_test,y_test,RNDSEED)
 
     
 

@@ -14,20 +14,20 @@ for var in $alphas; do
 
 
 
-sleep 300
+sleep 500
 #_FedAvg
 echo -n "_FedAvg"
 python3 fl_testbed/version2/client/federated_client_OFFSET_FedAvg.py -cn 0  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT1_FedAvg_${var}.txt
 #_FedAvgM
-
+sleep 300
 echo -n "_FedAvgM"
 python3 fl_testbed/version2/client/federated_client_OFFSET_FedAvgM.py -cn 0  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT1_FedAvgM_${var}.txt
 #_FedOpt
-
+sleep 300
 echo -n "_FedOpt"
 python3 fl_testbed/version2/client/federated_client_OFFSET_FedOpt.py -cn 0  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT1_FedOpt_${var}.txt
 #_QFedAvg
-  
+  sleep 300
 echo -n "_QFedAvg"
 python3 fl_testbed/version2/client/federated_client_OFFSET_QFedAvg.py -cn 0  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_0_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT1_QFedAvg_${var}.txt
 
@@ -37,7 +37,6 @@ python3 fl_testbed/version2/client/federated_client_OFFSET_QFedAvg.py -cn 0  -cm
 
 
   echo "done"
-  sleep 200
 done
 
 

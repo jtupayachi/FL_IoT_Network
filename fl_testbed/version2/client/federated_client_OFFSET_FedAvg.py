@@ -428,8 +428,6 @@ class FlowerClient(fl.client.NumPyClient):
         steps: int = config["val_steps"]
 
 
-        print("CLIENT")
-        print(X_test.shape)
 
         # Evaluate global model parameters on the local test data and return results
         loss, accuracy = self.model.evaluate(self.X_test, self.y_test,32,verbose=0)# #JT 32 is changed to 256

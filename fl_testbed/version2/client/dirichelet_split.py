@@ -668,6 +668,8 @@ class DataSplit:
                 #SAVING DATAFRAME!
                 merged_df_sampled=merged_df_sampled[['X','z']]
 
+                merged_df_sampled.rename(columns={'z': 'y'},inplace=True)
+                
                 print(merged_df_sampled)
                 #NEW EDITED LINE
                     

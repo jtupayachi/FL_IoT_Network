@@ -682,7 +682,7 @@ class Centralized:
     
         #Dynamic SPlit!
 
-        seq_length=15
+        seq_length=80
 
 
 

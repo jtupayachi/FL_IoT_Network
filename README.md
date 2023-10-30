@@ -1489,6 +1489,8 @@ python3 fl_testbed/version2/client/federated_client.py  -ml 2 -lr 0.001 -e 40 -c
 
 rsync -av --exclude='results' out_* results/tuesep26 && rsync -av --exclude='results' *.txt results/tuesep26
 
+rsync -av --exclude='results' out_* results/alphas && rsync -av --exclude='results' *.txt results/alphas
+
 #UNDER THE MAIN FOLDER
 
 rm -f out_* *.txt

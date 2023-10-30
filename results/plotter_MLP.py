@@ -10,7 +10,7 @@ from sklearn import preprocessing
 dir_path = os.path.dirname(os.path.realpath(__file__))
 
 ROUNDS=100
-FOLDER_PATH=dir_path+"/"+'tuesep26'
+FOLDER_PATH=dir_path+"/"+'alphas'
 PATH_FIND='MLP_TESLA_'
 DATA_TYPE=['TYPE1','TYPE2']
 METRICS=['accuracy','weighted_avg','MCS']

@@ -543,16 +543,6 @@ def main() -> None:
                         help="dfn_test_y",
                         type=str)
 
-    parser.add_argument("-momentum",
-                        "--momentum",
-                        help="momentum",
-                        type=float)
-
-    parser.add_argument("-slr",
-                        "--slr",
-                        help="slr",
-                        type=float)
-
     args = parser.parse_args()
 
     clients_max = int(args.clients_max)
@@ -562,9 +552,6 @@ def main() -> None:
     data_file_name = str(args.data_file_name)
     dfn_test_x = str(args.dfn_test_x)
     dfn_test_y = str(args.dfn_test_y)
-    
-    momentum = str(args.momentum)
-    slr = str(args.slr)
 
 
 

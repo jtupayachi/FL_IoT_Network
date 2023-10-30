@@ -538,6 +538,17 @@ def main() -> None:
                         required=True,
                         default=None)
 
+
+    parser.add_argument("-momentum",
+                        "--momentum",
+                        help="momentum",
+                        type=float)
+
+    parser.add_argument("-slr",
+                        "--slr",
+                        help="slr",
+                        type=float)
+
     args = parser.parse_args()
 
     
@@ -548,6 +559,9 @@ def main() -> None:
     dfn_test_x = str(args.dfn_test_x)
     dfn = str(args.dfn)
     rounds = int(args.rounds)
+    
+    momentum = float(args.momentum)
+    slr = float(args.slr)
 
     # Configuration
     root_path = os.path.dirname(os.path.abspath("__file__"))
@@ -574,8 +588,8 @@ def main() -> None:
     #WE CREATE A STRATEGY
 
     strategy=fl.server.strategy.FedAvgM(
-            fraction_fit=1,
-            fraction_evaluate=1,
+            fraction_fit=0.1,
+            fraction_evaluate=0.1,
             min_fit_clients=2,
             min_evaluate_clients=2,
             min_available_clients=5,
@@ -583,6 +597,9 @@ def main() -> None:
         on_fit_config_fn=fit_config,
         on_evaluate_config_fn=evaluate_config,
         initial_parameters=fl.common.ndarrays_to_parameters(model.get_weights()),
+        server_learning_rate=slr,
+        server_momentum=momentum,
+
         )
 
 

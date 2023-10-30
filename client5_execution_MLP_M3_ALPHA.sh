@@ -26,7 +26,7 @@ for var in $alphas; do
             echo $var3
             sleep 300
             echo -n "_FedAvgM"
-            python3 fl_testbed/version2/client/federated_client_OFFSET_FedAvgM.py -momentum ${var3} -slr ${var2} -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_FedAvgM_${var}_slr_${var2}_${var3}.txt
+            python3 fl_testbed/version2/client/federated_client_OFFSET_FedAvgM.py -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_FedAvgM_${var}_slr_${var2}_${var3}.txt
             echo "done"
         done
         
@@ -37,7 +37,7 @@ for var in $alphas; do
             echo $var4
             sleep 300
             echo -n "_FedOpt"
-            python3 fl_testbed/version2/client/federated_client_OFFSET_FedOpt.py -tau ${$var4}  -slr ${var2} -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_FedOpt_${var}_slr_${var2}_${$var4}.txt
+            python3 fl_testbed/version2/client/federated_client_OFFSET_FedOpt.py -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_FedOpt_${var}_slr_${var2}_${$var4}.txt
             echo "done"
         done
         
@@ -47,7 +47,7 @@ for var in $alphas; do
             echo $var5
             sleep 300
             echo -n "_QFedAvg"
-            python3 fl_testbed/version2/client/federated_client_OFFSET_QFedAvg.py -q ${var5} -slr ${var2} -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_QFedAvg_${var}_slr_${var2}_${var5}.txt
+            python3 fl_testbed/version2/client/federated_client_OFFSET_QFedAvg.py -cn 5  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_4_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT5_QFedAvg_${var}_slr_${var2}_${var5}.txt
             echo "done"
         done
         

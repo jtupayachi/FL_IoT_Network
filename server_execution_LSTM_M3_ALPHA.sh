@@ -1,12 +1,9 @@
 # !/bin/bash
 
 
-#LSTM
-#${var}
 
 #CENTRALIZED SEQ80
 python3 fl_testbed/version2/client/centralized_new.py  -ml 2  -cn 15 -cm 15 -e 100 -dfn   'combined_offset_misalignment_M3.csv' --JUMPING_STEP 20  -ip 172.17.0.2 2>&1 | tee out_server_14_RULM3_SEQ80.txt2
-
 
 
 alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
@@ -14,15 +11,14 @@ alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
 slr="0.001 0.01 1"
 
 FedAvgM_momentum="0.0 0.7 0.9"
-FedOpt_tau="0.0000001 0.00000001 0.000000001$"
+FedOpt_tau="0.0000001 0.00000001 0.000000001"
 QFedAvg_q="0.1 0.2 0.5"
 
 
 for var in $alphas; do
     echo $var
-    #FOR SEQ80
     
-
+    
     python3 fl_testbed/version2/client/dirichelet_split.py -data_X_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_inputs.pkl -data_X_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_inputs.pkl -data_y_train 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtrain_out.pkl -data_y_vals 100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedvals_out.pkl -cm 5 -alpha ${var} -beta 0.2 -motor 3 -type LSTM 2>&1 | tee DATASPLIT_${var}_LSTM_M3_${var}.txt
     
     #INDEPENDENT

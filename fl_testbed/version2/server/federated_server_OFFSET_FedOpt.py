@@ -518,13 +518,6 @@ def main() -> None:
                     help="dfn_test_y",
                     required=True,
                     type=str)
-    
-    # parser.add_argument("-fq",
-    #                 "--fq",
-    #                 help="fq",
-    #                 required=True,
-    #                 default=None)
-
 
     parser.add_argument("-dfn",
                         "--dfn",
@@ -603,9 +596,6 @@ def main() -> None:
         eta=slr,
         tau=tau,
         )
-
-
-
 
         # Start Flower server (SSL-enabled) for four rounds of federated learning
     fl.server.start_server(

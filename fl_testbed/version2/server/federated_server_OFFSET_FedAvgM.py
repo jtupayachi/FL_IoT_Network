@@ -518,13 +518,6 @@ def main() -> None:
                     help="dfn_test_y",
                     required=True,
                     type=str)
-    
-    # parser.add_argument("-fq",
-    #                 "--fq",
-    #                 help="fq",
-    #                 required=True,
-    #                 default=None)
-
 
     parser.add_argument("-dfn",
                         "--dfn",
@@ -578,7 +571,6 @@ def main() -> None:
     TRANSFORMED_FOLDER= "fl_testbed/version2/data/transformed/"
     df,X_test,y_test=load_data(TRANSFORMED_FOLDER,dfn,dfn_test_x,dfn_test_y)
     #WE LOAD THE MODEL UP TO MODEL COMPILE
-    
     model, X_train,y_train,X_vals,y_vals,X_test,y_test=model_definition(df,X_test,y_test,RNDSEED)
 
     # 1. server-side parameter initialization
@@ -586,7 +578,6 @@ def main() -> None:
 
 
     #WE CREATE A STRATEGY
-
     strategy=fl.server.strategy.FedAvgM(
             fraction_fit=0.1,
             fraction_evaluate=0.1,
@@ -599,9 +590,7 @@ def main() -> None:
         initial_parameters=fl.common.ndarrays_to_parameters(model.get_weights()),
         server_learning_rate=slr,
         server_momentum=momentum,
-
         )
-
 
         # Start Flower server (SSL-enabled) for four rounds of federated learning
     fl.server.start_server(

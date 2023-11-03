@@ -551,8 +551,6 @@ from sklearn.model_selection import StratifiedKFold
 def load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y):
         
     print("INI")
-    
-
 
     #TRAINING
     with open(
@@ -834,6 +832,17 @@ def main() -> None:
                         required=True,
                         default=None)
 
+
+    parser.add_argument("-q",
+                        "--q",
+                        help="q",
+                        type=float)
+
+    parser.add_argument("-slr",
+                        "--slr",
+                        help="slr",
+                        type=float)
+
     args = parser.parse_args()
 
     
@@ -844,6 +853,9 @@ def main() -> None:
     dfn_test_x = str(args.dfn_test_x)
     dfn = str(args.dfn)
     rounds = int(args.rounds)
+    
+    q = float(args.q)
+    slr = float(args.slr)
 
     # Configuration
     root_path = os.path.dirname(os.path.abspath("__file__"))
@@ -872,10 +884,10 @@ def main() -> None:
 
     #WE CREATE A STRATEGY
     strategy = fl.server.strategy.QFedAvg(
-        fraction_fit=1,
-        fraction_evaluate=1,
-q_param= 0.2,	
-            qffl_learning_rate = 0.1,
+        fraction_fit=0.1,
+        fraction_evaluate=0.1,
+        q_param= q,		
+        qffl_learning_rate = slr,
 
 
 

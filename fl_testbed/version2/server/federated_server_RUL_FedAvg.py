@@ -551,8 +551,6 @@ from sklearn.model_selection import StratifiedKFold
 def load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y):
         
     print("INI")
-    
-
 
     #TRAINING
     with open(
@@ -583,9 +581,6 @@ def load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y):
         y_test = pickle.load(file)
 
     del file
-
-
-
     return df,X_test,y_test
 
     
@@ -598,8 +593,6 @@ def model_definition(df,test_inputs,test_out,RNDSEED):
 
     print("#ASSIGNAMEMNT")
     
-
-
 
     train_inputs=np.array(df.X.apply(lambda x: np.array(x)).tolist())
     # train_inputs=train_inputs

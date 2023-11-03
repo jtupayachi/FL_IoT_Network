@@ -551,8 +551,6 @@ from sklearn.model_selection import StratifiedKFold
 def load_data(TRANSFORMED_FOLDER,data_file_name,dfn_test_x,dfn_test_y):
         
     print("INI")
-    
-
 
     #TRAINING
     with open(
@@ -836,6 +834,17 @@ def main() -> None:
                         required=True,
                         default=None)
 
+
+    parser.add_argument("-tau",
+                        "--tau",
+                        help="tau",
+                        type=float)
+
+    parser.add_argument("-slr",
+                        "--slr",
+                        help="slr",
+                        type=float)
+
     args = parser.parse_args()
 
     
@@ -846,6 +855,8 @@ def main() -> None:
     dfn_test_x = str(args.dfn_test_x)
     dfn = str(args.dfn)
     rounds = int(args.rounds)
+    tau = float(args.tau)
+    slr = float(args.slr)
 
     # Configuration
     root_path = os.path.dirname(os.path.abspath("__file__"))
@@ -874,13 +885,13 @@ def main() -> None:
 
     #WE CREATE A STRATEGY
     strategy = fl.server.strategy.FedOpt(
-        fraction_fit=1,
-        fraction_evaluate=1,
-                            eta = 1e-1,
+        fraction_fit=0.1,
+        fraction_evaluate=0.1,
+        # eta = 1e-1,
         eta_l = 1e-1,
         beta_1 = 0.0,
         beta_2 = 0.0,
-        tau = 1e-9,
+        # tau = 1e-9,
         min_fit_clients=2,
         min_evaluate_clients=2,
         min_available_clients=5, #DEFAULT 10
@@ -888,6 +899,8 @@ def main() -> None:
         on_fit_config_fn=fit_config,
         on_evaluate_config_fn=evaluate_config,
         initial_parameters=fl.common.ndarrays_to_parameters(model.get_weights()),
+        eta=slr,
+        tau=tau,
         )
 
         # Start Flower server (SSL-enabled) for four rounds of federated learning

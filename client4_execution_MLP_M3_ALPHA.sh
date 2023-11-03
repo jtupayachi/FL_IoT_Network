@@ -2,9 +2,7 @@
 #MLP
 #${var}
 
-
 alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
-
 slr="0.001 0.01 1"
 
 FedAvgM_momentum="0.0 0.7 0.9"
@@ -13,7 +11,6 @@ QFedAvg_q="0.1 0.2 0.5"
 
 for var in $alphas; do
   echo $var
-
 
 sleep 500
 #_FedAvg

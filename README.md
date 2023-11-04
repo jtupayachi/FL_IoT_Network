@@ -813,6 +813,9 @@ docker run  --privileged  --name client_5_QFedAvg --cap-add=NET_ADMIN --cap-add=
  --> -->
 
 
+docker run  --privileged  --name functional --cap-add=NET_ADMIN --cap-add=SYS_ADMIN --device=/dev/net/tun -d -it -v /mnt/nfs/var/nfs_share_dir/FL_AM_Defect-Detection:/FL_AM_Defect-Detection:z  testbed:1.0 bin/bash
+
+
 
 
 running commands

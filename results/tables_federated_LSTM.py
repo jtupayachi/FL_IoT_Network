@@ -35,6 +35,8 @@ files = glob(PATH_FIND_PART1+'*')
 
 print(files)
 
+dataframes=[]
+
 """LSTM_TESLA_FedAvgM_0.001_slr_0.001_0.0.txt"""
 """LSTM_TESLA_FedAvg_0.02.txt"""
 
@@ -57,255 +59,210 @@ for name in files:
     loss_list=[]
 
 
+    max_value = -999999
+    max_index = None
+    max_value = 0.0
+    max_index = -1  # Initialize to an invalid index
+
+    consecutive_count = 0  # Counter for consecutive elements
+
+
+    path_name=name
+    name=name.split(".tx")[0]
+    
+
+
     if  "_FedAvg_" in name:
         
-        type_model=type_model.append(name.split("_")[0])
-        type_machine=type_machine.append(name.split("_")[1])
-        type_algo=type_algo.append(name.split("_")[2])
-        type_alpha=type_alpha.append(name.split("_")[3])
-        type_slr=type_slr.append("-")
-        type_sparam=type_sparam.append("-")
+        type_model.append(name.split("_")[0])
+        type_machine.append(name.split("_")[1])
+        type_algo.append(name.split("_")[2])
+        type_alpha.append(name.split("_")[3])
+        type_slr.append("-")
+        type_sparam.append("-")
 
 
 
+        data=open(path_name)
+
+        for line in data:
+            if "| fit progress:" in line :
+                # prine.split(",")[-6]))
+                r2_list.append(float(re.findall("\d+\.\d+", line.split(",")[-2])[0]) )
+                mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
+                mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
+                loss_list.append(float(line.split(",")[-5]))
 
 
         
-        # print("this")
-        #CASE WITH FED AVERAGE
+        #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
+
+        # Iterate through the list
+
+        for i, value in enumerate(r2_list):
+            if value > max_value and value < 1.0:
+                consecutive_count += 1
+                if consecutive_count == 10:
+                    max_index = i
+                    break
+            else:
+                consecutive_count = 0
+
+        if max_index != -1:
+            print(f"Sequence of 10 continuous elements ends at index {max_index}.")
+
+        
+
+
+        # for i, value in enumerate(r2_list):
+        #     if (value > max_value and value <1.0):
+        #         max_value = value
+        #         max_index = i
+        
+
+
+        
+        if r2_list[max_index]<1.0:
+
+
+            dataframes.append(pd.DataFrame({
+            # 'type_model':type_model,
+            # 'type_machine':type_machine,
+            'type_algo':type_algo,
+            'type_alpha':type_alpha,
+            'type_slr':type_slr,
+            'type_sparam':type_sparam,
+
+
+
+            'epoch':int(int(max_index)+1),
+            'r2':r2_list[max_index],
+            'mse':mse_list[max_index],
+            'mae':mae_list[max_index],
+            'loss':loss_list[max_index],
+            
+            }))
+        else:
+            dataframes.append(pd.DataFrame({
+            # 'type_model':type_model,
+            # 'type_machine':type_machine,
+            'type_algo':type_algo,
+            'type_alpha':type_alpha,
+            'type_slr':type_slr,
+            'type_sparam':type_sparam,
+
+
+
+            'epoch':str(ROUNDS)+"+",
+            'r2':"-",
+            'mse':"-",
+            'mae':"-",
+            'loss':"-",
+            
+            }))
+
     
     else:
-        type_model=type_model.append(name.split("_")[0])
-        type_machine=type_machine.append(name.split("_")[1])
-        type_algo=type_algo.append(name.split("_")[2])
-        type_alpha=type_alpha.append(name.split("_")[3])
-        type_slr=type_slr.append(name.split("_")[5])
-        type_sparam=type_sparam.append(name.split("_")[6])
-
-        #OTHER CASES
-    #THIS IS THE FED AVERAGE
+        type_model.append(name.split("_")[0])
+        type_machine.append(name.split("_")[1])
+        type_algo.append(name.split("_")[2])
+        type_alpha.append(name.split("_")[3])
+        type_slr.append(name.split("_")[5])
+        type_sparam.append(name.split("_")[6])
 
 
 
+        data=open(path_name)
 
-
-# input()
-# for type_data in DATA_TYPE:
-#     # I GET THE FILE TYPE I WANT
-#     files_filtered=filter(lambda c: type_data in c, files)
-    
-#     for element in files_filtered:
-        
-#         data=open(element)
-        
-#         name_fed=element.split("_")[-3]
-#         name_full=element
-#         names.append(name_fed)
-
-
-#         r2_list=[]
-#         mse_list=[]
-#         mae_list=[]
-#         loss_list=[]
-
-#         for line in data:
-#             # if line.startswith("    accuracy"):
-#             #     accuracy_list.append(float(line.split("      ")[-2]))
-#             #     # pair_counter=pair_counter+1
-#             # elif line.startswith("weighted avg"):
-#             #     weightedavg_list.append(float(line.split(" ")[-7]))
-#             # elif line.startswith("MCS "):
-#             #     mcs_list.append(float(line.split(" ")[-1].replace("\n","")))
-#             if "| fit progress:" in line :
-#                 # print(line)
-#                 # print(line.split(","))
-#                 # print(len(line.split(",")))
-#                 # print(float(line.split(",")[-6]))
-#                 r2_list.append(float(re.findall("\d+\.\d+", line.split(",")[-2])[0]) )
-#                 mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
-#                 mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
-#                 loss_list.append(float(line.split(",")[-5]))
-        
-                
-
-
-                
-
-                
-        
-        
-#         print(len(r2_list))
-#         print(len(mse_list))
-#         print(len(mae_list))
-#         print(len(loss_list))
-
-#         # min_lenght=min(len(accuracy_list),len(weightedavg_list),len(mcs_list))
-
-#         # accuracy_list=accuracy_list[:min_lenght]
-#         # weightedavg_list=weightedavg_list[:min_lenght]
-#         # mcs_list=mcs_list[:min_lenght]
-        
-
-
+        for line in data:
+            if "| fit progress:" in line :
+                # prine.split(",")[-6]))
+                r2_list.append(float(re.findall("\d+\.\d+", line.split(",")[-2])[0]) )
+                mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
+                mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
+                loss_list.append(float(line.split(",")[-5]))
 
 
         
-#         #CHECK FOR DUPLICATE OUTPUT!!!
-#         # try:
-#         inner_pandas=pd.DataFrame.from_dict({'r2':r2_list,'mse':mse_list,'mae':mae_list,'loss':loss_list})
-#         # t = inner_pandas[['accuracy', 'weighted_avg', 'MCS']]     
-#         # inner_pandas=inner_pandas[(t.ne(t.shift())).any(axis=1)]
+        #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
+
+
+
+        # Iterate through the list
+
+        for i, value in enumerate(r2_list):
+            if value > max_value and value < 1.0:
+                consecutive_count += 1
+                if consecutive_count == 10:
+                    max_index = i
+                    break
+            else:
+                consecutive_count = 0
+
+        if max_index != -1:
+            print(f"Sequence of 10 continuous elements ends at index {max_index}.")
+
+
         
 
 
-#         # min_lenght=min(inner_pandas.shape[0],len(loss_list))
-        
-#         # inner_pandas=inner_pandas.iloc[:min_lenght,:]
-
-#         # loss_list=loss_list[:min_lenght]
-
-#         # print(inner_pandas.shape)
-#         # print(len(loss_list))
-#         # inner_pandas['loss'] = loss_list
-#         # ,'loss':loss_list
-
-
-#         # print(len(loss_list))
-
-
-#         data_frame=pd.DataFrame({'name_full':name_full,'name_fed':name_fed,'type':type_data,'data':[inner_pandas]})
-#         # print(data_frame['data'][0].head())
-#         plots_dict.append(data_frame)
-#         # except Exception as e:
-#         #     print(e)
-    
-#     for i in DATA_TYPE:
-#         plot_r2=[]
-#         plot_mse=[]
-#         plot_mae=[]
-#         plot_loss=[]
         
 
+        # print(data_)
+        # input()
+        # print(max_index)
 
-#         #CREAte A DATAFRAME FOR EACH DATA_TYPE
-#         # master=pd.DataFrame(index=np.arange(4000), columns=['columns']).reset_index()
+        if r2_list[max_index]<1.0:
+
+
+            dataframes.append(pd.DataFrame({
+            # 'type_model':type_model,
+            # 'type_machine':type_machine,
+            'type_algo':type_algo,
+            'type_alpha':type_alpha,
+            'type_slr':type_slr,
+            'type_sparam':type_sparam,
+
+
+
+            'epoch':int(int(max_index)+1),
+            'r2':r2_list[max_index],
+            'mse':mse_list[max_index],
+            'mae':mae_list[max_index],
+            'loss':loss_list[max_index],
+            
+            }))
+        else:
+            dataframes.append(pd.DataFrame({
+            # 'type_model':type_model,
+            # 'type_machine':type_machine,
+            'type_algo':type_algo,
+            'type_alpha':type_alpha,
+            'type_slr':type_slr,
+            'type_sparam':type_sparam,
+
+
+
+            'epoch':str(ROUNDS)+"+",
+            'r2':"-",
+            'mse':"-",
+            'mae':"-",
+            'loss':"-",
+            
+            }))
         
-#         for x in plots_dict:
-#             # print(master)
-#             if x['type'][0] ==i:
-#                 plot_r2.append(x['data'][0]['r2'].values)
-#                 plot_mse.append(x['data'][0]['mse'].values)
-#                 plot_mae.append(x['data'][0]['mae'].values)
-#                 plot_loss.append(x['data'][0]['loss'].values)
-
-        
-#         fig, ax = plt.subplots(1)
-        
-#         print(plot_r2)
-#         print(plot_mse)
-        
 
 
-#         # print(len(plot_accuracy))
-        
+result = pd.concat(dataframes, axis=0)
 
-#         scaler = preprocessing.MinMaxScaler(feature_range=(0, 1))
-        
+# Reset the index, if needed
+result = result.reset_index(drop=True).sort_values(['type_alpha','type_slr','type_algo','type_sparam'],ascending=[True,True,True,True])
+result.to_csv('FEDERATED_LSTM.csv',index=False)
+# Convert DataFrame to LaTeX table
+latex_table = result.to_latex(index=False)
 
-#         for name,sub,color in zip(list(set(names)),plot_r2,COLORS):
-#             print(name)
-#             try:
+# Print the LaTeX table or save it to a .tex file
+print(latex_table)
 
-#                 #MAKE SURE 0 and 1
-#                 sub=[x if 0 <= x <= 1 else 0 for x in sub]
-#                 print("OK")
-#                 ax.plot(np.arange(len(sub)), sub,color ,label=name)
-#                 # medfilt(scaler.fit_transform(.reshape(-1, 1)).reshape(-1),51)
-#                 ax.set_xlim([0, ROUNDS])
-#                 ax.set_xbound(lower=-3, upper=ROUNDS)
-#                 ax.set_ylim([0, 1])
-#                 ax.set_ybound(lower=0, upper=1)
-#                 ax.set_xlabel('Rounds')
-#                 ax.set_ylabel('R2')
-#                 ax.legend(loc="lower right")
-
-#             except Exception as e:
-#                 print(e)
-        
-#         plt.tight_layout()
-#         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"r2"+"LSTM.pdf")
-
-#         fig, ax = plt.subplots(1)
-
-    
-
-#         # ax.set_title("plot_weighted_avg")
-#         # print(len(plot_weighted_avg))
-#         for name,sub,color in zip(list(set(names)),plot_mse,COLORS):
-#             try:
-#                 print("OK")
-#                 ax.plot(np.arange(len(sub)), sub,color,label=name)
-#                 ax.set_xlim([0, ROUNDS])
-#                 ax.set_xbound(lower=-3, upper=ROUNDS)
-# #                ax.set_ylim([0, 1])
-# #                ax.set_ybound(lower=0, upper=1)
-#                 ax.set_xlabel('Rounds')
-#                 ax.set_ylabel('MSE')
-#                 ax.legend(loc="upper right")
-#             except Exception as e:
-#                 print(e)
-        
-#         plt.tight_layout()
-#         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mse"+"LSTM.pdf")
-        
-#         fig, ax = plt.subplots(1)
-        
- 
-
-
-#         # ax.set_title("plot_MCS")  
-#         # print(len(plot_MCS))
-#         for name,sub,color in zip(list(set(names)),plot_mae,COLORS):
-#             try:
-                
-#                 ax.plot(np.arange(len(sub)), sub,color,label=name)
-#                 ax.set_xlim([0, ROUNDS])
-#                 ax.set_xbound(lower=-3, upper=ROUNDS)
-# #                ax.set_ylim([0, 1])
-# #                ax.set_ybound(lower=0, upper=1)
-#                 ax.set_xlabel('Rounds')
-#                 ax.set_ylabel('MAE')
-#                 ax.legend(loc="upper right")
-#             except Exception as e:
-#                 print(e)
-#         plt.tight_layout()
-#         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"mae"+"LSTM.pdf")
-
-#         fig, ax = plt.subplots(1)
-
-
-#                 # ax.set_title("plot_MCS")  
-#         print(len(plot_loss))
-#         for name,sub,color in zip(list(set(names)),plot_loss,COLORS):
-#             # try:
-#             ax.plot(np.arange(len(sub)),sub, color,label=name)
-#             # ax.set_aspect('auto')
-#             ax.set_xlim([0, ROUNDS])
-#             ax.set_xbound(lower=-3, upper=ROUNDS)
-#             # ax.set_ylim([0, 1])
-#             # ax.set_ybound(lower=0, upper=1)
-#             ax.set_xlabel('Rounds')
-#             ax.set_ylabel('Loss')
-#             ax.legend(loc="upper right")
-#             # except Exception as e:
-#             #     print(e)
-#         plt.tight_layout()
-#         plt.savefig(FOLDER_PATH+"/"+i+PATH_FIND_PART2+"loss"+"LSTM.pdf")
-
-#         fig, ax = plt.subplots(1)
-
-  
- 
-
-#     print("")    
-
+# result.to_csv('data.csv', index=False)
+# print(result)

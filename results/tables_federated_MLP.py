@@ -42,6 +42,13 @@ dataframes=[]
 
 
 
+def round_float_or_keep_string(value):
+    if isinstance(value, (float, int)):  # Check if it's a float or int
+        return f"{round(value, 3):.3f}"  # Round to 2 decimal places for floats
+    else:
+        return value  # Keep the string as is
+
+
 for name in files:
     print(name)
 
@@ -290,7 +297,15 @@ result = pd.concat(dataframes, axis=0)
 # Reset the index, if needed
 result = result.reset_index(drop=True).sort_values(['type_alpha','type_slr','type_algo','type_sparam'],ascending=[True,True,True,True])
 
+
+result['Accuracy'] = result['Accuracy'].apply(round_float_or_keep_string)
+result['F1-Weighted'] = result['F1-Weighted'].apply(round_float_or_keep_string)
+result['MCS'] = result['MCS'].apply(round_float_or_keep_string)
+result['Loss'] = result['Loss'].apply(round_float_or_keep_string)
+
 result.to_csv('FEDERATED_MLP.csv',index=False)
+
+
 # Convert DataFrame to LaTeX table
 latex_table = result.to_latex(index=False)
 

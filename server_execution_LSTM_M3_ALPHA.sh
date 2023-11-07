@@ -5,8 +5,8 @@
 #CENTRALIZED SEQ80
 python3 fl_testbed/version2/client/centralized_new.py  -ml 2  -cn 15 -cm 15 -e 100 -dfn   'combined_offset_misalignment_M3.csv' --JUMPING_STEP 20  -ip 172.17.0.2 2>&1 | tee out_server_14_RULM3_SEQ80.txt2
 
-
-alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
+# alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
+alphas="0.005 0.05 0.5 0.075 1.0 1000000.0"
 slr="0.001 0.01 1"
 
 FedAvgM_momentum="0.0 0.7 0.9"

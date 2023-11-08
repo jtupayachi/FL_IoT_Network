@@ -6,7 +6,7 @@ alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
 slr="0.001 0.01 1"
 
 FedAvgM_momentum="0.0 0.7 0.9"
-FedOpt_tau="1.000000e-07 1.000000e-08 1.000000e-09"
+FedOpt_tau="1e-7 1-8 1e-9"
 QFedAvg_q="0.1 0.2 0.5"
 
 for var in $alphas; do
@@ -35,7 +35,7 @@ for var in $alphas; do
             echo $var4
             sleep 300
             echo -n "_FedOpt"
-            python3 fl_testbed/version2/client/federated_client_OFFSET_FedOpt.py -cn 2  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_2_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT3_FedOpt_${var}_slr_${var2}_${$var4}.txt
+            python3 fl_testbed/version2/client/federated_client_OFFSET_FedOpt.py -cn 2  -cm 5 -e 1  -ip  172.17.0.8  -dfn_test_x   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedX_test.pkl' -dfn_test_y   '100_1_15_15_combined_offset_misalignment_M3.csv__client_centralizedy_test.pkl' -dfn 'M3_5_2_ddf_MLP.pkl' 2>&1 | tee MLP_CLIENT3_FedOpt_${var}_slr_${var2}_${var4}.txt
             echo "done"
         done
         

@@ -34,7 +34,7 @@ echo "done"
             echo $var4
             sleep 300
             echo -n "_FedOpt"
-python3 fl_testbed/version2/client/federated_client_RUL_FedOpt.py   -cn 0 -cm 5 -e 1 -dfn   'M3_5_0_ddf_LSTM.pkl' -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl'   -ip 172.17.0.3 2>&1 | tee LSTM_CLIENT1_FedOpt_${var}_slr_${var2}_${$var4}.txt
+python3 fl_testbed/version2/client/federated_client_RUL_FedOpt.py   -cn 0 -cm 5 -e 1 -dfn   'M3_5_0_ddf_LSTM.pkl' -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl'   -ip 172.17.0.3 2>&1 | tee LSTM_CLIENT1_FedOpt_${var}_slr_${var2}_${var4}.txt
 echo "done"
         done
         #_QFedAvg

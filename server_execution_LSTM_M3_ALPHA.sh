@@ -47,7 +47,7 @@ for var in $alphas; do
         for var4 in $FedOpt_tau; do
             echo $var4
             echo -n "_FedOpt"
-            python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py -tau ${$var4}  -slr ${var2}  -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_5_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_${var}_slr_${var2}_${$var4}.txt
+            python3 fl_testbed/version2/server/federated_server_RUL_FedOpt.py -tau ${var4}  -slr ${var2}  -cm 5 -e 1 --rounds 1000 -ip  172.17.0.2  -dfn_test_x   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' -dfn_test_y   '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' -dfn 'M3_5_0_ddf_LSTM.pkl'  2>&1 | tee LSTM_TESLA_FedOpt_${var}_slr_${var2}_${var4}.txt
             echo "done"
         done
         #_QFedAvg

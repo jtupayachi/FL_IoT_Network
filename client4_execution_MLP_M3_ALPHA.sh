@@ -6,7 +6,8 @@ alphas="0.001 0.01 0.1 0.02 0.2 0.005 0.05 0.5 0.075 1.0 1000000.0"
 slr="0.001 0.01 1"
 
 FedAvgM_momentum="0.0 0.7 0.9"
-FedOpt_tau="1e-7 1-8 1e-9"
+# FedOpt_tau="1e-7 1e-8 1e-9"
+FedOpt_tau="1e-8"
 QFedAvg_q="0.1 0.2 0.5"
 
 for var in $alphas; do

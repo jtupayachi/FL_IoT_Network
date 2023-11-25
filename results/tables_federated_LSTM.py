@@ -277,7 +277,7 @@ result.to_csv('FEDERATED_LSTM.csv',index=False)
 
 
 # Convert DataFrame to LaTeX table
-latex_table = result.to_latex(index=False)
+latex_table = result.drop('epoch', axis=1).to_latex(index=False)
 
 # Print the LaTeX table or save it to a .tex file
 print(latex_table)

@@ -305,7 +305,7 @@ result['Loss'] = result['Loss'].apply(round_float_or_keep_string)
 
 result.to_csv('FEDERATED_MLP.csv',index=False)
 
-
+result['type_alpha'] = result['type_alpha'].apply(lambda x: '{:.0f}'.format(float(x)) if float(x).is_integer() else '{:g}'.format(float(x)))
 # Convert DataFrame to LaTeX table
 latex_table = result.drop('Epoch', axis=1).to_latex(index=False)
 

@@ -266,6 +266,7 @@ result = pd.concat(dataframes, axis=0)
 # Reset the index, if needed
 result = result.reset_index(drop=True).sort_values(['type_alpha','type_slr','type_algo','type_sparam'],ascending=[True,True,True,True])
 
+
 result['r2'] = result['r2'].apply(round_float_or_keep_string)
 result['mse'] = result['mse'].apply(round_float_or_keep_string)
 result['mae'] = result['mae'].apply(round_float_or_keep_string)
@@ -275,7 +276,7 @@ result.to_csv('FEDERATED_LSTM.csv',index=False)
 
 
 
-
+result['type_alpha'] = result['type_alpha'].apply(lambda x: '{:.0f}'.format(float(x)) if float(x).is_integer() else '{:g}'.format(float(x)))
 # Convert DataFrame to LaTeX table
 latex_table = result.drop('epoch', axis=1).to_latex(index=False)
 

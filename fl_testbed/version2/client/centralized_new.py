@@ -12,7 +12,7 @@
 import os
 # os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-
+from tcn import TCN, tcn_full_summary
 #MLP
 from tensorflow.keras.layers import Dropout,Conv1D,MaxPooling1D,Flatten, Activation, Dense
 # from tensorflow.keras.regularizers import L1L2
@@ -185,7 +185,15 @@ class Centralized:
 
         df_temp = pd.read_csv(self.DATA_FOLDER + self.data_file_name,
                               chunksize=50000)
+      
+
+
+
         self.df = pd.concat(df_temp)
+
+        # if model ==3:
+        #     self.df=self.df[['S1_HighFrequency_grms','S2_HighFrequency_grms','status','rul']]
+        #     print(self.df)
 
     def train_cut_split_1(self):
         df = self.df
@@ -590,8 +598,6 @@ class Centralized:
         df=self.df
         X=self.X
         y=self.y
-
-
         #FAKE SPLIT!!
         ## true orignal ones
         # data split
@@ -656,7 +662,6 @@ class Centralized:
 
         #DEFYING A SEQUENCE LENGTH! 10 OFFSET to 80 # NO OVERLAP
 
-        
         
 
         #SEQUENCE GENERATOR
@@ -983,6 +988,407 @@ class Centralized:
         print('Median Absolute Error:', metrics.median_absolute_error(_test_out, y_pred))
 
 
+
+
+    def modeling_3(self):
+        import pandas as pd
+        df=self.df
+        X=self.X
+        y=self.y
+        #FAKE SPLIT!!
+        ## true orignal ones
+        # data split
+
+        # set aside 20% of train and test data for evaluation
+        X_train, X_test, y_train, y_test = train_test_split(X, y,
+            test_size=0.001, shuffle = False, random_state = RNDSEED)
+
+        # Use the same function above for the validation set
+        X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
+            test_size=0.001, random_state= RNDSEED,shuffle=False) # 0.25 x 0.8 = 0.2
+
+
+        #CREATING ys UNDER FAKE DATA CONDITIONS
+        y_train=pd.DataFrame(y_train,columns = df.columns[-2:])
+        y_vals=pd.DataFrame(y_vals,columns = df.columns[-2:])
+        y_test=pd.DataFrame(y_test,columns = df.columns[-2:])
+
+
+
+        #NORMALIZING DATA!!!
+        from sklearn.preprocessing import StandardScaler
+        from scipy.signal import medfilt
+        import pandas as pd
+        ######################LAST CHANGE JT #####################
+        
+        #LETS SEE REULTS WITHOUT NORMALIZATION (1) ###################
+        # def NormalizeData(data):
+        #     return 1-(data - np.min(data)) / (np.max(data) - np.min(data))
+        
+        
+        # model = np.poly1d(np.polyfit(range(0,len(y_train['rul'])), y_train['rul'], 1))
+        # polyline = np.array(np.linspace(0,len(y_train['rul']),len(y_train['rul']) ) )
+        # y_train['rul'] = NormalizeData(polyline)
+            
+
+
+        
+
+
+        #LETS SEE REULTS WITHOUT NORMALIZATION (2) ###################
+        ## Using Oldest - current to determine the RUL
+
+        # scaler=StandardScaler()
+        # X_train=pd.DataFrame(scaler.fit_transform(X_train),columns = df.columns[:-1])
+
+
+        
+        #ADDING A FILTER TO SMOOTHEN CURVE
+        ######################LAST CHANGE JT #####################
+        plt.plot( range(0,len(y_train['rul'])),y_train['rul'] ,color='red')
+
+
+        print(y_train['rul'] )
+        print(range(0,len(y_train['rul'])))
+
+
+
+        
+
+        #PLOTTER RUL AND FEATURES REMOVED!
+
+        #DEFYING A SEQUENCE LENGTH! 10 OFFSET to 80 # NO OVERLAP
+
+        
+
+        #SEQUENCE GENERATOR
+
+        def gen_seq(data, seq_length, columns):
+            L=[]
+            n = data.shape[0]
+            for i in range(0, n - seq_length,JUMPING_STEP):
+                L.append(data[i:i+seq_length][columns].values)
+            return(L)
+        
+
+        #INCLUSION OF STATUS
+        columns=df.columns[:-1]
+        print(columns)
+
+        #TARGET COLUMN
+        target=df.columns[-1]
+        print(target)
+
+
+        # INPUTS
+    
+        #Dynamic SPlit!
+
+        seq_length=80
+
+
+
+        train_inputs = np.vstack([gen_seq(X_train[X_train['status'] == id], seq_length, columns)
+            for id in X_train['status'].unique()])
+        
+
+
+
+        test_inputs = np.vstack([gen_seq(X_test[X_test['status'] == id], seq_length, columns)
+                            for id in X_test['status'].unique()])
+        
+    
+
+        vals_inputs = np.vstack([gen_seq(X_vals[X_vals['status'] == id], seq_length, columns)
+                            for id in X_vals['status'].unique()])
+
+
+
+        
+
+        #OUTPUTS
+        def gen_labels(id_df, seq_length, label):
+            data_array = id_df[label].values
+            num_elements = data_array.shape[0]
+            return data_array[seq_length:num_elements:JUMPING_STEP]
+        
+
+
+        train_out = np.vstack([gen_labels(y_train[y_train['status'] == id], seq_length, [target])
+                            for id in y_train['status'].unique()])
+
+        test_out = np.vstack([gen_labels(y_test[y_test['status'] == id], seq_length, [target])
+                            for id in y_test['status'].unique()])
+        
+        vals_out = np.vstack([gen_labels(y_vals[y_vals['status'] == id], seq_length, [target])
+                            for id in y_vals['status'].unique()])
+
+
+
+        #NEW SPLITTING!!!
+        stra_train_inputs=train_inputs[:,:,-1]
+
+
+
+        # set aside 20% of train and test data for evaluation HERE WE SHUFFLE OUR SEQUENCES
+        train_inputs, test_inputs, train_out, test_out = train_test_split(train_inputs, train_out,
+            test_size=0.25, shuffle = True, random_state = RNDSEED,stratify=stra_train_inputs)
+
+
+        stra_train_inputs=train_inputs[:,:,-1]
+
+        # Use the same function above for the validation set WE JUST SPLIT IT IN 0.25 and 0.75 OF THE PREVIOUS SPLIT
+        train_inputs, vals_inputs, train_out, vals_out = train_test_split(train_inputs, train_out, 
+            test_size=0.25,shuffle=True, random_state= RNDSEED,stratify=stra_train_inputs) # 0.25 x 0.8 = 0.2
+
+        print("TRAIN_INPUT CHECK")
+        print(train_inputs)
+
+
+
+
+
+
+            # saving files.
+        with open(
+                self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+                self.FILE_NAME + "train_out.pkl",
+                "wb",
+        ) as file:
+            pickle.dump(train_out, file)
+
+        with open(
+                self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+                self.FILE_NAME + "train_inputs.pkl",
+                "wb",
+        ) as file:
+            pickle.dump(train_inputs, file)
+
+        with open(
+                self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+                self.FILE_NAME + "test_out.pkl",
+                "wb",
+        ) as file:
+            pickle.dump(test_out, file)
+
+        with open(
+                self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+                self.FILE_NAME + "test_inputs.pkl",
+                "wb",
+        ) as file:
+            pickle.dump(test_inputs, file)
+
+        with open(
+            self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+            self.FILE_NAME + "vals_out.pkl",
+            "wb",
+        ) as file:
+            pickle.dump(vals_out, file)
+
+        with open(
+                self.TRANSFORMED_FOLDER + self.concatenated_identifier +
+                self.FILE_NAME + "vals_inputs.pkl",
+                "wb",
+        ) as file:
+            pickle.dump(vals_inputs, file)
+
+
+        #DROPPING STATUS
+
+        print(train_inputs.shape)
+        train_inputs=train_inputs[:,:,:-1]
+        test_inputs=test_inputs[:,:,:-1]
+        vals_inputs=vals_inputs[:,:,:-1]
+        print(train_inputs.shape)
+
+
+        # columns=df.columns[:-1]
+        # print(columns)
+        # input()
+
+
+
+        #HERE IS WHERE SPLITTING AND NORMALIZATION SHOULD GO!!!
+        # def NormalizeData(data):
+        #     return 1-(data - np.min(data)) / (np.max(data) - np.min(data))
+        
+
+        # model = np.poly1d(np.polyfit(range(0,len(y_train['rul'])), y_train['rul'], 1))
+        # polyline = np.array(np.linspace(0,len(y_train['rul']),len(y_train['rul']) ) )
+        # y_train['rul'] = NormalizeData(polyline)
+
+
+        print("train_out")
+        print(train_out.shape)
+        # polyline = np.array(np.linspace(0,len(train_out),len(train_out) ) )
+        scaler=MinMaxScaler(feature_range=(0, 1))
+        train_out=scaler.fit_transform(train_out)
+        # train_out = train_out.apply(NormalizeData)
+        # NormalizeData(polyline)
+        train_out=train_out.reshape(-1,1)
+        
+
+        print("test_out")
+        print(test_out.shape)
+        # polyline = np.array(np.linspace(0,len(test_out),len(test_out) ) )
+        scaler=MinMaxScaler(feature_range=(0, 1))
+        test_out=scaler.fit_transform(test_out)
+        # test_out = test_out.apply(NormalizeData)
+        # test_out = NormalizeData(polyline)
+        test_out=test_out.reshape(-1,1)
+
+
+        print("vals_out")
+        print(vals_out)
+        print(vals_out.shape)
+        # polyline = np.array(np.linspace(0,len(vals_out),len(vals_out) ) )
+        scaler=MinMaxScaler(feature_range=(0, 1))
+        vals_out=scaler.fit_transform(vals_out)
+        # vals_out = vals_out.apply(NormalizeData)
+        # vals_out = NormalizeData(polyline)
+        vals_out=vals_out.reshape(-1,1)
+        print(vals_out)
+        print(vals_out.shape)
+        
+
+
+
+
+
+        #NOW THE SEQUENCES
+        "train_inputs"
+        for seq in range(train_inputs.shape[0]):
+            scaler=StandardScaler()
+            
+            train_inputs[seq]=scaler.fit_transform(train_inputs[seq])
+
+        "test_inputs"
+        for seq in range(test_inputs.shape[0]):
+            scaler=StandardScaler()
+            
+            test_inputs[seq]=scaler.fit_transform(test_inputs[seq])
+
+
+
+        "vals_inputs"
+        for seq in range(vals_inputs.shape[0]):
+            scaler=StandardScaler()
+            
+            vals_inputs[seq]=scaler.fit_transform(vals_inputs[seq])
+
+
+
+        
+            
+
+
+
+
+
+
+
+
+
+
+
+        print(train_inputs.shape)
+        print(test_inputs.shape)
+        print(vals_inputs.shape)
+        
+
+
+
+
+
+
+
+
+     
+        from  datetime import datetime
+
+        log_dir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        print(log_dir)
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
+
+        # es=EarlyStopping(
+        # monitor="val_loss",
+        # patience=6,
+        # verbose=1,
+        # mode="auto",
+        # min_delta=0.0001,
+        # restore_best_weights=True)
+        
+            
+        tf.keras.backend.clear_session()
+        conf = tf.compat.v1.ConfigProto()
+        conf.gpu_options.allow_growth=True
+        session = tf.compat.v1.Session(config=conf)
+
+        nb_features = train_inputs.shape[2]
+        sequence_length  = train_inputs.shape[1]
+        nb_out = train_out.shape[1]
+
+        model = tf.keras.models.Sequential([
+        TCN(nb_filters=4, kernel_size=2, dilations=[1, 2,4,8,16,32],input_shape=(sequence_length, nb_features),return_sequences=False),
+        # Global average pooling layer
+        # GlobalAveragePooling1D(),
+        # tf.keras.layers.Dropout(0.2),
+        # Fully connected layers
+        # Dense(32, activation='relu'),
+        tf.keras.layers.Dense(nb_out, activation = 'relu')  # Output layer for regression
+        ])
+
+        lr = tf.keras.callbacks.LearningRateScheduler(lambda epoch: 10**-7 * 10**(epoch/3))
+
+        model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.RMSprop(), metrics =['mse','mae'])
+
+
+        #FAST AI SEE IF TRIANING IMPROVES !
+
+        es = EarlyStopping(monitor="val_loss",
+                mode="auto",
+                verbose=2,
+                patience=10,
+                min_delta=0.0001,
+                restore_best_weights=True)
+        # 1420492
+        # history = model.fit(train_inputs, train_out, epochs = 20, callbacks = [lr])
+        history=model.fit(train_inputs,train_out,epochs=self.epochs,validation_data= (vals_inputs,vals_out) ,verbose=2,callbacks=[tensorboard_callback,es],)#,lr
+        plt.plot(history.history['loss'])
+        plt.plot(history.history['val_loss'])
+        plt.title('model train vs validation loss')
+        plt.ylabel('loss')
+        plt.xlabel('epoch')
+        plt.legend(['train', 'validation'], loc='upper right')
+        plt.show()
+
+
+
+        # loading the saved modelweights-improvement-87-0.16.h /home/jose/FL_AM_Defect-Detection/checkpoint/RUL16LSTM/weights-improvement-07-0.04.h5
+        # model = tf.keras.models.load_model('/home/jose/FL_AM_Defect-Detection/checkpoint/RUL16LSTM/weights-improvement_BEST.h5')
+
+        print(test_inputs.shape)
+
+        _test_inputs=test_inputs[0:]
+        _test_out=test_out[0:]
+
+
+        y_pred = model.predict(_test_inputs) ## using the untinted dataset!
+    
+        print('R^2:', metrics.r2_score(_test_out, y_pred))
+        print('Mean Absolute Error (MAE):', metrics.mean_absolute_error(_test_out, y_pred))
+        print('Mean Squared Error (MSE):', metrics.mean_squared_error(_test_out, y_pred))
+        print('Mean Absolute Percentage Error (MAPE):', metrics.mean_absolute_percentage_error(_test_out, y_pred))
+        print('Root Mean Squared Error (RMSE):', np.sqrt(metrics.mean_squared_error(_test_out, y_pred))) # np.sqrt
+
+        print('Explained Variance Score:', metrics.explained_variance_score(_test_out, y_pred))
+        print('Max Error:', metrics.max_error(_test_out, y_pred))
+        print('Mean Squared Log Error:', metrics.mean_squared_log_error(_test_out, y_pred))
+        print('Median Absolute Error:', metrics.median_absolute_error(_test_out, y_pred))
+
+
+
+
         # X = self.X_train
         # y = self.y_train
 
@@ -1269,6 +1675,12 @@ if __name__ == "__main__":
         centralized.train_cut_split_2()
         # centralized.pre_modeling_2()
         centralized.modeling_2()
+        # centralized.testing_2()
+    elif model == 3:
+        print("MODE 3")
+        centralized.train_cut_split_2()
+        # centralized.pre_modeling_2()
+        centralized.modeling_3()
         # centralized.testing_2()
 
     exit()

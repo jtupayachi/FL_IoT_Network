@@ -1,0 +1,145 @@
+2023-12-14 17:59:18.449186: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2023-12-14 17:59:30.174678: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 31141 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3b:00.0, compute capability: 7.0
+2023-12-14 17:59:30.196172: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1639] Created device /job:localhost/replica:0/task:0/device:GPU:0 with 31141 MB memory:  -> device: 0, name: Tesla V100-PCIE-32GB, pci bus id: 0000:3b:00.0, compute capability: 7.0
+SCRIPT INITIATED
+INI
+MODE 3
+['S1_CrestFactor_g~g', 'S1_DerivedPeak_g', 'S1_Peak~Peak_g', 'S1_RMS_g', 'S1_TruePeak_g', 'S1_HighFrequency_grms', 'S1_Kurtosis_g~g', 'S2_CrestFactor_g~g', 'S2_DerivedPeak_g', 'S2_Peak~Peak_g', 'S2_RMS_g', 'S2_TruePeak_g', 'S2_HighFrequency_grms', 'S2_Kurtosis_g~g']
+0         2009308.0
+1         2009307.0
+2         2009306.0
+3         2009305.0
+4         2009304.0
+            ...    
+238239        499.0
+238240        498.0
+238241        497.0
+238242        496.0
+238243        495.0
+Name: rul, Length: 238244, dtype: float64
+range(0, 238244)
+Index(['S1_CrestFactor_g~g', 'S1_DerivedPeak_g', 'S1_Peak~Peak_g', 'S1_RMS_g',
+       'S1_TruePeak_g', 'S1_HighFrequency_grms', 'S1_Kurtosis_g~g',
+       'S2_CrestFactor_g~g', 'S2_DerivedPeak_g', 'S2_Peak~Peak_g', 'S2_RMS_g',
+       'S2_TruePeak_g', 'S2_HighFrequency_grms', 'S2_Kurtosis_g~g', 'S1_temp',
+       'status'],
+      dtype='object')
+rul
+TRAIN_INPUT CHECK
+[[[ 2.5289  0.7637  2.6636 ...  2.8368 73.0218  3.    ]
+  [ 2.5154  0.765   2.6664 ...  2.7851 72.9816  3.    ]
+  [ 2.4072  0.7596  2.5469 ...  2.8474 73.0393  3.    ]
+  ...
+  [ 2.3706  0.7598  2.5216 ...  2.9138 73.03    3.    ]
+  [ 2.437   0.7669  2.6325 ...  2.7697 73.0303  3.    ]
+  [ 2.4404  0.7629  2.5917 ...  2.8768 73.0062  3.    ]]
+
+ [[ 2.5378  0.7205  2.5681 ...  2.9006 72.0184  2.    ]
+  [ 2.5309  0.7183  2.5542 ...  2.9401 72.0326  2.    ]
+  [ 2.5329  0.7206  2.5584 ...  2.8989 72.0027  2.    ]
+  ...
+  [ 2.587   0.7213  2.6141 ...  2.925  72.0939  2.    ]
+  [ 2.547   0.7221  2.5762 ...  3.0347 72.0971  2.    ]
+  [ 2.608   0.7238  2.636  ...  2.9433 72.0025  2.    ]]
+
+ [[ 2.4594  0.7064  2.4566 ...  2.8585 72.9753  3.    ]
+  [ 2.425   0.7081  2.4078 ...  2.9882 72.9664  3.    ]
+  [ 2.3664  0.7079  2.3625 ...  2.888  72.9539  3.    ]
+  ...
+  [ 2.4542  0.6984  2.3769 ...  2.8531 72.9507  3.    ]
+  [ 2.5147  0.6957  2.3965 ...  2.8426 72.9728  3.    ]
+  [ 2.5862  0.6972  2.4633 ...  2.8411 72.9728  3.    ]]
+
+ ...
+
+ [[ 2.4074  0.7766  2.6189 ...  2.8169 73.0234  3.    ]
+  [ 2.4488  0.7826  2.686  ...  2.7807 73.0803  3.    ]
+  [ 2.4597  0.7812  2.6904 ...  2.9895 73.0774  3.    ]
+  ...
+  [ 2.4963  0.7805  2.7485 ...  2.7902 73.0902  3.    ]
+  [ 2.4926  0.7773  2.7193 ...  2.9755 73.0464  3.    ]
+  [ 2.4855  0.7812  2.6978 ...  2.9366 73.1048  3.    ]]
+
+ [[ 2.6128  0.7125  2.5923 ...  2.7818 72.7524  2.    ]
+  [ 2.5556  0.713   2.5445 ...  2.9215 72.8256  2.    ]
+  [ 2.59    0.7109  2.5261 ...  2.8666 72.7589  2.    ]
+  ...
+  [ 2.5535  0.7136  2.5513 ...  2.8769 73.2343  2.    ]
+  [ 2.5898  0.7139  2.5822 ...  2.8743 73.2494  2.    ]
+  [ 2.4793  0.7103  2.4725 ...  3.0285 73.2699  2.    ]]
+
+ [[ 2.4243  0.6703  2.289  ...  2.8628 73.4598  4.    ]
+  [ 2.4146  0.6727  2.2421 ...  2.9162 73.4371  4.    ]
+  [ 2.4962  0.6748  2.2763 ...  3.0286 73.4493  4.    ]
+  ...
+  [ 2.3835  0.6948  2.2931 ...  2.9503 73.3008  4.    ]
+  [ 2.3749  0.6939  2.2916 ...  2.8438 73.2992  4.    ]
+  [ 2.4469  0.692   2.3244 ...  2.844  73.3008  4.    ]]]
+(6691, 80, 16)
+(6691, 80, 15)
+train_out
+(6691, 1)
+test_out
+(2974, 1)
+vals_out
+[[1915173.]
+ [2006407.]
+ [1907553.]
+ ...
+ [1213174.]
+ [   7975.]
+ [1127704.]]
+(2231, 1)
+[[0.95317182]
+ [0.99859548]
+ [0.94937797]
+ ...
+ [0.60366002]
+ [0.00361461]
+ [0.56110615]]
+(2231, 1)
+(6691, 80, 15)
+(2974, 80, 15)
+(2231, 80, 15)
+logs/fit/20231214-175930
+Epoch 1/100
+2023-12-14 17:59:32.602634: I tensorflow/compiler/xla/stream_executor/cuda/cuda_dnn.cc:432] Loaded cuDNN version 8600
+2023-12-14 17:59:32.875906: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x15983280 initialized for platform CUDA (this does not guarantee that XLA will be used). Devices:
+2023-12-14 17:59:32.875947: I tensorflow/compiler/xla/service/service.cc:176]   StreamExecutor device (0): Tesla V100-PCIE-32GB, Compute Capability 7.0
+2023-12-14 17:59:32.882242: I tensorflow/compiler/mlir/tensorflow/utils/dump_mlir_util.cc:255] disabling MLIR crash reproducer, set env var `MLIR_CRASH_REPRODUCER_DIRECTORY` to enable.
+2023-12-14 17:59:32.988936: I ./tensorflow/compiler/jit/device_compiler.h:186] Compiled cluster using XLA!  This line is logged at most once for the lifetime of the process.
+210/210 - 6s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 6s/epoch - 29ms/step
+Epoch 2/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 3/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 4/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 5/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 6/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 7/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 8/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 9/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 10/100
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 11/100
+Restoring model weights from the end of the best epoch: 1.
+210/210 - 1s - loss: 0.2525 - mse: 0.5050 - mae: 0.6376 - val_loss: 0.2538 - val_mse: 0.5075 - val_mae: 0.6381 - 1s/epoch - 6ms/step
+Epoch 11: early stopping
+(2974, 80, 15)
+ 1/93 [..............................] - ETA: 27s27/93 [=======>......................] - ETA: 0s 56/93 [=================>............] - ETA: 0s85/93 [==========================>...] - ETA: 0s93/93 [==============================] - ETA: 0s93/93 [==============================] - 1s 2ms/step
+R^2: -4.114270059230621
+Mean Absolute Error (MAE): 0.6389411043679185
+Mean Squared Error (MSE): 0.5074725063009052
+Mean Absolute Percentage Error (MAPE): 0.9996637525218561
+Root Mean Squared Error (RMSE): 0.7123710453835874
+Explained Variance Score: 0.0
+Max Error: 1.0000000000000002
+Mean Squared Log Error: 0.2706838856089838
+Median Absolute Error: 0.6896745199347019

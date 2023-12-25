@@ -139,7 +139,10 @@ for element in files:
 
             axs[row, col].set_xlabel('Rounds')
             axs[row, col].set_ylabel(column)
+            axs[row, col].set_xlim([0, ROUNDS])
+            axs[row, col].set_xbound(lower=-3, upper=ROUNDS)
             axs[row, col].legend()
+            
 
         # Adjust layout
         plt.tight_layout(rect=[0, 0.03, 1, 0.95])

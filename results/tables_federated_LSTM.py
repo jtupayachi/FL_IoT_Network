@@ -59,6 +59,8 @@ for name in files:
     type_alpha=[]
     type_slr=[]
     type_sparam=[]
+    time_ini=None
+    time_end=None
 
 
     r2_list=[]
@@ -88,6 +90,11 @@ for name in files:
         type_alpha.append(name.split("_")[3])
         type_slr.append("-")
         type_sparam.append("-")
+        #ONLY HAPPENS ONE TIME!
+
+
+        
+
 
 
 
@@ -100,6 +107,20 @@ for name in files:
                 mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
                 mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
                 loss_list.append(float(line.split(",")[-5]))
+
+            # print(line)
+            # input()
+            if "| app.py:185 | Disconnect and shut down" in line.strip():
+                # print(line)
+                print("enter")
+                time_end=line.split(",")[0]#.split(" ")[2:]
+                print(time_end,"end")
+                input()
+            if "tensorflow/core/platform/cpu_feature_guard.cc:182]" in line:
+                time_ini=line.split(".")[0]
+                print(time_ini,"ini")
+                # input()
+
 
 
         
@@ -181,6 +202,7 @@ for name in files:
 
 
         data=open(path_name)
+        print(path_name)
 
         for line in data:
             if "| fit progress:" in line :
@@ -189,6 +211,18 @@ for name in files:
                 mse_list.append(float(re.findall("\d+\.\d+",line.split(",")[-4])[0]))
                 mae_list.append(float(re.findall("\d+\.\d+",line.split(",")[-3])[0]))
                 loss_list.append(float(line.split(",")[-5]))
+            # print(line)
+            # input()
+            if "| app.py:185 | Disconnect and shut down".strip().lower() in line.strip().lower():
+                # print(line)
+                print("enter")
+                time_end=line.split(",")[0]#.split(" ")[2:]
+                print(time_end,"end")
+                input()
+            if "tensorflow/core/platform/cpu_feature_guard.cc:182]" in line:
+                time_ini=line.split(".")[0]
+                print(time_ini,"ini")
+                # input()
 
 
         
@@ -260,7 +294,7 @@ for name in files:
             }))
         
 
-
+    input()
 result = pd.concat(dataframes, axis=0)
 
 # Reset the index, if needed
@@ -285,3 +319,4 @@ print(latex_table)
 
 # result.to_csv('data.csv', index=False)
 # print(result)
+

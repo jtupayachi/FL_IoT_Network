@@ -30,7 +30,9 @@ plots_dict=[]
 
 os.chdir(FOLDER_PATH)
 print(FOLDER_PATH)
-files = glob(PATH_FIND_PART1+'*')
+# files = glob(PATH_FIND_PART1+'*')
+files = [file for file in glob(PATH_FIND_PART1 + '*') if not (file.endswith('.pdf') or file.endswith('.csv'))]
+
 # files=[k for k in files if PATH_FIND_PART2 in k]
 
 print(files)
@@ -50,8 +52,6 @@ def round_float_or_keep_string(value):
 
 
 for name in files:
-    print(name)
-
     #PARAMETERS LIST INI
     type_model=[]
     type_machine=[]
@@ -59,6 +59,7 @@ for name in files:
     type_alpha=[]
     type_slr=[]
     type_sparam=[]
+    time_end=None
 
 
     accuracy_list=[]
@@ -81,8 +82,6 @@ for name in files:
 
 
     if  "_FedAvg_" in name:
-
-
         
         type_model.append(name.split("_")[0])
         type_machine.append(name.split("_")[1])
@@ -112,7 +111,11 @@ for name in files:
                 # print(len(line.split(",")))
                 # print(float(line.split(",")[-6]))
                 loss_list.append(float(line.split(",")[-6]))
-
+            if "FL finished in" in line:
+                print(line)
+                print("enter")
+                time_end=round(float(line.split("in ")[-1]),3)#.split(" ")[2:]
+                print(time_end,"end")
 
         
         #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
@@ -163,6 +166,7 @@ for name in files:
             'F1-Weighted':weightedavg_list[max_index],
             'MCS':mcs_list[max_index],
             'Loss':loss_list[max_index],
+            'time_end':time_end
             
             }))
         else:
@@ -181,6 +185,7 @@ for name in files:
             'F1-Weighted':"-",
             'MCS':"-",
             'Loss':"-",
+            'time_end':time_end
             
             }))
 
@@ -196,6 +201,7 @@ for name in files:
 
 
         data=open(path_name)
+        print(path_name)
 
         for line in data:
             if line.startswith("    accuracy"):
@@ -214,7 +220,11 @@ for name in files:
                 # print(len(line.split(",")))
                 # print(float(line.split(",")[-6]))
                 loss_list.append(float(line.split(",")[-6]))
-
+            if "FL finished in" in line:
+                print(line)
+                print("enter")
+                time_end=round(float(line.split("in ")[-1]),3)#.split(" ")[2:]
+                print(time_end,"end")
         
         #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
 
@@ -249,8 +259,6 @@ for name in files:
 
         if int(int(max_index)+1)>0:
 
-            print(len(loss_list))
-
 
             dataframes.append(pd.DataFrame({
             # 'type_model':type_model,
@@ -267,10 +275,9 @@ for name in files:
             'F1-Weighted':weightedavg_list[max_index],
             'MCS':mcs_list[max_index],
             'Loss':loss_list[max_index],
+            'time_end':time_end,
             
             }))
-
-
         else:
             dataframes.append(pd.DataFrame({
             # 'type_model':type_model,
@@ -287,10 +294,10 @@ for name in files:
             'F1-Weighted':"-",
             'MCS':"-",
             'Loss':"-",
+            'time_end':time_end,
             
             }))
         
-
 
 result = pd.concat(dataframes, axis=0)
 
@@ -303,11 +310,11 @@ result['F1-Weighted'] = result['F1-Weighted'].apply(round_float_or_keep_string)
 result['MCS'] = result['MCS'].apply(round_float_or_keep_string)
 result['Loss'] = result['Loss'].apply(round_float_or_keep_string)
 
-result.to_csv('FEDERATED_MLP.csv',index=False)
+# result.to_csv('FEDERATED_MLP.csv',index=False)
 
 result['type_alpha'] = result['type_alpha'].apply(lambda x: '{:.0f}'.format(float(x)) if float(x).is_integer() else '{:g}'.format(float(x)))
 # Convert DataFrame to LaTeX table
-latex_table = result.drop('Epoch', axis=1).to_latex(index=False)
+latex_table = result.drop(['Epoch'], axis=1).to_latex(index=False)#,'time_end'#.drop(['epoch'], axis=1)
 
 # Print the LaTeX table or save it to a .tex file
 print(latex_table)

@@ -30,7 +30,9 @@ plots_dict=[]
 
 os.chdir(FOLDER_PATH)
 print(FOLDER_PATH)
-files = glob(PATH_FIND_PART1+'*')
+# files = glob(PATH_FIND_PART1+'*')
+files = [file for file in glob(PATH_FIND_PART1 + '*') if not (file.endswith('.pdf') or file.endswith('.csv'))]
+
 # files=[k for k in files if PATH_FIND_PART2 in k]
 
 print(files)
@@ -49,9 +51,7 @@ def round_float_or_keep_string(value):
         return value  # Keep the string as is
 
 
-
 for name in files:
-
     #PARAMETERS LIST INI
     type_model=[]
     type_machine=[]
@@ -59,7 +59,6 @@ for name in files:
     type_alpha=[]
     type_slr=[]
     type_sparam=[]
-    time_ini=None
     time_end=None
 
 
@@ -90,11 +89,6 @@ for name in files:
         type_alpha.append(name.split("_")[3])
         type_slr.append("-")
         type_sparam.append("-")
-        #ONLY HAPPENS ONE TIME!
-
-
-        
-
 
 
 
@@ -110,18 +104,11 @@ for name in files:
 
             # print(line)
             # input()
-            if "| app.py:185 | Disconnect and shut down" in line.strip():
+            if "INFO:flwr:FL finished in" in line:
                 # print(line)
                 print("enter")
-                time_end=line.split(",")[0]#.split(" ")[2:]
+                time_end=round(float(line.split("in ")[-1]),3)#.split(" ")[2:]
                 print(time_end,"end")
-                input()
-            if "tensorflow/core/platform/cpu_feature_guard.cc:182]" in line:
-                time_ini=line.split(".")[0]
-                print(time_ini,"ini")
-                # input()
-
-
 
         
         #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
@@ -169,6 +156,7 @@ for name in files:
             'mse':mse_list[max_index],
             'mae':mae_list[max_index],
             'loss':loss_list[max_index],
+            'time_end':time_end
             
             }))
         else:
@@ -187,6 +175,7 @@ for name in files:
             'mse':"-",
             'mae':"-",
             'loss':"-",
+            'time_end':time_end
             
             }))
 
@@ -213,21 +202,13 @@ for name in files:
                 loss_list.append(float(line.split(",")[-5]))
             # print(line)
             # input()
-            if "| app.py:185 | Disconnect and shut down".strip().lower() in line.strip().lower():
+            if "INFO:flwr:FL finished in" in line:
                 # print(line)
                 print("enter")
-                time_end=line.split(",")[0]#.split(" ")[2:]
+                time_end=round(float(line.split("in ")[-1]),3)#.split(" ")[2:]
                 print(time_end,"end")
-                input()
-            if "tensorflow/core/platform/cpu_feature_guard.cc:182]" in line:
-                time_ini=line.split(".")[0]
-                print(time_ini,"ini")
-                # input()
-
-
         
         #GET POSITION WHERE THE GHIGHEST ELEMNT LIEST ON
-
 
 
         # Iterate through the list
@@ -272,6 +253,7 @@ for name in files:
             'mse':mse_list[max_index],
             'mae':mae_list[max_index],
             'loss':loss_list[max_index],
+            'time_end':time_end,
             
             }))
         else:
@@ -290,11 +272,11 @@ for name in files:
             'mse':"-",
             'mae':"-",
             'loss':"-",
+            'time_end':time_end,
             
             }))
         
 
-    input()
 result = pd.concat(dataframes, axis=0)
 
 # Reset the index, if needed
@@ -306,17 +288,14 @@ result['mse'] = result['mse'].apply(round_float_or_keep_string)
 result['mae'] = result['mae'].apply(round_float_or_keep_string)
 result['loss'] = result['loss'].apply(round_float_or_keep_string)
 
-result.to_csv('FEDERATED_LSTM.csv',index=False)
-
-
+# result.to_csv('FEDERATED_LSTM.csv',index=False)
 
 result['type_alpha'] = result['type_alpha'].apply(lambda x: '{:.0f}'.format(float(x)) if float(x).is_integer() else '{:g}'.format(float(x)))
 # Convert DataFrame to LaTeX table
-latex_table = result.drop('epoch', axis=1).to_latex(index=False)
+latex_table = result.drop(['epoch'], axis=1).to_latex(index=False)
 
 # Print the LaTeX table or save it to a .tex file
 print(latex_table)
 
 # result.to_csv('data.csv', index=False)
 # print(result)
-

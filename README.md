@@ -8,8 +8,8 @@ Paper for FL
 
 
 📦Overleaf
- ┣ 📂IEEE_to_read
-        ┗ 📜main_to_read.tex
+ ┣ 📂IEEE (to_read)
+        ┗ 📜main.tex (to_read)
  ┣ 📂ACM
         ┗📜main.tex
 

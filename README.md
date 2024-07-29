@@ -50,7 +50,7 @@ The Federated Learning code is organized within the 'fl_testbed/version2' folder
 --->📂client<---
 <!-- 📜CustomNumpyClient.py: Inhered class with hadny function for federated client. -->
 
-📜centralized.py: Run a deep learning model using a complete dataset.
+📜centralized.py: Runs a deep learning model using a complete dataset.
 
 📜datasplit.py: Builts in two operation modes for data generation (Dirichlet Distribution).
 
@@ -69,7 +69,7 @@ of the whole dataset.
 --->📂server<---
 <!-- 📜CustomStrategy.py: Custom FedAvg strategy implementation with built-in testing.
 📜aggregate.py: Required file for federated server script. -->
-📜federated_server.py: Script for running the federated server.
+📜federated_server.py: Runs the federated server.
 <!-- 📜strategy.py: Abstract base class for server strategy. -->
 
 
@@ -85,7 +85,7 @@ of the whole dataset.
 Execution orchestrators labeled as (ex.'server_execution_LSTM_M1.sh') perform the following parameterized scripts execution while testing the FL hyperparameter parameter grid.
 
 1. datasplit.py (Clients)
-2. centralized.py (Clients and server)
+2. centralized.py (Clients and Server)
 3. independent.py (Clients)
 4. federated_server.py (Server)
 5. federated_client.py (Clients)
@@ -153,24 +153,27 @@ combined_offset_misalignment.csv: https://drive.google.com/file/d/1-E5wqPmhtIlsd
 </pre>
 
 
-<h2>Parameters:</h2>
+<h2>Main Parameters:</h2>
 
+Included in the .sh files.
 <pre>
 
 
 
 -ml: Type of model executed.
--lr: Learning rate. :: It is important to fine tune this parameter as it may lead to overfitting
--e: Number of epochs. :: It is important to fine tune this parameter as it may lead to overfitting (EarlyStopping triggered).
+-lr: Learning rate. 
+-e: Number of epochs.
 -cm: Max number of clients.
 -cn: Client number.
 -dfn: Initial dataframe.
 -ip: CLient/server ip.
+-fq: fraction of sampled/residual dataset.
 --comparative_path_y_test: Initial dataset splitted train/test saved as pickle y_test
 --comparative_path_X_test: Initial dataset splitted train/test saved as pickle X_test
 --rounds: Number of federated rounds.
--l: Manual weights for data_split.py script.
--fq: fraction of sampled/residual dataset.
+--JUMPING_STEP: Time window offset.
+
+
 
 
 </pre> 

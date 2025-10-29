@@ -85,6 +85,91 @@ def create_model_factory():
             )
     return model_factory
 
+# def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = None):
+#     """Create proper evaluation function for centralized evaluation"""
+#     def evaluate_fn(server_round: int, parameters: Parameters, config: Dict[str, Scalar]):
+#         """
+#         Evaluate the model on a centralized test set
+#         """
+#         try:
+#             print(f"🔍 Running centralized evaluation for round {server_round}...")
+            
+#             # Extract model configuration
+#             model_config = config.get("model", {})
+#             hyperparams = {
+#                 "model_type": model_config.get("model_type", "dense"),
+#                 "hidden_dim": model_config.get("hidden_dim", 64),
+#                 "num_layers": model_config.get("num_layers", 2),
+#                 "dropout": model_config.get("dropout", 0.2),
+#                 "hidden_dims": model_config.get("hidden_dims", [64, 32])
+#             }
+            
+#             # Create model
+#             model = model_factory(hyperparams["model_type"], input_dim, **hyperparams)
+            
+#             # Set parameters (convert to tensor format)
+#             params_dict = zip(model.state_dict().keys(), parameters)
+#             state_dict = {k: torch.tensor(v) for k, v in params_dict}
+#             model.load_state_dict(state_dict, strict=True)
+            
+#             model.eval()
+            
+#             # Generate synthetic test data for demonstration
+#             # In production, replace this with actual centralized test data loading
+#             if test_data_path and os.path.exists(test_data_path):
+#                 print(f"📁 Loading test data from: {test_data_path}")
+#                 # Load actual test data here
+#                 # For now, use synthetic data
+#                 X_test = torch.randn(100, input_dim)
+#                 y_test = torch.randn(100, 1)
+#             else:
+#                 # Synthetic data for testing - REPLACE WITH REAL DATA
+#                 print("⚠️ Using synthetic test data - replace with actual centralized test dataset")
+#                 X_test = torch.randn(100, input_dim)
+#                 y_test = torch.randn(100, 1) * 0.5 + X_test[:, 0:1] * 0.5  # Add some correlation
+            
+#             # Evaluate
+#             with torch.no_grad():
+#                 predictions = model(X_test)
+#                 loss = nn.MSELoss()(predictions, y_test).item()
+                
+#                 # Calculate metrics
+#                 y_true_np = y_test.numpy().flatten()
+#                 y_pred_np = predictions.numpy().flatten()
+                
+#                 mse = np.mean((y_true_np - y_pred_np) ** 2)
+#                 rmse = np.sqrt(mse)
+#                 mae = np.mean(np.abs(y_true_np - y_pred_np))
+                
+#                 # Handle R² calculation with division by zero protection
+#                 y_var = np.var(y_true_np)
+#                 if y_var == 0:
+#                     r2 = 0.0
+#                 else:
+#                     r2 = 1 - (mse / y_var)
+            
+#             metrics = {
+#                 "rmse": float(rmse),
+#                 "mse": float(mse),
+#                 "mae": float(mae),
+#                 "r2": float(r2)
+#             }
+            
+#             print(f"📊 Centralized Evaluation - Round {server_round}:")
+#             print(f"   Loss: {loss:.4f}")
+#             print(f"   RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")
+            
+#             return float(loss), metrics
+            
+#         except Exception as e:
+#             print(f"⚠️ Centralized evaluation error: {e}")
+#             import traceback
+#             traceback.print_exc()
+#             # Return placeholder values if evaluation fails
+#             return 10.0, {"rmse": 10.0, "mse": 100.0, "mae": 10.0, "r2": -1.0}
+    
+#     return evaluate_fn
+
 def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = None):
     """Create proper evaluation function for centralized evaluation"""
     def evaluate_fn(server_round: int, parameters: Parameters, config: Dict[str, Scalar]):
@@ -104,10 +189,13 @@ def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = No
                 "hidden_dims": model_config.get("hidden_dims", [64, 32])
             }
             
-            # Create model
-            model = model_factory(hyperparams["model_type"], input_dim, **hyperparams)
+            # FIX: Extract model_type from hyperparams to avoid duplicate argument
+            model_type = hyperparams.pop("model_type")  # Remove model_type from hyperparams
             
-            # Set parameters (convert to tensor format)
+            # Create model - now model_type is passed separately, hyperparams doesn't contain it
+            model = model_factory(model_type, input_dim, **hyperparams)
+            
+            # Rest of your code remains the same...
             params_dict = zip(model.state_dict().keys(), parameters)
             state_dict = {k: torch.tensor(v) for k, v in params_dict}
             model.load_state_dict(state_dict, strict=True)
@@ -115,18 +203,14 @@ def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = No
             model.eval()
             
             # Generate synthetic test data for demonstration
-            # In production, replace this with actual centralized test data loading
             if test_data_path and os.path.exists(test_data_path):
                 print(f"📁 Loading test data from: {test_data_path}")
-                # Load actual test data here
-                # For now, use synthetic data
                 X_test = torch.randn(100, input_dim)
                 y_test = torch.randn(100, 1)
             else:
-                # Synthetic data for testing - REPLACE WITH REAL DATA
                 print("⚠️ Using synthetic test data - replace with actual centralized test dataset")
                 X_test = torch.randn(100, input_dim)
-                y_test = torch.randn(100, 1) * 0.5 + X_test[:, 0:1] * 0.5  # Add some correlation
+                y_test = torch.randn(100, 1) * 0.5 + X_test[:, 0:1] * 0.5
             
             # Evaluate
             with torch.no_grad():
@@ -141,7 +225,6 @@ def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = No
                 rmse = np.sqrt(mse)
                 mae = np.mean(np.abs(y_true_np - y_pred_np))
                 
-                # Handle R² calculation with division by zero protection
                 y_var = np.var(y_true_np)
                 if y_var == 0:
                     r2 = 0.0
@@ -165,10 +248,11 @@ def get_evaluate_fn(model_factory, input_dim: int = 24, test_data_path: str = No
             print(f"⚠️ Centralized evaluation error: {e}")
             import traceback
             traceback.print_exc()
-            # Return placeholder values if evaluation fails
             return 10.0, {"rmse": 10.0, "mse": 100.0, "mae": 10.0, "r2": -1.0}
     
     return evaluate_fn
+
+
 
 class MetricsCollector:
     """Collects and saves metrics from all rounds"""
@@ -517,6 +601,126 @@ def main():
 
 
 
+# def run_server(args):
+#     """Run the FL server"""
+#     try:
+#         # Load configuration
+#         with open(args.config, 'r') as f:
+#             config = json.load(f)
+        
+#         # Extract server configuration
+#         server_config = config.get("server", {})
+#         strategy_config = config.get("strategy", {})
+#         data_config = config.get("data", {})
+#         model_config = config.get("model", {})
+        
+#         # Get server parameters
+#         server_host = server_config.get("host", "0.0.0.0")
+#         server_port = args.port or server_config.get("port", 8080)
+#         num_rounds = server_config.get("num_rounds", 10)
+        
+#         # Get strategy parameters
+#         strategy_name = strategy_config.get("name", "fedavg")
+#         fraction_fit = strategy_config.get("fraction_fit", 1.0)
+#         fraction_evaluate = strategy_config.get("fraction_evaluate", 1.0)
+#         min_fit_clients = strategy_config.get("min_fit_clients", 2)
+#         min_evaluate_clients = strategy_config.get("min_evaluate_clients", 2)
+#         min_available_clients = strategy_config.get("min_available_clients", 
+#                                                    data_config.get("num_clients", 2))
+        
+#         # Experiment info
+#         experiment_id = config.get("experiment_id", "nasa_experiment")
+#         algorithm = config.get("algorithm", "fedavg")
+        
+#         print("🚀 Starting NASA Federated Learning Server")
+#         print("=" * 50)
+#         print(f"Experiment ID: {experiment_id}")
+#         print(f"Algorithm: {algorithm.upper()}")
+#         print(f"Server: {server_host}:{server_port}")
+#         print(f"Rounds: {num_rounds}")
+        
+#         # === FIXED: Create proper directory structure ===
+#         experiment_dir = os.path.join(args.results_dir, experiment_id)
+#         results_dir = os.path.join(experiment_dir, "metrics")  # CSV files go in metrics/
+        
+#         # Create both directories
+#         os.makedirs(experiment_dir, exist_ok=True)
+#         os.makedirs(results_dir, exist_ok=True)
+        
+#         print(f"Experiment dir: {experiment_dir}")
+#         print(f"Metrics dir: {results_dir}")  # This should show .../metrics/
+#         print("=" * 50)
+        
+#         # Initialize metrics collector with correct path
+#         metrics_collector = MetricsCollector(results_dir, experiment_id)
+        
+#         # Create model factory and evaluation function
+#         model_factory = create_model_factory()
+#         input_dim = 24  # NASA dataset has 24 features
+        
+#         # Get test data path if available
+#         test_data_path = data_config.get("test_data_path")
+        
+#         # Create proper evaluation function
+#         evaluate_fn = get_evaluate_fn(model_factory, input_dim, test_data_path)
+        
+#         # Create strategy with proper configuration
+#         strategy = CustomFedAvg(
+#             metrics_collector=metrics_collector,
+#             fraction_fit=fraction_fit,
+#             fraction_evaluate=fraction_evaluate,
+#             min_fit_clients=min_fit_clients,
+#             min_evaluate_clients=min_evaluate_clients,
+#             min_available_clients=min_available_clients,
+#             evaluate_fn=evaluate_fn,
+#             on_fit_config_fn=lambda r: {"current_round": r},
+#             on_evaluate_config_fn=lambda r: {"current_round": r}
+#         )
+        
+#         # Start Flower server
+#         print(f"🔄 Starting FL server on {server_host}:{server_port}...")
+#         print(f"📊 Evaluation enabled: {fraction_evaluate > 0}")
+#         print(f"📈 CSV files will be saved to: {results_dir}")
+        
+#         # Save config in experiment directory (not metrics/)
+#         config_save_path = os.path.join(experiment_dir, "config.json")
+#         with open(config_save_path, 'w') as f:
+#             json.dump(config, f, indent=2)
+#         print(f"📁 Config saved to: {config_save_path}")
+        
+#         # Start server
+#         fl.server.start_server(
+#             server_address=f"{server_host}:{server_port}",
+#             config=fl.server.ServerConfig(num_rounds=num_rounds),
+#             strategy=strategy,
+#             grpc_max_message_length=1024 * 1024 * 1024
+#         )
+        
+#         print("✅ Server completed successfully!")
+        
+#         # Print final summary with correct paths
+#         print("\n📈 FINAL SUMMARY:")
+#         print(f"   Round metrics: {os.path.join(results_dir, 'round_metrics.csv')}")
+#         print(f"   Client metrics: {os.path.join(results_dir, 'client_metrics.csv')}")
+#         print(f"   Test metrics: {os.path.join(results_dir, 'test_metrics.csv')}")
+#         print(f"   Eval metrics: {os.path.join(results_dir, 'eval_metrics.csv')}")
+        
+#         # Verify files were created
+#         for csv_file in ['round_metrics.csv', 'client_metrics.csv', 'eval_metrics.csv', 'test_metrics.csv']:
+#             file_path = os.path.join(results_dir, csv_file)
+#             if os.path.exists(file_path):
+#                 with open(file_path, 'r') as f:
+#                     lines = f.readlines()
+#                     print(f"✅ {csv_file}: {len(lines)-1} records")
+#             else:
+#                 print(f"❌ {csv_file}: NOT FOUND")
+        
+#     except Exception as e:
+#         print(f"❌ Server error: {e}")
+#         import traceback
+#         traceback.print_exc()
+#         raise
+
 def run_server(args):
     """Run the FL server"""
     try:
@@ -555,29 +759,35 @@ def run_server(args):
         print(f"Server: {server_host}:{server_port}")
         print(f"Rounds: {num_rounds}")
         
-        # === FIXED: Create proper directory structure ===
+        # === FIXED: Clean directory structure ===
+        # Create main results directory if it doesn't exist
+        os.makedirs(args.results_dir, exist_ok=True)
+        
+        # Create experiment directory (one level)
         experiment_dir = os.path.join(args.results_dir, experiment_id)
-        results_dir = os.path.join(experiment_dir, "metrics")  # CSV files go in metrics/
-        
-        # Create both directories
         os.makedirs(experiment_dir, exist_ok=True)
-        os.makedirs(results_dir, exist_ok=True)
         
-        print(f"Experiment dir: {experiment_dir}")
-        print(f"Metrics dir: {results_dir}")  # This should show .../metrics/
+        # Create metrics directory inside experiment directory
+        metrics_dir = os.path.join(experiment_dir, "metrics")
+        os.makedirs(metrics_dir, exist_ok=True)
+        
+        print(f"📁 Directory structure:")
+        print(f"   Results root: {args.results_dir}")
+        print(f"   Experiment: {experiment_dir}")
+        print(f"   Metrics: {metrics_dir}")
         print("=" * 50)
         
         # Initialize metrics collector with correct path
-        metrics_collector = MetricsCollector(results_dir, experiment_id)
+        metrics_collector = MetricsCollector(metrics_dir, experiment_id)
         
-        # Create model factory and evaluation function
+        # Rest of your code remains the same...
         model_factory = create_model_factory()
         input_dim = 24  # NASA dataset has 24 features
         
         # Get test data path if available
         test_data_path = data_config.get("test_data_path")
         
-        # Create proper evaluation function
+        # Create proper evaluation function (with the model_type fix)
         evaluate_fn = get_evaluate_fn(model_factory, input_dim, test_data_path)
         
         # Create strategy with proper configuration
@@ -596,9 +806,9 @@ def run_server(args):
         # Start Flower server
         print(f"🔄 Starting FL server on {server_host}:{server_port}...")
         print(f"📊 Evaluation enabled: {fraction_evaluate > 0}")
-        print(f"📈 CSV files will be saved to: {results_dir}")
+        print(f"📈 CSV files will be saved to: {metrics_dir}")
         
-        # Save config in experiment directory (not metrics/)
+        # Save config in experiment directory
         config_save_path = os.path.join(experiment_dir, "config.json")
         with open(config_save_path, 'w') as f:
             json.dump(config, f, indent=2)
@@ -616,14 +826,14 @@ def run_server(args):
         
         # Print final summary with correct paths
         print("\n📈 FINAL SUMMARY:")
-        print(f"   Round metrics: {os.path.join(results_dir, 'round_metrics.csv')}")
-        print(f"   Client metrics: {os.path.join(results_dir, 'client_metrics.csv')}")
-        print(f"   Test metrics: {os.path.join(results_dir, 'test_metrics.csv')}")
-        print(f"   Eval metrics: {os.path.join(results_dir, 'eval_metrics.csv')}")
+        print(f"   Round metrics: {os.path.join(metrics_dir, 'round_metrics.csv')}")
+        print(f"   Client metrics: {os.path.join(metrics_dir, 'client_metrics.csv')}")
+        print(f"   Test metrics: {os.path.join(metrics_dir, 'test_metrics.csv')}")
+        print(f"   Eval metrics: {os.path.join(metrics_dir, 'eval_metrics.csv')}")
         
         # Verify files were created
         for csv_file in ['round_metrics.csv', 'client_metrics.csv', 'eval_metrics.csv', 'test_metrics.csv']:
-            file_path = os.path.join(results_dir, csv_file)
+            file_path = os.path.join(metrics_dir, csv_file)
             if os.path.exists(file_path):
                 with open(file_path, 'r') as f:
                     lines = f.readlines()

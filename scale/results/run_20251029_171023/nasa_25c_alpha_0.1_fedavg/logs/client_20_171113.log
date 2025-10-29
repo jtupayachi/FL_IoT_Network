@@ -1,0 +1,87 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message bdab4a3b-8fd4-430e-b984-873269f5c158
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 3687dd26-bf06-445b-935b-b528b78f4cfb
+[92mINFO [0m:      Sent reply
+🚀 Starting NASA FL Client: client_20
+Algorithm: FEDAVG
+Server: localhost:8686
+K-Folds: 5
+Log Directory: logs
+🔄 Using device: cuda
+🎯 GPU: NVIDIA A100-SXM4-80GB
+💾 Hyperparameters saved to: logs/client_20_hyperparams_20251029_171120.csv
+🔍 Looking for data at: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_20
+📊 Loaded 7643 total samples from /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_20
+🔢 Original feature dimension: 24
+🔍 Applying KernelPCA with 5 components, kernel=poly
+📊 Data shape - Before: (4585, 24), After: (4585, 5)
+🔄 Created sequences with length 10
+   Final dataset shape: X (4575, 10, 5), y (4575,)
+✅ Data split completed:
+   Training samples: 4575
+   Validation samples: 1519
+   Test samples: 1519
+   Model type: lstm
+   Final input dimension: 5
+✅ Client client_20 ready:
+   Model: LSTM
+   Training: 4575 samples
+   Device: cuda
+   Validation: 1519 samples
+   Test: 1519 samples
+   Algorithm: fedavg
+   Total Rounds: 10
+   Learning Rate: 0.001
+   Batch Size: 32
+   Logging to: logs
+⏩ Skipping CV for Round 1 (runs every 5 rounds)
+Round 1: train_loss=9110.0918, val_loss=9163.6592, val_r2=-0.3276
+
+🧪 Round 1 Evaluation Results:
+   Test Loss: 13140.7805
+   RMSE: 114.6332, MAE: 89.8674, R²: -0.8303
+💾 Test metrics saved to: logs/client_20_test_metrics_20251029_171120.csv
+❌ Client error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8686 {grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+Traceback (most recent call last):
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 2375, in <module>
+    main()
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 2360, in main
+    fl.client.start_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 962, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8686 {grpc_status:14, grpc_message:"Cancelling all calls"}"
+>

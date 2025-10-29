@@ -659,6 +659,47 @@ class NASAFlowerClient(fl.client.NumPyClient):
         print(f"   Logging to: {log_dir}")
 
 
+    def evaluate(self, parameters, config):
+        """Evaluate the model on test set - THIS IS MISSING!"""
+        self.set_parameters(parameters)
+        
+        self.model.eval()
+        with torch.no_grad():
+            test_predictions = self.model(self.X_test)
+            test_loss = self.criterion(test_predictions, self.y_test).item()
+            test_metrics = self._calculate_metrics(self.y_test, test_predictions)
+            
+            # Also get validation metrics for comparison
+            val_predictions = self.model(self.X_val)
+            val_metrics = self._calculate_metrics(self.y_val, val_predictions)
+        
+        print(f"\n🧪 Round {self.current_round} Test Results:")
+        print(f"   Test Loss: {test_loss:.4f}, RMSE: {test_metrics['rmse']:.4f}, R²: {test_metrics['r2']:.4f}")
+        
+        # Log test metrics
+        test_results = {
+            "test_loss": test_loss,
+            "test_rmse": test_metrics["rmse"],
+            "test_mse": test_metrics["mse"],
+            "test_mae": test_metrics["mae"],
+            "test_r2": test_metrics["r2"],
+            "val_rmse": val_metrics["rmse"],
+            "val_r2": val_metrics["r2"],
+            "algorithm": self.algorithm
+        }
+        
+        self.metrics_logger.log_test_metrics(self.current_round, test_results, self.hyperparams.model_type)
+        
+        # Return metrics to server
+        return float(test_loss), len(self.X_test), {
+            "test_loss": float(test_loss),
+            "test_rmse": float(test_metrics["rmse"]),
+            "test_r2": float(test_metrics["r2"]),
+            "val_rmse": float(val_metrics["rmse"]),
+            "val_r2": float(val_metrics["r2"])
+        }
+
+
     def _get_data_path(self) -> str:
         """Construct data path from configuration"""
         base_path = self.config["data"]["base_path"]

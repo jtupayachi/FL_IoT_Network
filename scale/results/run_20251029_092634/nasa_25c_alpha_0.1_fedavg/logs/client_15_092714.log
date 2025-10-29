@@ -12,3 +12,58 @@
             This is a deprecated feature. It will be removed
             entirely in future versions of Flower.
         
+🚀 Starting NASA FL Client: client_15
+Algorithm: FEDAVG
+Server: localhost:8686
+K-Folds: 5
+Log Directory: logs
+💾 Hyperparameters saved to: logs/client_15_hyperparams_20251029_092717.csv
+🔍 Looking for data at: /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_15
+📊 Loaded 6529 total samples from /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_15
+🔄 Created sequences with length 10
+   Final dataset shape: X (6519, 10, 24), y (6519,)
+✅ Data split completed:
+   Training samples: 3911
+   Validation samples: 1304
+   Test samples: 1304
+   Model type: lstm
+✅ Client client_15 ready:
+   Model: LSTM
+   Training: 3911 samples
+   Validation: 1304 samples
+   Test: 1304 samples
+   Algorithm: fedavg
+   Total Rounds: 10
+   Learning Rate: 0.001
+   Batch Size: 32
+   Logging to: logs
+❌ Client error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_status:14, grpc_message:"Cancelling all calls"}"
+>
+Traceback (most recent call last):
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1067, in <module>
+    epoch_loss = 0
+
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1052, in main
+    fold_model.parameters(), 
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 962, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer  {grpc_status:14, grpc_message:"Cancelling all calls"}"
+>

@@ -1,0 +1,38 @@
+🚀 Starting NASA FL Client: client_15
+Algorithm: FEDAVG
+Server: localhost:8686
+K-Folds: 5
+Log Directory: logs
+🔄 Using device: cuda
+🎯 GPU: NVIDIA L40S
+💾 Hyperparameters saved to: logs/client_15_hyperparams_20251029_093722.csv
+🔍 Looking for data at: /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_15
+📊 Loaded 6529 total samples from /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_15
+🔄 Created sequences with length 10
+   Final dataset shape: X (6519, 10, 24), y (6519,)
+✅ Data split completed:
+   Training samples: 3911
+   Validation samples: 1304
+   Test samples: 1304
+   Model type: lstm
+❌ Client error: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+
+Traceback (most recent call last):
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1236, in <module>
+    main()
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1218, in main
+    client = NASAFlowerClient(args.client_id, config)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 676, in __init__
+    self.X_train = self.X_train.to(self.device)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+torch.AcceleratorError: CUDA error: out of memory
+Search for `cudaErrorMemoryAllocation' in https://docs.nvidia.com/cuda/cuda-runtime-api/group__CUDART__TYPES.html for more information.
+CUDA kernel errors might be asynchronously reported at some other API call, so the stacktrace below might be incorrect.
+For debugging consider passing CUDA_LAUNCH_BLOCKING=1
+Compile with `TORCH_USE_CUDA_DSA` to enable device-side assertions.
+

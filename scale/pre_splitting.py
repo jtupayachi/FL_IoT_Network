@@ -449,9 +449,9 @@ if __name__ == "__main__":
         print(f"Experiment scripts created in: {scripts_dir}")
 
 def main():
-    # Configuration
-    base_path = "/home/jose/FL_IoT_Network/scale/data/nasa_cmaps/CMaps"
-    output_dir = "/home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data"
+    # Configuration /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa-cmaps.zip
+    base_path = "/mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/CMaps" # Cjamge this
+    output_dir = "/mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data" # Cjamge this
     
     # Initialize splitter
     splitter = NASA_CMAPS_PreSplitter(base_path)

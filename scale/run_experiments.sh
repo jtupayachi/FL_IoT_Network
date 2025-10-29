@@ -268,7 +268,7 @@ run_experiment() {
     echo "   Starting server... Log: $server_log"
     
     # Start the server - FIXED: Use the config file we just created
-    python "$SERVER_SCRIPT" --config "$config_file" --results-dir "$results_dir" > "$server_log" 2>&1 &
+    python3 "$SERVER_SCRIPT" --config "$config_file" --results-dir "$results_dir" > "$server_log" 2>&1 &
     local server_pid=$!
     
     # Wait for server to start
@@ -289,7 +289,7 @@ run_experiment() {
     for ((i=0; i<num_clients; i++)); do
         local client_log="$results_dir/logs/client_${i}_$(date +%H%M%S).log"
         echo "   Starting client_$i..."
-        python "$CLIENT_SCRIPT" --client-id "client_$i" --config "$config_file" > "$client_log" 2>&1 &
+        python3 "$CLIENT_SCRIPT" --client-id "client_$i" --config "$config_file" > "$client_log" 2>&1 &
         client_pids+=($!)
         
         # Stagger client starts

@@ -1347,15 +1347,16 @@ class MetricsCollector:
         self.experiment_id = experiment_id
         self.timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
-        # Create results directory
-        os.makedirs(results_dir, exist_ok=True)
-        
-        # Define file paths
-        self.round_metrics_path = os.path.join(results_dir, f"round_metrics.csv")
-        self.client_metrics_path = os.path.join(results_dir, f"client_metrics.csv")
-        self.eval_metrics_path = os.path.join(results_dir, f"eval_metrics.csv")
-        self.test_metrics_path = os.path.join(results_dir, f"test_metrics.csv")  # New: for client test results
-        
+        # Create metrics subdirectory
+        self.metrics_dir = os.path.join(results_dir, "metrics")
+        os.makedirs(self.metrics_dir, exist_ok=True)
+
+        # Define file paths inside metrics/
+        self.round_metrics_path = os.path.join(self.metrics_dir, "round_metrics.csv")
+        self.client_metrics_path = os.path.join(self.metrics_dir, "client_metrics.csv")
+        self.eval_metrics_path = os.path.join(self.metrics_dir, "eval_metrics.csv")
+        self.test_metrics_path = os.path.join(self.metrics_dir, "test_metrics.csv")
+
         # Initialize CSV files
         self._initialize_metrics_files()
         
@@ -1771,15 +1772,16 @@ def run_server(args):
             grpc_max_message_length=1024 * 1024 * 1024  # 1GB max message length
         )
         
+
         print("✅ Server completed successfully!")
         print(f"📊 Results saved to: {results_dir}")
         
         # Print final summary
         print("\n📈 FINAL SUMMARY:")
-        print(f"   Round metrics: {os.path.join(results_dir, 'round_metrics.csv')}")
-        print(f"   Client metrics: {os.path.join(results_dir, 'client_metrics.csv')}")
-        print(f"   Test metrics: {os.path.join(results_dir, 'test_metrics.csv')}")
-        print(f"   Eval metrics: {os.path.join(results_dir, 'eval_metrics.csv')}")
+        print(f"   Round metrics: {os.path.join(metrics_collector.metrics_dir, 'round_metrics.csv')}")
+        print(f"   Client metrics: {os.path.join(metrics_collector.metrics_dir, 'client_metrics.csv')}")
+        print(f"   Test metrics: {os.path.join(metrics_collector.metrics_dir, 'test_metrics.csv')}")
+        print(f"   Eval metrics: {os.path.join(metrics_collector.metrics_dir, 'eval_metrics.csv')}")
         
     except Exception as e:
         print(f"❌ Server error: {e}")

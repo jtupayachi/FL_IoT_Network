@@ -570,75 +570,6 @@ class NASADataLoader:
 
 
 
-# class NASAFlowerClient(fl.client.NumPyClient):
-#     def __init__(self, client_id: str, config: Dict):
-#         self.client_id = client_id
-#         self.config = config
-#         self.algorithm = config.get("algorithm", "fedavg")
-#         self.current_round = 0
-#         self.cv_completed = False  # Track if CV has been run
-#         self.total_rounds = config.get("server", {}).get("num_rounds", 10)
-        
-#         # Initialize hyperparameters
-#         model_config = config.get("model", {})
-#         self.hyperparams = Hyperparameters(model_config)
-        
-#         # Initialize metrics logger
-#         log_dir = config.get("logging", {}).get("log_dir", "logs")
-#         self.metrics_logger = MetricsLogger(client_id, log_dir)
-        
-#         # Log hyperparameters
-#         self.metrics_logger.log_hyperparameters(self.hyperparams)
-        
-#         # Load data with proper splits
-#         data_path = self._get_data_path()
-        
-#         self.data_loader = NASADataLoader(data_path, self.hyperparams)
-#         self.X_train, self.y_train, self.X_val, self.y_val, self.X_test, self.y_test = self.data_loader.load_data()
-        
-#         # Create model
-#         input_dim = self.X_train.shape[-1]  # Handle both 2D and 3D inputs
-
-#         # Extract hyperparameters without model_type to avoid duplication
-#         self.model_kwargs = self.hyperparams.to_dict().copy()
-#         # Remove model_type since it's already passed as first argument
-#         self.model_kwargs.pop('model_type', None)
-
-#         self.model = ModelFactory.create_model(
-#             self.hyperparams.model_type, 
-#             input_dim, 
-#             **self.model_kwargs
-#         )
-        
-#         # Initialize optimizer
-#         if self.hyperparams.optimizer == "adam":
-#             self.optimizer = optim.Adam(
-#                 self.model.parameters(), 
-#                 lr=self.hyperparams.learning_rate,
-#                 weight_decay=self.hyperparams.weight_decay
-#             )
-#         elif self.hyperparams.optimizer == "sgd":
-#             self.optimizer = optim.SGD(
-#                 self.model.parameters(), 
-#                 lr=self.hyperparams.learning_rate,
-#                 weight_decay=self.hyperparams.weight_decay,
-#                 momentum=0.9
-#             )
-#         else:
-#             self.optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparams.learning_rate)
-            
-#         self.criterion = nn.MSELoss()
-        
-#         print(f"✅ Client {client_id} ready:")
-#         print(f"   Model: {self.hyperparams.model_type.upper()}")
-#         print(f"   Training: {len(self.X_train)} samples")
-#         print(f"   Validation: {len(self.X_val)} samples") 
-#         print(f"   Test: {len(self.X_test)} samples")
-#         print(f"   Algorithm: {self.algorithm}")
-#         print(f"   Total Rounds: {self.total_rounds}")
-#         print(f"   Learning Rate: {self.hyperparams.learning_rate}")
-#         print(f"   Batch Size: {self.hyperparams.batch_size}")
-#         print(f"   Logging to: {log_dir}")
 class NASAFlowerClient(fl.client.NumPyClient):
     def __init__(self, client_id: str, config: Dict):
         self.client_id = client_id
@@ -727,7 +658,7 @@ class NASAFlowerClient(fl.client.NumPyClient):
         print(f"   Batch Size: {self.hyperparams.batch_size}")
         print(f"   Logging to: {log_dir}")
 
-        
+
     def _get_data_path(self) -> str:
         """Construct data path from configuration"""
         base_path = self.config["data"]["base_path"]
@@ -881,127 +812,6 @@ class NASAFlowerClient(fl.client.NumPyClient):
         
         return self.get_parameters({}), len(self.X_train), results
 
-
-    # def _k_fold_cross_validation(self, parameters, config, k_folds: int = 3) -> Dict[str, List[float]]:
-    #     """Perform k-fold cross-validation on TRAINING data only - OPTIMIZED VERSION"""
-    #     self.set_parameters(parameters)
-        
-    #     # OPTIMIZATION: Reduce epochs for CV to save time (biggest CV speedup)
-    #     epochs = min(2, config.get("local_epochs", self.hyperparams.local_epochs))  # Max 2 epochs for CV
-    #     batch_size = config.get("batch_size", self.hyperparams.batch_size)
-        
-    #     # Use only training data for cross-validation
-    #     kf = KFold(n_splits=k_folds, shuffle=True, random_state=42)
-        
-    #     fold_metrics = {
-    #         "fold": [],
-    #         "train_loss": [],
-    #         "val_loss": [],
-    #         "rmse": [],
-    #         "mse": [],
-    #         "mae": [],
-    #         "r2": []
-    #     }
-        
-    #     # Only show detailed CV output for the first round
-    #     if not self.cv_completed:
-    #         print(f"\n🔍 Starting {k_folds}-fold cross-validation on TRAINING data for client {self.client_id}")
-        
-    #     for fold, (train_idx, val_idx) in enumerate(kf.split(self.X_train)):
-    #         if not self.cv_completed:
-    #             print(f"\n📊 Fold {fold + 1}/{k_folds}")
-            
-    #         # Split training data for this fold
-    #         X_fold_train, X_fold_val = self.X_train[train_idx], self.X_train[val_idx]
-    #         y_fold_train, y_fold_val = self.y_train[train_idx], self.y_train[val_idx]
-            
-    #         # Create fresh model for this fold
-    #         input_dim = self.X_train.shape[-1]
-    #         fold_model = ModelFactory.create_model(
-    #             self.hyperparams.model_type, 
-    #             input_dim, 
-    #             **self.model_kwargs
-    #         )
-            
-    #         if self.hyperparams.optimizer == "adam":
-    #             fold_optimizer = optim.Adam(
-    #                 fold_model.parameters(), 
-    #                 lr=self.hyperparams.learning_rate,
-    #                 weight_decay=self.hyperparams.weight_decay
-    #             )
-    #         else:
-    #             fold_optimizer = optim.Adam(fold_model.parameters(), lr=self.hyperparams.learning_rate)
-            
-    #         # Copy initial parameters
-    #         fold_model.load_state_dict(self.model.state_dict())
-            
-    #         # Training loop for this fold - OPTIMIZATION: Reduced epochs
-    #         fold_model.train()
-    #         train_losses = []
-            
-    #         for epoch in range(epochs):
-    #             epoch_loss = 0
-    #             num_batches = 0
-                
-    #             # OPTIMIZATION: Use larger batches for CV to speed up
-    #             cv_batch_size = min(batch_size * 2, len(X_fold_train))  # Larger batches for CV
-                
-    #             for i in range(0, len(X_fold_train), cv_batch_size):
-    #                 batch_X = X_fold_train[i:i+cv_batch_size]
-    #                 batch_y = y_fold_train[i:i+cv_batch_size]
-                    
-    #                 fold_optimizer.zero_grad()
-    #                 outputs = fold_model(batch_X)
-    #                 loss = self.criterion(outputs, batch_y)
-    #                 loss.backward()
-    #                 fold_optimizer.step()
-                    
-    #                 epoch_loss += loss.item()
-    #                 num_batches += 1
-                
-    #             if num_batches > 0:
-    #                 train_losses.append(epoch_loss / num_batches)
-            
-    #         # Evaluate on fold validation set
-    #         fold_model.eval()
-    #         with torch.no_grad():
-    #             # OPTIMIZATION: Skip train predictions to save computation
-    #             # train_predictions = fold_model(X_fold_train)
-    #             # train_loss = self.criterion(train_predictions, y_fold_train).item()
-    #             train_loss = 0.0  # Skip detailed train metrics during CV
-                
-    #             val_predictions = fold_model(X_fold_val)
-    #             val_loss = self.criterion(val_predictions, y_fold_val).item()
-    #             val_metrics = self._calculate_metrics(y_fold_val, val_predictions)
-            
-    #         # Store metrics for this fold
-    #         fold_metrics["fold"].append(fold + 1)
-    #         fold_metrics["train_loss"].append(train_loss)
-    #         fold_metrics["val_loss"].append(val_loss)
-    #         fold_metrics["rmse"].append(val_metrics["rmse"])
-    #         fold_metrics["mse"].append(val_metrics["mse"])
-    #         fold_metrics["mae"].append(val_metrics["mae"])
-    #         fold_metrics["r2"].append(val_metrics["r2"])
-            
-    #         if not self.cv_completed:
-    #             print(f"   Fold {fold + 1} Results:")
-    #             print(f"     Val Loss: {val_loss:.4f}")
-    #             print(f"     Val RMSE: {val_metrics['rmse']:.4f}, Val R²: {val_metrics['r2']:.4f}")
-        
-    #     # Log CV metrics to CSV (always log, but only show message once)
-    #     self.metrics_logger.log_cv_metrics(self.current_round, fold_metrics, self.hyperparams.model_type)
-        
-    #     # Only show summary for the first round
-    #     if not self.cv_completed:
-    #         print(f"\n📈 {k_folds}-Fold CV Summary (Training Data):")
-    #         for metric in ["val_loss", "rmse", "r2"]:  # OPTIMIZATION: Show only key metrics
-    #             values = fold_metrics[metric]
-    #             print(f"   {metric.upper()}: {np.mean(values):.4f} ± {np.std(values):.4f}")
-            
-    #         # Mark CV as completed to avoid repeating detailed output
-    #         self.cv_completed = True
-        
-    #     return fold_metrics
 
     def _k_fold_cross_validation(self, parameters, config, k_folds: int = 3) -> Dict[str, List[float]]:
         """Perform k-fold cross-validation on TRAINING data only - OPTIMIZED VERSION"""

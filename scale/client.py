@@ -7,6 +7,8 @@ import numpy as np
 import pandas as pd
 import argparse
 import json
+from sklearn.decomposition import KernelPCA, PCA
+from sklearn.preprocessing import StandardScaler
 import os
 import time
 from typing import Dict, Tuple, List, Optional
@@ -122,6 +124,56 @@ class ModelFactory:
         else:
             raise ValueError(f"Unknown model type: {model_type}")
 
+# class Hyperparameters:
+#     """Hyperparameter configuration class"""
+#     def __init__(self, config: Dict):
+#         self.model_type = config.get("model_type", "dense")
+        
+#         # Training parameters
+#         self.learning_rate = config.get("learning_rate", 0.001)
+#         self.batch_size = config.get("batch_size", 32)
+#         self.local_epochs = config.get("local_epochs", 1)
+#         self.optimizer = config.get("optimizer", "adam")
+#         self.weight_decay = config.get("weight_decay", 0.0)
+        
+#         # Model architecture parameters
+#         self.hidden_dims = config.get("hidden_dims", [64, 32])  # For dense
+#         self.hidden_dim = config.get("hidden_dim", 64)  # For LSTM
+#         self.num_layers = config.get("num_layers", 2)  # For LSTM
+#         self.dropout = config.get("dropout", 0.2)
+#         self.activation = config.get("activation", "relu")
+#         self.use_attention = config.get("use_attention", False)  # For LSTM
+        
+#         # Data parameters
+#         self.sequence_length = config.get("sequence_length", 10)  # For LSTM
+#         self.test_size = config.get("test_size", 0.2)
+#         self.val_size = config.get("val_size", 0.2)
+        
+#         # Cross-validation
+#         self.k_folds = config.get("k_folds", 5)
+        
+#     def to_dict(self) -> Dict:
+#         """Convert hyperparameters to dictionary"""
+#         return {
+#             "model_type": self.model_type,
+#             "learning_rate": self.learning_rate,
+#             "batch_size": self.batch_size,
+#             "local_epochs": self.local_epochs,
+#             "optimizer": self.optimizer,
+#             "weight_decay": self.weight_decay,
+#             "hidden_dims": self.hidden_dims,
+#             "hidden_dim": self.hidden_dim,
+#             "num_layers": self.num_layers,
+#             "dropout": self.dropout,
+#             "activation": self.activation,
+#             "use_attention": self.use_attention,
+#             "sequence_length": self.sequence_length,
+#             "test_size": self.test_size,
+#             "val_size": self.val_size,
+#             "k_folds": self.k_folds
+#         }
+
+
 class Hyperparameters:
     """Hyperparameter configuration class"""
     def __init__(self, config: Dict):
@@ -147,6 +199,11 @@ class Hyperparameters:
         self.test_size = config.get("test_size", 0.2)
         self.val_size = config.get("val_size", 0.2)
         
+        # Dimensionality reduction parameters (NEW)
+        self.reduction_type = config.get("reduction_type", "none")  # "none", "pca", "kpca"
+        self.n_components = config.get("n_components", 10)
+        self.kernel = config.get("kernel", "rbf")  # For KernelPCA
+        
         # Cross-validation
         self.k_folds = config.get("k_folds", 5)
         
@@ -160,14 +217,17 @@ class Hyperparameters:
             "optimizer": self.optimizer,
             "weight_decay": self.weight_decay,
             "hidden_dims": self.hidden_dims,
-            "hidden_dim": self.hidden_dim,
-            "num_layers": self.num_layers,
+            "hidden_dim": self.hyperparams.hidden_dim,
+            "num_layers": self.hyperparams.num_layers,
             "dropout": self.dropout,
             "activation": self.activation,
             "use_attention": self.use_attention,
             "sequence_length": self.sequence_length,
             "test_size": self.test_size,
             "val_size": self.val_size,
+            "reduction_type": self.reduction_type,
+            "n_components": self.n_components,
+            "kernel": self.kernel,
             "k_folds": self.k_folds
         }
 
@@ -451,11 +511,130 @@ class MetricsLogger:
         
         return summary
 
+# class NASADataLoader:
+#     def __init__(self, data_path: str, hyperparams: Hyperparameters, random_state: int = 42):
+#         self.data_path = data_path
+#         self.hyperparams = hyperparams
+#         self.random_state = random_state
+        
+#     def create_sequences(self, data: np.ndarray, targets: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+#         """Create sequences for LSTM training"""
+#         sequence_length = self.hyperparams.sequence_length
+#         sequences = []
+#         target_sequences = []
+        
+#         for i in range(len(data) - sequence_length):
+#             sequences.append(data[i:(i + sequence_length)])
+#             target_sequences.append(targets[i + sequence_length])
+        
+#         return np.array(sequences), np.array(target_sequences)
+        
+#     def load_data(self) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+#         """Load and preprocess client data with proper train/val/test split"""
+#         try:
+#             # Check if path exists, if not try alternative structure
+#             if not os.path.exists(self.data_path):
+#                 alt_paths = [
+#                     self.data_path,
+#                     self.data_path.replace("pre_split_data", "data"),
+#                     os.path.join(os.path.dirname(self.data_path), "train_data.txt"),
+#                     "data/train_data.txt"
+#                 ]
+                
+#                 for alt_path in alt_paths:
+#                     if os.path.exists(alt_path):
+#                         self.data_path = alt_path
+#                         break
+#                 else:
+#                     raise FileNotFoundError(f"No data file found in any expected location")
+            
+#             data_file = os.path.join(self.data_path, "train_data.txt") if os.path.isdir(self.data_path) else self.data_path
+            
+#             # Load data - FIXED: use raw string for regex
+#             data = pd.read_csv(data_file, sep=r'\s+', header=None)
+            
+#             # Features: columns 2-25 (operational settings + sensors)
+#             X = data.iloc[:, 2:26].values.astype(np.float32)
+#             y = self._calculate_rul(data).astype(np.float32)
+            
+#             print(f"📊 Loaded {len(X)} total samples from {self.data_path}")
+            
+#             # Create sequences for LSTM if needed
+#             if self.hyperparams.model_type == "lstm":
+#                 X, y = self.create_sequences(X, y)
+#                 print(f"🔄 Created sequences with length {self.hyperparams.sequence_length}")
+#                 print(f"   Final dataset shape: X {X.shape}, y {y.shape}")
+            
+#             # Split into train+val and test sets
+#             X_temp, X_test, y_temp, y_test = train_test_split(
+#                 X, y, test_size=self.hyperparams.test_size, random_state=self.random_state, shuffle=True
+#             )
+            
+#             # Split train+val into train and validation sets
+#             val_ratio = self.hyperparams.val_size / (1 - self.hyperparams.test_size)
+#             X_train, X_val, y_train, y_val = train_test_split(
+#                 X_temp, y_temp, test_size=val_ratio, random_state=self.random_state, shuffle=True
+#             )
+            
+#             # Convert to PyTorch tensors
+#             X_train_tensor = torch.tensor(X_train)
+#             y_train_tensor = torch.tensor(y_train).unsqueeze(1) if len(y_train.shape) == 1 else torch.tensor(y_train)
+#             X_val_tensor = torch.tensor(X_val)
+#             y_val_tensor = torch.tensor(y_val).unsqueeze(1) if len(y_val.shape) == 1 else torch.tensor(y_val)
+#             X_test_tensor = torch.tensor(X_test)
+#             y_test_tensor = torch.tensor(y_test).unsqueeze(1) if len(y_test.shape) == 1 else torch.tensor(y_test)
+            
+#             print(f"✅ Data split completed:")
+#             print(f"   Training samples: {len(X_train)}")
+#             print(f"   Validation samples: {len(X_val)}")
+#             print(f"   Test samples: {len(X_test)}")
+#             print(f"   Model type: {self.hyperparams.model_type}")
+            
+#             return X_train_tensor, y_train_tensor, X_val_tensor, y_val_tensor, X_test_tensor, y_test_tensor
+            
+#         except Exception as e:
+#             print(f"❌ Error loading data from {self.data_path}: {e}")
+#             print("🔄 Using synthetic data for testing")
+#             # Return synthetic data for testing
+#             if self.hyperparams.model_type == "lstm":
+#                 seq_len = self.hyperparams.sequence_length
+#                 X_train = torch.randn(60, seq_len, 24)
+#                 y_train = torch.randn(60, 1)
+#                 X_val = torch.randn(20, seq_len, 24)
+#                 y_val = torch.randn(20, 1)
+#                 X_test = torch.randn(20, seq_len, 24)
+#                 y_test = torch.randn(20, 1)
+#             else:
+#                 X_train = torch.randn(60, 24)
+#                 y_train = torch.randn(60, 1)
+#                 X_val = torch.randn(20, 24)
+#                 y_val = torch.randn(20, 1)
+#                 X_test = torch.randn(20, 24)
+#                 y_test = torch.randn(20, 1)
+#             return X_train, y_train, X_val, y_val, X_test, y_test
+    
+#     def _calculate_rul(self, data: pd.DataFrame) -> np.ndarray:
+#         """Calculate RUL labels"""
+#         unit_ids = data[0].values
+#         time_cycles = data[1].values
+        
+#         rul_labels = []
+#         for unit_id in np.unique(unit_ids):
+#             unit_mask = (unit_ids == unit_id)
+#             max_cycle = time_cycles[unit_mask].max()
+#             unit_rul = max_cycle - time_cycles[unit_mask]
+#             rul_labels.extend(unit_rul)
+        
+#         return np.array(rul_labels)
+
+
 class NASADataLoader:
     def __init__(self, data_path: str, hyperparams: Hyperparameters, random_state: int = 42):
         self.data_path = data_path
         self.hyperparams = hyperparams
         self.random_state = random_state
+        self.scaler = None
+        self.pca = None
         
     def create_sequences(self, data: np.ndarray, targets: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
         """Create sequences for LSTM training"""
@@ -468,6 +647,48 @@ class NASADataLoader:
             target_sequences.append(targets[i + sequence_length])
         
         return np.array(sequences), np.array(target_sequences)
+    
+    def apply_dimensionality_reduction(self, X_train: np.ndarray, X_val: np.ndarray, X_test: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Apply PCA/KPCA dimensionality reduction"""
+        # Check if PCA parameters are provided in hyperparams
+        reduction_type = getattr(self.hyperparams, 'reduction_type', 'none')
+        n_components = getattr(self.hyperparams, 'n_components', 10)
+        
+        if reduction_type == 'none':
+            print("🔍 No dimensionality reduction applied")
+            return X_train, X_val, X_test
+        
+        # Standardize the data first (important for PCA)
+        self.scaler = StandardScaler()
+        X_train_scaled = self.scaler.fit_transform(X_train)
+        X_val_scaled = self.scaler.transform(X_val)
+        X_test_scaled = self.scaler.transform(X_test)
+        
+        if reduction_type == 'pca':
+            self.pca = PCA(n_components=n_components, random_state=self.random_state)
+            print(f"🔍 Applying PCA with {n_components} components")
+        elif reduction_type == 'kpca':
+            kernel = getattr(self.hyperparams, 'kernel', 'rbf')
+            self.pca = KernelPCA(n_components=n_components, kernel=kernel, 
+                               random_state=self.random_state)
+            print(f"🔍 Applying KernelPCA with {n_components} components, kernel={kernel}")
+        else:
+            print(f"⚠️ Unknown reduction type: {reduction_type}")
+            return X_train, X_val, X_test
+        
+        # Fit and transform
+        X_train_reduced = self.pca.fit_transform(X_train_scaled)
+        X_val_reduced = self.pca.transform(X_val_scaled)
+        X_test_reduced = self.pca.transform(X_test_scaled)
+        
+        # Print variance explained for PCA
+        if reduction_type == 'pca' and hasattr(self.pca, 'explained_variance_ratio_'):
+            explained_variance = self.pca.explained_variance_ratio_.sum()
+            print(f"📊 Explained variance: {explained_variance:.4f} ({explained_variance*100:.2f}%)")
+        
+        print(f"📊 Data shape - Before: {X_train.shape}, After: {X_train_reduced.shape}")
+        
+        return X_train_reduced, X_val_reduced, X_test_reduced
         
     def load_data(self) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """Load and preprocess client data with proper train/val/test split"""
@@ -498,12 +719,7 @@ class NASADataLoader:
             y = self._calculate_rul(data).astype(np.float32)
             
             print(f"📊 Loaded {len(X)} total samples from {self.data_path}")
-            
-            # Create sequences for LSTM if needed
-            if self.hyperparams.model_type == "lstm":
-                X, y = self.create_sequences(X, y)
-                print(f"🔄 Created sequences with length {self.hyperparams.sequence_length}")
-                print(f"   Final dataset shape: X {X.shape}, y {y.shape}")
+            print(f"🔢 Original feature dimension: {X.shape[1]}")
             
             # Split into train+val and test sets
             X_temp, X_test, y_temp, y_test = train_test_split(
@@ -515,6 +731,18 @@ class NASADataLoader:
             X_train, X_val, y_train, y_val = train_test_split(
                 X_temp, y_temp, test_size=val_ratio, random_state=self.random_state, shuffle=True
             )
+            
+            # Apply dimensionality reduction if specified in hyperparams
+            if hasattr(self.hyperparams, 'reduction_type') and self.hyperparams.reduction_type != 'none':
+                X_train, X_val, X_test = self.apply_dimensionality_reduction(X_train, X_val, X_test)
+            
+            # Create sequences for LSTM if needed
+            if self.hyperparams.model_type == "lstm":
+                X_train, y_train = self.create_sequences(X_train, y_train)
+                X_val, y_val = self.create_sequences(X_val, y_val)
+                X_test, y_test = self.create_sequences(X_test, y_test)
+                print(f"🔄 Created sequences with length {self.hyperparams.sequence_length}")
+                print(f"   Final dataset shape: X {X_train.shape}, y {y_train.shape}")
             
             # Convert to PyTorch tensors
             X_train_tensor = torch.tensor(X_train)
@@ -529,6 +757,7 @@ class NASADataLoader:
             print(f"   Validation samples: {len(X_val)}")
             print(f"   Test samples: {len(X_test)}")
             print(f"   Model type: {self.hyperparams.model_type}")
+            print(f"   Final input dimension: {X_train_tensor.shape[-1]}")
             
             return X_train_tensor, y_train_tensor, X_val_tensor, y_val_tensor, X_test_tensor, y_test_tensor
             
@@ -536,20 +765,23 @@ class NASADataLoader:
             print(f"❌ Error loading data from {self.data_path}: {e}")
             print("🔄 Using synthetic data for testing")
             # Return synthetic data for testing
+            # Determine the input dimension based on PCA settings
+            input_dim = getattr(self.hyperparams, 'n_components', 24) if hasattr(self.hyperparams, 'reduction_type') and self.hyperparams.reduction_type != 'none' else 24
+            
             if self.hyperparams.model_type == "lstm":
                 seq_len = self.hyperparams.sequence_length
-                X_train = torch.randn(60, seq_len, 24)
+                X_train = torch.randn(60, seq_len, input_dim)
                 y_train = torch.randn(60, 1)
-                X_val = torch.randn(20, seq_len, 24)
+                X_val = torch.randn(20, seq_len, input_dim)
                 y_val = torch.randn(20, 1)
-                X_test = torch.randn(20, seq_len, 24)
+                X_test = torch.randn(20, seq_len, input_dim)
                 y_test = torch.randn(20, 1)
             else:
-                X_train = torch.randn(60, 24)
+                X_train = torch.randn(60, input_dim)
                 y_train = torch.randn(60, 1)
-                X_val = torch.randn(20, 24)
+                X_val = torch.randn(20, input_dim)
                 y_val = torch.randn(20, 1)
-                X_test = torch.randn(20, 24)
+                X_test = torch.randn(20, input_dim)
                 y_test = torch.randn(20, 1)
             return X_train, y_train, X_val, y_val, X_test, y_test
     
@@ -566,8 +798,6 @@ class NASADataLoader:
             rul_labels.extend(unit_rul)
         
         return np.array(rul_labels)
-
-
 
 
 

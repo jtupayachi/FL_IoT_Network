@@ -14,6 +14,7 @@ from sklearn.model_selection import KFold, train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 import csv
 from datetime import datetime
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 
 class LSTMModel(nn.Module):
     """LSTM model for NASA RUL prediction with sequence data"""
@@ -659,45 +660,120 @@ class NASAFlowerClient(fl.client.NumPyClient):
         print(f"   Logging to: {log_dir}")
 
 
+
     def evaluate(self, parameters, config):
-        """Evaluate the model on test set - THIS IS MISSING!"""
+        """Evaluate the model on test set - FIXED VERSION"""
+        # Set the received parameters
         self.set_parameters(parameters)
         
+        # Set model to evaluation mode
         self.model.eval()
+        
+        test_loss = 0.0
+        test_predictions = []
+        test_targets = []
+        
+        # Evaluate in batches to handle large datasets
+        batch_size = config.get("batch_size", self.hyperparams.batch_size)
+        
         with torch.no_grad():
-            test_predictions = self.model(self.X_test)
-            test_loss = self.criterion(test_predictions, self.y_test).item()
-            test_metrics = self._calculate_metrics(self.y_test, test_predictions)
-            
-            # Also get validation metrics for comparison
-            val_predictions = self.model(self.X_val)
-            val_metrics = self._calculate_metrics(self.y_val, val_predictions)
+            for i in range(0, len(self.X_test), batch_size):
+                batch_X = self.X_test[i:i + batch_size]
+                batch_y = self.y_test[i:i + batch_size]
+                
+                outputs = self.model(batch_X)
+                loss = self.criterion(outputs, batch_y)
+                
+                test_loss += loss.item() * len(batch_X)
+                test_predictions.append(outputs.cpu().numpy())
+                test_targets.append(batch_y.cpu().numpy())
         
-        print(f"\n🧪 Round {self.current_round} Test Results:")
-        print(f"   Test Loss: {test_loss:.4f}, RMSE: {test_metrics['rmse']:.4f}, R²: {test_metrics['r2']:.4f}")
+        # Calculate overall metrics
+        test_loss = test_loss / len(self.X_test)
+        test_predictions = np.concatenate(test_predictions).flatten()
+        test_targets = np.concatenate(test_targets).flatten()
         
-        # Log test metrics
+        # Calculate regression metrics
+        mse = mean_squared_error(test_targets, test_predictions)
+        rmse = np.sqrt(mse)
+        mae = mean_absolute_error(test_targets, test_predictions)
+        r2 = r2_score(test_targets, test_predictions)
+        
+        print(f"\n🧪 Round {self.current_round} Evaluation Results:")
+        print(f"   Test Loss: {test_loss:.4f}")
+        print(f"   RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")
+        
+        # Log to eval_metrics.csv (this is what Flower uses for centralized evaluation)
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        eval_metrics = {
+            "timestamp": timestamp,
+            "round": self.current_round,
+            "loss": test_loss,
+            "rmse": rmse,
+            "mse": mse,
+            "mae": mae,
+            "r2": r2,
+            "algorithm": self.algorithm
+        }
+        
+        # Also log to the test metrics file for consistency
         test_results = {
             "test_loss": test_loss,
-            "test_rmse": test_metrics["rmse"],
-            "test_mse": test_metrics["mse"],
-            "test_mae": test_metrics["mae"],
-            "test_r2": test_metrics["r2"],
-            "val_rmse": val_metrics["rmse"],
-            "val_r2": val_metrics["r2"],
+            "test_rmse": rmse,
+            "test_mse": mse,
+            "test_mae": mae,
+            "test_r2": r2,
             "algorithm": self.algorithm
         }
         
         self.metrics_logger.log_test_metrics(self.current_round, test_results, self.hyperparams.model_type)
         
-        # Return metrics to server
+        # Return metrics in Flower format
         return float(test_loss), len(self.X_test), {
-            "test_loss": float(test_loss),
-            "test_rmse": float(test_metrics["rmse"]),
-            "test_r2": float(test_metrics["r2"]),
-            "val_rmse": float(val_metrics["rmse"]),
-            "val_r2": float(val_metrics["r2"])
+            "rmse": float(rmse),
+            "mse": float(mse),
+            "mae": float(mae),
+            "r2": float(r2)
         }
+    # def evaluate(self, parameters, config):
+    #     """Evaluate the model on test set - THIS IS MISSING!"""
+    #     self.set_parameters(parameters)
+        
+    #     self.model.eval()
+    #     with torch.no_grad():
+    #         test_predictions = self.model(self.X_test)
+    #         test_loss = self.criterion(test_predictions, self.y_test).item()
+    #         test_metrics = self._calculate_metrics(self.y_test, test_predictions)
+            
+    #         # Also get validation metrics for comparison
+    #         val_predictions = self.model(self.X_val)
+    #         val_metrics = self._calculate_metrics(self.y_val, val_predictions)
+        
+    #     print(f"\n🧪 Round {self.current_round} Test Results:")
+    #     print(f"   Test Loss: {test_loss:.4f}, RMSE: {test_metrics['rmse']:.4f}, R²: {test_metrics['r2']:.4f}")
+        
+    #     # Log test metrics
+    #     test_results = {
+    #         "test_loss": test_loss,
+    #         "test_rmse": test_metrics["rmse"],
+    #         "test_mse": test_metrics["mse"],
+    #         "test_mae": test_metrics["mae"],
+    #         "test_r2": test_metrics["r2"],
+    #         "val_rmse": val_metrics["rmse"],
+    #         "val_r2": val_metrics["r2"],
+    #         "algorithm": self.algorithm
+    #     }
+        
+    #     self.metrics_logger.log_test_metrics(self.current_round, test_results, self.hyperparams.model_type)
+        
+    #     # Return metrics to server
+    #     return float(test_loss), len(self.X_test), {
+    #         "test_loss": float(test_loss),
+    #         "test_rmse": float(test_metrics["rmse"]),
+    #         "test_r2": float(test_metrics["r2"]),
+    #         "val_rmse": float(val_metrics["rmse"]),
+    #         "val_r2": float(val_metrics["r2"])
+    #     }
 
 
     def _get_data_path(self) -> str:

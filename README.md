@@ -1031,3 +1031,33 @@ FL & Alpha & S-LR & FL Param  & $R^2$ & MSE & MAE & Loss & Runtime (s) \\
 
 
 </pre> 
+
+
+
+
+# New Scale Experiments:
+
+
+```bash
+
+# Create a new conda environment called 'flwr-nasa'
+conda create -n flwr-nasa python=3.11 -y
+
+# Activate the environment
+conda activate flwr-nasa
+
+
+
+
+
+# Install packages via conda
+conda install numpy pandas -y
+
+# Install Flower via pip (usually more up-to-date)
+pip install flwr
+
+
+pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu130
+
+
+```

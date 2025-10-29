@@ -1,0 +1,111 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 1743c762-fab0-4a31-ba5e-bce365e5de09
+[92mINFO [0m:      Sent reply
+🚀 Starting NASA FL Client: client_7
+Algorithm: FEDAVG
+Server: localhost:8686
+K-Folds: 5
+Log Directory: logs
+💾 Hyperparameters saved to: logs/client_7_hyperparams_20251029_085402.csv
+🔍 Looking for data at: /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_7
+📊 Loaded 7255 total samples from /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_7
+🔄 Created sequences with length 10
+   Final dataset shape: X (7245, 10, 24), y (7245,)
+✅ Data split completed:
+   Training samples: 4347
+   Validation samples: 1449
+   Test samples: 1449
+   Model type: lstm
+✅ Client client_7 ready:
+   Model: LSTM
+   Training: 4347 samples
+   Validation: 1449 samples
+   Test: 1449 samples
+   Algorithm: fedavg
+   Total Rounds: 10
+   Learning Rate: 0.001
+   Batch Size: 32
+   Logging to: logs
+
+🔍 Starting 5-fold cross-validation on TRAINING data for client client_7
+
+📊 Fold 1/5
+   Fold 1 Results:
+     Train Loss: 10979.4512, Val Loss: 10888.0156
+     Val RMSE: 104.3457, Val R²: -0.7464
+
+📊 Fold 2/5
+   Fold 2 Results:
+     Train Loss: 10952.5518, Val Loss: 11851.0215
+     Val RMSE: 108.8624, Val R²: -0.6770
+
+📊 Fold 3/5
+   Fold 3 Results:
+     Train Loss: 11346.5186, Val Loss: 11401.8369
+     Val RMSE: 106.7794, Val R²: -0.8468
+
+📊 Fold 4/5
+   Fold 4 Results:
+     Train Loss: 10774.7695, Val Loss: 10531.5273
+     Val RMSE: 102.6232, Val R²: -0.6392
+
+📊 Fold 5/5
+   Fold 5 Results:
+     Train Loss: 11319.1416, Val Loss: 10725.0576
+     Val RMSE: 103.5619, Val R²: -0.9298
+💾 CV metrics saved to: logs/client_7_cv_metrics_20251029_085402.csv
+
+📈 5-Fold CV Summary (Training Data):
+   TRAIN_LOSS: 11074.4865 ± 222.5253
+   VAL_LOSS: 11079.4918 ± 482.0200
+   RMSE: 105.2345 ± 2.2784
+   MSE: 11079.4928 ± 482.0206
+   MAE: 79.8712 ± 1.9766
+   R2: -0.7678 ± 0.1075
+
+🎯 Round 0 Training Results:
+   Training - Loss: 7526.7803, RMSE: 86.7570, R²: -0.1959
+   Validation - Loss: 7581.3223, RMSE: 87.0708, R²: -0.2120
+💾 Training metrics saved to: logs/client_7_training_metrics_20251029_085402.csv
+❌ Client error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:8686 {grpc_message:"Cancelling all calls", grpc_status:14}"
+>
+Traceback (most recent call last):
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1030, in <module>
+    main()
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1015, in main
+    fl.client.start_client(
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 945, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:8686 {grpc_message:"Cancelling all calls", grpc_status:14}"
+>

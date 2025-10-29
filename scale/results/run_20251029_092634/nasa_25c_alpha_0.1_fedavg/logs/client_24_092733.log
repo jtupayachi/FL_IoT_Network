@@ -14,3 +14,85 @@
         
 [92mINFO [0m:      
 [92mINFO [0m:      Received: train message d7d0727e-0add-4be9-b14c-3c0e95a317bf
+[92mINFO [0m:      Sent reply
+🚀 Starting NASA FL Client: client_24
+Algorithm: FEDAVG
+Server: localhost:8686
+K-Folds: 5
+Log Directory: logs
+💾 Hyperparameters saved to: logs/client_24_hyperparams_20251029_092735.csv
+🔍 Looking for data at: /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_24
+📊 Loaded 6445 total samples from /home/jose/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_24
+🔄 Created sequences with length 10
+   Final dataset shape: X (6435, 10, 24), y (6435,)
+✅ Data split completed:
+   Training samples: 3861
+   Validation samples: 1287
+   Test samples: 1287
+   Model type: lstm
+✅ Client client_24 ready:
+   Model: LSTM
+   Training: 3861 samples
+   Validation: 1287 samples
+   Test: 1287 samples
+   Algorithm: fedavg
+   Total Rounds: 10
+   Learning Rate: 0.001
+   Batch Size: 32
+   Logging to: logs
+
+🔍 Running 3-fold cross-validation (Round 0)
+
+🔍 Starting 3-fold cross-validation on TRAINING data for client client_24
+
+📊 Fold 1/3
+   Fold 1 Results:
+     Val Loss: 20749.4023
+     Val RMSE: 144.0465, Val R²: -1.8354
+
+📊 Fold 2/3
+   Fold 2 Results:
+     Val Loss: 22865.9082
+     Val RMSE: 151.2148, Val R²: -1.8480
+
+📊 Fold 3/3
+   Fold 3 Results:
+     Val Loss: 22132.1152
+     Val RMSE: 148.7687, Val R²: -1.9027
+💾 CV metrics saved to: logs/client_24_cv_metrics_20251029_092735.csv
+
+📈 3-Fold CV Summary (Training Data):
+   VAL_LOSS: 21915.8086 ± 877.4929
+   RMSE: 148.0100 ± 2.9752
+   R2: -1.8620 ± 0.0292
+
+🎯 Round 0 Training Results:
+   Training - Loss: 9139.3623, RMSE: 95.6000, R²: -0.1926
+   Validation - Loss: 8943.8857, RMSE: 94.5721, R²: -0.2051
+💾 Training metrics saved to: logs/client_24_training_metrics_20251029_092735.csv
+❌ Client error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:8686 {grpc_message:"Cancelling all calls", grpc_status:14}"
+>
+Traceback (most recent call last):
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1067, in <module>
+  File "/home/jose/FL_IoT_Network/scale/client.py", line 1052, in main
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/home/jose/.conda/envs/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 945, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Cancelling all calls"
+	debug_error_string = "UNKNOWN:Error received from peer ipv4:127.0.0.1:8686 {grpc_message:"Cancelling all calls", grpc_status:14}"
+>

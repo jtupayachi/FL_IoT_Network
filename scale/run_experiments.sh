@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# NASA FL Experiments Runner with SuperNode Support
-# Fixed version with proper config file handling
-
 set -e  # Exit on any error
 
 # Configuration
@@ -18,10 +15,17 @@ BASE_PORT=8686
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 RUN_ID="run_${TIMESTAMP}"
 
-# Experiment parameters
-declare -a STRATEGIES=("fedavg") # "fedprox"
-declare -a CLIENTS=(25) #HERE
-declare -a ALPHAS=(0.1) # 0.5 1.0
+# Experiment parameters - UPDATED FOR MULTIPLE STRATEGIES
+declare -a STRATEGIES=("fedavg" "fedavgm" "fedopt" "fedprox" )  # Flower built-ins
+declare -A MODEL_PARAMS=(
+    ["fedavg"]=""
+    ["fedavgm"]="server_momentum:0.5,0.9"
+    ["fedopt"]="tau:0.001,0.01"
+    ["qfedavg"]="q_param:0.1,0.5,1.0;qffl_learning_rate:0.01,0.1"
+)
+declare -a CLIENTS=(25)  # Keep constant
+declare -a ALPHAS=(0.5)  # Vary this single parameter (0.1=very non-IID, 1.0=more IID)
+
 
 # Default values
 DEFAULT_ROUNDS=10
@@ -31,6 +35,68 @@ DEFAULT_MIN_CLIENTS=2
 PARALLEL=false
 CLEAN=false
 QUICK_TEST=false
+
+
+
+
+
+
+# Parse model-specific parameters for a strategy
+parse_model_params() {
+    local strategy=$1
+    local params_string="${MODEL_PARAMS[$strategy]}"
+    
+    if [ -z "$params_string" ]; then
+        echo ""
+        return
+    fi
+    
+    # Parse format: "param1:val1,val2;param2:val3,val4"
+    echo "$params_string"
+}
+
+# Get all parameter combinations for a strategy
+get_param_combinations() {
+    local strategy=$1
+    local params_string=$(parse_model_params "$strategy")
+    
+    if [ -z "$params_string" ]; then
+        echo "default"
+        return
+    fi
+    
+    # Split by semicolon to get individual parameters
+    IFS=';' read -ra PARAMS <<< "$params_string"
+    
+    # For each parameter, split by colon to get name:values
+    declare -A param_arrays
+    declare -a param_names
+    
+    for param in "${PARAMS[@]}"; do
+        IFS=':' read -r name values <<< "$param"
+        param_names+=("$name")
+        IFS=',' read -ra param_arrays[$name] <<< "$values"
+    done
+    
+    # Generate all combinations
+    # For simplicity, we'll iterate through first param values
+    # You can extend this for full cartesian product
+    if [ ${#param_names[@]} -eq 1 ]; then
+        local pname="${param_names[0]}"
+        for val in ${param_arrays[$pname][@]}; do
+            echo "${pname}=${val}"
+        done
+    elif [ ${#param_names[@]} -eq 2 ]; then
+        local pname1="${param_names[0]}"
+        local pname2="${param_names[1]}"
+        for val1 in ${param_arrays[$pname1][@]}; do
+            for val2 in ${param_arrays[$pname2][@]}; do
+                echo "${pname1}=${val1},${pname2}=${val2}"
+            done
+        done
+    fi
+}
+
 
 usage() {
     echo "Usage: $0 [OPTIONS]"
@@ -331,10 +397,57 @@ run_experiment() {
 }
 
 # Run experiments in sequence
+# run_sequential_experiments() {
+#     local run_dir=$1
+#     local current_port=$BASE_PORT
+#     local total_experiments=$((${#STRATEGIES[@]} * ${#CLIENTS[@]} * ${#ALPHAS[@]}))
+#     local completed=0
+#     local failed=0
+    
+#     echo "➡️ Running $total_experiments experiments sequentially..."
+#     echo ""
+    
+#     for strategy in "${STRATEGIES[@]}"; do
+#         for num_clients in "${CLIENTS[@]}"; do
+#             for alpha in "${ALPHAS[@]}"; do
+#                 ((completed++))
+#                 echo "📊 Progress: $completed/$total_experiments"
+#                 echo "🔧 Setting up: $strategy / $num_clients clients / alpha $alpha"
+                
+#                 if wait_for_port $current_port; then
+#                     if run_experiment "$strategy" "$num_clients" "$alpha" $current_port "$run_dir"; then
+#                         echo "✅ Completed: $strategy / $num_clients clients / alpha $alpha"
+#                     else
+#                         ((failed++))
+#                         # echo "❌ Failed: $strategy / $num_clients clients / alpha $alpha"
+#                     fi
+#                 else
+#                     ((failed++))
+#                     # echo "❌ Port unavailable: $strategy / $num_clients clients / alpha $alpha"
+#                 fi
+                
+#                 current_port=$((current_port + 1))
+#                 echo "----------------------------------------"
+#                 sleep 5  # Brief pause between experiments
+#             done
+#         done
+#     done
+    
+#     echo "🎉 Sequential experiments completed: $((completed - failed))/$completed successful"
+#     return $failed
+# }
+
 run_sequential_experiments() {
     local run_dir=$1
     local current_port=$BASE_PORT
-    local total_experiments=$((${#STRATEGIES[@]} * ${#CLIENTS[@]} * ${#ALPHAS[@]}))
+    local total_experiments=0
+    
+    # Calculate total experiments
+    for strategy in "${STRATEGIES[@]}"; do
+        local param_combos=($(get_param_combinations "$strategy"))
+        total_experiments=$((total_experiments + ${#param_combos[@]} * ${#CLIENTS[@]} * ${#ALPHAS[@]}))
+    done
+    
     local completed=0
     local failed=0
     
@@ -342,27 +455,29 @@ run_sequential_experiments() {
     echo ""
     
     for strategy in "${STRATEGIES[@]}"; do
-        for num_clients in "${CLIENTS[@]}"; do
-            for alpha in "${ALPHAS[@]}"; do
-                ((completed++))
-                echo "📊 Progress: $completed/$total_experiments"
-                echo "🔧 Setting up: $strategy / $num_clients clients / alpha $alpha"
-                
-                if wait_for_port $current_port; then
-                    if run_experiment "$strategy" "$num_clients" "$alpha" $current_port "$run_dir"; then
-                        echo "✅ Completed: $strategy / $num_clients clients / alpha $alpha"
+        local param_combos=($(get_param_combinations "$strategy"))
+        
+        for param_combo in "${param_combos[@]}"; do
+            for num_clients in "${CLIENTS[@]}"; do
+                for alpha in "${ALPHAS[@]}"; do
+                    ((completed++))
+                    echo "📊 Progress: $completed/$total_experiments"
+                    echo "🔧 Setting up: $strategy / $param_combo / $num_clients clients / alpha $alpha"
+                    
+                    if wait_for_port $current_port; then
+                        if run_experiment "$strategy" "$num_clients" "$alpha" $current_port "$run_dir" "$param_combo"; then
+                            echo "✅ Completed"
+                        else
+                            ((failed++))
+                        fi
                     else
                         ((failed++))
-                        echo "❌ Failed: $strategy / $num_clients clients / alpha $alpha"
                     fi
-                else
-                    ((failed++))
-                    echo "❌ Port unavailable: $strategy / $num_clients clients / alpha $alpha"
-                fi
-                
-                current_port=$((current_port + 1))
-                echo "----------------------------------------"
-                sleep 5  # Brief pause between experiments
+                    
+                    current_port=$((current_port + 1))
+                    echo "----------------------------------------"
+                    sleep 5
+                done
             done
         done
     done
@@ -453,29 +568,29 @@ generate_summary() {
 |---------------|----------|---------|-------|------|--------|---------|
 EOF
 
-    local current_port=$BASE_PORT
-    for strategy in "${STRATEGIES[@]}"; do
-        for num_clients in "${CLIENTS[@]}"; do
-            for alpha in "${ALPHAS[@]}"; do
-                local exp_id="nasa_${num_clients}c_alpha_${alpha}_${strategy}"
-                local exp_dir="$run_dir/$exp_id"
+    # local current_port=$BASE_PORT
+    # for strategy in "${STRATEGIES[@]}"; do
+    #     for num_clients in "${CLIENTS[@]}"; do
+    #         for alpha in "${ALPHAS[@]}"; do
+    #             local exp_id="nasa_${num_clients}c_alpha_${alpha}_${strategy}"
+    #             local exp_dir="$run_dir/$exp_id"
                 
-                local status="❌ Failed"
-                local results_link="-"
+    #             local status="❌ Failed"
+    #             local results_link="-"
                 
-                if [ -f "$exp_dir/metrics/round_metrics.csv" ]; then
-                    status="✅ Completed"
-                    results_link="[View]($exp_id/metrics/round_metrics.csv)"
-                    ((completed_count++))
-                elif [ -d "$exp_dir" ]; then
-                    status="⚠️ Partial"
-                fi
+    #             if [ -f "$exp_dir/metrics/round_metrics.csv" ]; then
+    #                 status="✅ Completed"
+    #                 results_link="[View]($exp_id/metrics/round_metrics.csv)"
+    #                 ((completed_count++))
+    #             elif [ -d "$exp_dir" ]; then
+    #                 status="⚠️ Partial"
+    #             fi
                 
-                echo "| $exp_id | $strategy | $num_clients | $alpha | $current_port | $status | $results_link |" >> "$summary_file"
-                current_port=$((current_port + 1))
-            done
-        done
-    done
+    #             echo "| $exp_id | $strategy | $num_clients | $alpha | $current_port | $status | $results_link |" >> "$summary_file"
+    #             current_port=$((current_port + 1))
+    #         done
+    #     done
+    # done
 
     cat >> "$summary_file" << EOF
 
@@ -558,13 +673,13 @@ main() {
     echo "Results: $run_dir"
     echo "Summary: $run_dir/experiment_summary.md"
     
-    if [ $failed_experiments -gt 0 ]; then
-        echo "⚠️  $failed_experiments experiments failed. Check the logs above."
-        exit 1
-    else
-        echo "✅ All experiments completed successfully!"
-        exit 0
-    fi
+    # if [ $failed_experiments -gt 0 ]; then
+    #     echo "⚠️  $failed_experiments experiments failed. Check the logs above."
+    #     exit 1
+    # else
+    #     echo "✅ All experiments completed successfully!"
+    #     exit 0
+    # fi
 }
 
 # Run main function

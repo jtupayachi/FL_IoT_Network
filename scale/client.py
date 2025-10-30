@@ -128,6 +128,38 @@ class ModelFactory:
 
 class Hyperparameters:
     """Hyperparameter configuration class"""
+    # def __init__(self, config: Dict):
+    #     self.model_type = config.get("model_type", "dense")
+        
+    #     # Training parameters
+    #     self.learning_rate = config.get("learning_rate", 0.001)
+    #     self.batch_size = config.get("batch_size", 32)
+    #     self.local_epochs = config.get("local_epochs", 1)
+    #     self.optimizer = config.get("optimizer", "adam")
+    #     self.weight_decay = config.get("weight_decay", 0.0)
+        
+    #     # Model architecture parameters
+    #     self.hidden_dims = config.get("hidden_dims", [64, 32])  # For dense
+    #     self.hidden_dim = config.get("hidden_dim", 64)  # For LSTM
+    #     self.num_layers = config.get("num_layers", 2)  # For LSTM
+    #     self.dropout = config.get("dropout", 0.2)
+    #     self.activation = config.get("activation", "relu")
+    #     self.use_attention = config.get("use_attention", False)  # For LSTM
+        
+    #     # Data parameters
+    #     self.sequence_length = config.get("sequence_length", 10)  # For LSTM
+    #     self.test_size = config.get("test_size", 0.2)
+    #     self.val_size = config.get("val_size", 0.2)
+        
+    #     # Dimensionality reduction parameters
+    #     self.reduction_type = config.get("reduction_type", "none")
+    #     self.n_components = config.get("n_components", 10)
+    #     self.kernel = config.get("kernel", "rbf")  # For KernelPCA
+        
+    #     # Cross-validation
+    #     self.k_folds = config.get("k_folds", 5)
+        
+
     def __init__(self, config: Dict):
         self.model_type = config.get("model_type", "dense")
         
@@ -138,29 +170,58 @@ class Hyperparameters:
         self.optimizer = config.get("optimizer", "adam")
         self.weight_decay = config.get("weight_decay", 0.0)
         
+        # Early stopping parameters - NEW
+        self.early_stopping_patience = config.get("early_stopping_patience", 3)
+        self.early_stopping_min_delta = config.get("early_stopping_min_delta", 0.001)
+        self.early_stopping_enabled = config.get("early_stopping_enabled", True)
+        
         # Model architecture parameters
-        self.hidden_dims = config.get("hidden_dims", [64, 32])  # For dense
-        self.hidden_dim = config.get("hidden_dim", 64)  # For LSTM
-        self.num_layers = config.get("num_layers", 2)  # For LSTM
+        self.hidden_dims = config.get("hidden_dims", [64, 32])
+        self.hidden_dim = config.get("hidden_dim", 64)
+        self.num_layers = config.get("num_layers", 2)
         self.dropout = config.get("dropout", 0.2)
         self.activation = config.get("activation", "relu")
-        self.use_attention = config.get("use_attention", False)  # For LSTM
+        self.use_attention = config.get("use_attention", False)
         
         # Data parameters
-        self.sequence_length = config.get("sequence_length", 10)  # For LSTM
+        self.sequence_length = config.get("sequence_length", 10)
         self.test_size = config.get("test_size", 0.2)
         self.val_size = config.get("val_size", 0.2)
         
         # Dimensionality reduction parameters
         self.reduction_type = config.get("reduction_type", "none")
         self.n_components = config.get("n_components", 10)
-        self.kernel = config.get("kernel", "rbf")  # For KernelPCA
+        self.kernel = config.get("kernel", "rbf")
         
         # Cross-validation
         self.k_folds = config.get("k_folds", 5)
-        
+
+    # def to_dict(self) -> Dict:
+    #     """Convert hyperparameters to dictionary - FIXED VERSION"""
+    #     return {
+    #         "model_type": self.model_type,
+    #         "learning_rate": self.learning_rate,
+    #         "batch_size": self.batch_size,
+    #         "local_epochs": self.local_epochs,
+    #         "optimizer": self.optimizer,
+    #         "weight_decay": self.weight_decay,
+    #         "hidden_dims": self.hidden_dims,
+    #         "hidden_dim": self.hidden_dim,  # FIXED: was self.hyperparams.hidden_dim
+    #         "num_layers": self.num_layers,  # FIXED: was self.hyperparams.num_layers
+    #         "dropout": self.dropout,
+    #         "activation": self.activation,
+    #         "use_attention": self.use_attention,
+    #         "sequence_length": self.sequence_length,
+    #         "test_size": self.test_size,
+    #         "val_size": self.val_size,
+    #         "reduction_type": self.reduction_type,
+    #         "n_components": self.n_components,
+    #         "kernel": self.kernel,
+    #         "k_folds": self.k_folds
+    #     }
+
     def to_dict(self) -> Dict:
-        """Convert hyperparameters to dictionary - FIXED VERSION"""
+        """Convert hyperparameters to dictionary"""
         return {
             "model_type": self.model_type,
             "learning_rate": self.learning_rate,
@@ -168,9 +229,12 @@ class Hyperparameters:
             "local_epochs": self.local_epochs,
             "optimizer": self.optimizer,
             "weight_decay": self.weight_decay,
+            "early_stopping_patience": self.early_stopping_patience,  # NEW
+            "early_stopping_min_delta": self.early_stopping_min_delta,  # NEW
+            "early_stopping_enabled": self.early_stopping_enabled,  # NEW
             "hidden_dims": self.hidden_dims,
-            "hidden_dim": self.hidden_dim,  # FIXED: was self.hyperparams.hidden_dim
-            "num_layers": self.num_layers,  # FIXED: was self.hyperparams.num_layers
+            "hidden_dim": self.hidden_dim,
+            "num_layers": self.num_layers,
             "dropout": self.dropout,
             "activation": self.activation,
             "use_attention": self.use_attention,
@@ -633,6 +697,120 @@ class NASADataLoader:
         return np.array(rul_labels)
 
 class NASAFlowerClient(fl.client.NumPyClient):
+    # def __init__(self, client_id: str, config: Dict):
+    #     self.client_id = client_id
+    #     self.config = config
+    #     self.algorithm = config.get("algorithm", "fedavg")
+    #     self.current_round = 0
+    #     self.cv_completed = False
+    #     self.total_rounds = config.get("server", {}).get("num_rounds", 10)
+        
+    #     # GPU optimization
+    #     self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #     print(f"🔄 Using device: {self.device}")
+    #     if torch.cuda.is_available():
+    #         print(f"🎯 GPU: {torch.cuda.get_device_name()}")
+        
+    #     # Initialize hyperparameters
+    #     model_config = config.get("model", {})
+    #     self.hyperparams = Hyperparameters(model_config)
+        
+    #     # Initialize metrics logger
+    #     log_dir = config.get("logging", {}).get("log_dir", "logs")
+    #     self.metrics_logger = MetricsLogger(client_id, log_dir)
+        
+    #     # Log hyperparameters
+    #     self.metrics_logger.log_hyperparameters(self.hyperparams)
+        
+    #     # Load data with proper splits
+    #     data_path = self._get_data_path()
+        
+    #     self.data_loader = NASADataLoader(data_path, self.hyperparams)
+    #     self.X_train, self.y_train, self.X_val, self.y_val, self.X_test, self.y_test = self.data_loader.load_data()
+        
+    #     # Move data to GPU
+    #     self.X_train = self.X_train.to(self.device)
+    #     self.y_train = self.y_train.to(self.device)
+    #     self.X_val = self.X_val.to(self.device)
+    #     self.y_val = self.y_val.to(self.device)
+    #     self.X_test = self.X_test.to(self.device)
+    #     self.y_test = self.y_test.to(self.device)
+        
+    #     # Create model
+    #     input_dim = self.X_train.shape[-1]
+    #     self.model_kwargs = self.hyperparams.to_dict().copy()
+    #     self.model_kwargs.pop('model_type', None)
+
+    #     self.model = ModelFactory.create_model(
+    #         self.hyperparams.model_type, 
+    #         input_dim, 
+    #         **self.model_kwargs
+    #     )
+        
+    #     # Move model to GPU
+    #     self.model = self.model.to(self.device)
+        
+    #     # Initialize optimizer
+    #     if self.hyperparams.optimizer == "adam":
+    #         self.optimizer = optim.Adam(
+    #             self.model.parameters(), 
+    #             lr=self.hyperparams.learning_rate,
+    #             weight_decay=self.hyperparams.weight_decay
+    #         )
+    #     elif self.hyperparams.optimizer == "sgd":
+    #         self.optimizer = optim.SGD(
+    #             self.model.parameters(), 
+    #             lr=self.hyperparams.learning_rate,
+    #             weight_decay=self.hyperparams.weight_decay,
+    #             momentum=0.9
+    #         )
+    #     else:
+    #         self.optimizer = optim.Adam(self.model.parameters(), lr=self.hyperparams.learning_rate)
+            
+    #     self.criterion = nn.MSELoss()
+        
+    #     print(f"✅ Client {client_id} ready:")
+    #     print(f"   Model: {self.hyperparams.model_type.upper()}")
+    #     print(f"   Training: {len(self.X_train)} samples")
+    #     print(f"   Device: {self.device}")
+    #     print(f"   Validation: {len(self.X_val)} samples") 
+    #     print(f"   Test: {len(self.X_test)} samples")
+    #     print(f"   Algorithm: {self.algorithm}")
+    #     print(f"   Total Rounds: {self.total_rounds}")
+    #     print(f"   Learning Rate: {self.hyperparams.learning_rate}")
+    #     print(f"   Batch Size: {self.hyperparams.batch_size}")
+    #     print(f"   Logging to: {log_dir}")
+
+    # def __init__(self, client_id: str, config: Dict):
+    #     self.client_id = client_id
+    #     self.config = config
+    #     self.algorithm = config.get("algorithm", "fedavg")
+    #     self.current_round = 0
+    #     self.cv_completed = False
+    #     self.total_rounds = config.get("server", {}).get("num_rounds", 10)
+        
+    #     # Early stopping tracking - NEW
+    #     self.early_stop_counter = 0
+    #     self.best_val_rmse = float('inf')
+    #     self.epochs_trained = 0
+    #     self.total_early_stops = 0
+        
+    #     # GPU optimization
+    #     self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    #     print(f"🔄 Using device: {self.device}")
+    #     if torch.cuda.is_available():
+    #         print(f"🎯 GPU: {torch.cuda.get_device_name()}")
+        
+    #     # Initialize hyperparameters
+    #     model_config = config.get("model", {})
+    #     self.hyperparams = Hyperparameters(model_config)
+        
+    #     # Print early stopping config - NEW
+    #     if self.hyperparams.early_stopping_enabled:
+    #         print(f"🛑 Early stopping enabled:")
+    #         print(f"   Patience: {self.hyperparams.early_stopping_patience} epochs")
+    #         print(f"   Min delta: {self.hyperparams.early_stopping_min_delta}")
+
     def __init__(self, client_id: str, config: Dict):
         self.client_id = client_id
         self.config = config
@@ -640,6 +818,12 @@ class NASAFlowerClient(fl.client.NumPyClient):
         self.current_round = 0
         self.cv_completed = False
         self.total_rounds = config.get("server", {}).get("num_rounds", 10)
+        
+        # Early stopping tracking - NEW
+        self.early_stop_counter = 0
+        self.best_val_rmse = float('inf')
+        self.epochs_trained = 0
+        self.total_early_stops = 0
         
         # GPU optimization
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -651,20 +835,26 @@ class NASAFlowerClient(fl.client.NumPyClient):
         model_config = config.get("model", {})
         self.hyperparams = Hyperparameters(model_config)
         
-        # Initialize metrics logger
+        # Print early stopping config - NEW
+        if self.hyperparams.early_stopping_enabled:
+            print(f"🛑 Early stopping enabled:")
+            print(f"   Patience: {self.hyperparams.early_stopping_patience} epochs")
+            print(f"   Min delta: {self.hyperparams.early_stopping_min_delta}")
+        
+        # Initialize metrics logger - RESTORED
         log_dir = config.get("logging", {}).get("log_dir", "logs")
         self.metrics_logger = MetricsLogger(client_id, log_dir)
         
-        # Log hyperparameters
+        # Log hyperparameters - RESTORED
         self.metrics_logger.log_hyperparameters(self.hyperparams)
         
-        # Load data with proper splits
+        # Load data with proper splits - RESTORED
         data_path = self._get_data_path()
         
         self.data_loader = NASADataLoader(data_path, self.hyperparams)
         self.X_train, self.y_train, self.X_val, self.y_val, self.X_test, self.y_test = self.data_loader.load_data()
         
-        # Move data to GPU
+        # Move data to GPU - RESTORED
         self.X_train = self.X_train.to(self.device)
         self.y_train = self.y_train.to(self.device)
         self.X_val = self.X_val.to(self.device)
@@ -672,7 +862,7 @@ class NASAFlowerClient(fl.client.NumPyClient):
         self.X_test = self.X_test.to(self.device)
         self.y_test = self.y_test.to(self.device)
         
-        # Create model
+        # Create model - RESTORED
         input_dim = self.X_train.shape[-1]
         self.model_kwargs = self.hyperparams.to_dict().copy()
         self.model_kwargs.pop('model_type', None)
@@ -683,10 +873,10 @@ class NASAFlowerClient(fl.client.NumPyClient):
             **self.model_kwargs
         )
         
-        # Move model to GPU
+        # Move model to GPU - RESTORED
         self.model = self.model.to(self.device)
         
-        # Initialize optimizer
+        # Initialize optimizer - RESTORED
         if self.hyperparams.optimizer == "adam":
             self.optimizer = optim.Adam(
                 self.model.parameters(), 
@@ -717,6 +907,7 @@ class NASAFlowerClient(fl.client.NumPyClient):
         print(f"   Batch Size: {self.hyperparams.batch_size}")
         print(f"   Logging to: {log_dir}")
 
+
     def get_parameters(self, config):
         """Return model weights"""
         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
@@ -727,11 +918,110 @@ class NASAFlowerClient(fl.client.NumPyClient):
         state_dict = {k: torch.tensor(v).to(self.device) for k, v in params_dict}
         self.model.load_state_dict(state_dict, strict=True)
 
+    # def fit(self, parameters, config):
+    #     """Train the model for one round with proper validation"""
+    #     self.current_round = config.get("current_round", 0)
+        
+    #     # Run CV only periodically to save computation time
+    #     run_cv = (
+    #         self.current_round == 0 or
+    #         self.current_round % 5 == 0 or
+    #         self.current_round == self.total_rounds - 1
+    #     )
+        
+    #     if run_cv:
+    #         k_folds = min(3, self.hyperparams.k_folds)
+    #         print(f"\n🔍 Running {k_folds}-fold cross-validation (Round {self.current_round})")
+    #         cv_metrics = self._k_fold_cross_validation(parameters, config, k_folds)
+    #     else:
+    #         cv_metrics = {
+    #             "fold": [0],
+    #             "train_loss": [0], 
+    #             "val_loss": [0],
+    #             "rmse": [0],
+    #             "mse": [0],
+    #             "mae": [0],
+    #             "r2": [0]
+    #         }
+    #         print(f"⏩ Skipping CV for Round {self.current_round} (runs every 5 rounds)")
+        
+    #     # Train on full training dataset for federated learning
+    #     self.set_parameters(parameters)
+        
+    #     epochs = config.get("local_epochs", self.hyperparams.local_epochs)
+    #     batch_size = config.get("batch_size", self.hyperparams.batch_size)
+        
+    #     # Training loop
+    #     self.model.train()
+    #     train_losses = []
+        
+    #     for epoch in range(epochs):
+    #         epoch_loss = 0
+    #         num_batches = 0
+            
+    #         for i in range(0, len(self.X_train), batch_size):
+    #             batch_X = self.X_train[i:i+batch_size]
+    #             batch_y = self.y_train[i:i+batch_size]
+                
+    #             self.optimizer.zero_grad()
+    #             outputs = self.model(batch_X)
+    #             loss = self.criterion(outputs, batch_y)
+    #             loss.backward()
+    #             self.optimizer.step()
+                
+    #             epoch_loss += loss.item()
+    #             num_batches += 1
+            
+    #         if num_batches > 0:
+    #             train_losses.append(epoch_loss / num_batches)
+        
+    #     # Evaluate on validation set
+    #     with torch.no_grad():
+    #         self.model.eval()
+    #         train_predictions = self.model(self.X_train)
+    #         train_loss = self.criterion(train_predictions, self.y_train).item()
+    #         train_metrics = self._calculate_metrics(self.y_train, train_predictions)
+            
+    #         val_predictions = self.model(self.X_val)
+    #         val_loss = self.criterion(val_predictions, self.y_val).item()
+    #         val_metrics = self._calculate_metrics(self.y_val, val_predictions)
+        
+    #     # Reduced logging frequency
+    #     if run_cv or self.current_round % 3 == 0 or self.current_round == self.total_rounds - 1:
+    #         print(f"\n🎯 Round {self.current_round} Training Results:")
+    #         print(f"   Training - Loss: {train_loss:.4f}, RMSE: {train_metrics['rmse']:.4f}, R²: {train_metrics['r2']:.4f}")
+    #         print(f"   Validation - Loss: {val_loss:.4f}, RMSE: {val_metrics['rmse']:.4f}, R²: {val_metrics['r2']:.4f}")
+    #     else:
+    #         print(f"Round {self.current_round}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_r2={val_metrics['r2']:.4f}")
+        
+    #     # Prepare results
+    #     results = {
+    #         "loss": float(val_loss),
+    #         "mae": float(val_metrics["mae"]),
+    #         "train_loss": float(train_loss),
+    #         "val_loss": float(val_loss),
+    #         "train_rmse": float(train_metrics["rmse"]),
+    #         "val_rmse": float(val_metrics["rmse"]),
+    #         "train_r2": float(train_metrics["r2"]),
+    #         "val_r2": float(val_metrics["r2"]),
+    #         "client_id": self.client_id,
+    #         "samples": len(self.X_train),
+    #         "algorithm": self.algorithm,
+    #         "avg_epoch_loss": float(np.mean(train_losses) if train_losses else train_loss),
+    #     }
+        
+    #     # Reduced CSV logging frequency
+    #     if run_cv or self.current_round % 2 == 0 or self.current_round == self.total_rounds - 1:
+    #         self.metrics_logger.log_training_metrics(self.current_round, results, self.hyperparams)
+        
+    #     return self.get_parameters({}), len(self.X_train), results
+
+
     def fit(self, parameters, config):
-        """Train the model for one round with proper validation"""
+        """Train the model with local early stopping"""
         self.current_round = config.get("current_round", 0)
         
-        # Run CV only periodically to save computation time
+        # Run CV only periodically
         run_cv = (
             self.current_round == 0 or
             self.current_round % 5 == 0 or
@@ -744,30 +1034,33 @@ class NASAFlowerClient(fl.client.NumPyClient):
             cv_metrics = self._k_fold_cross_validation(parameters, config, k_folds)
         else:
             cv_metrics = {
-                "fold": [0],
-                "train_loss": [0], 
-                "val_loss": [0],
-                "rmse": [0],
-                "mse": [0],
-                "mae": [0],
-                "r2": [0]
+                "fold": [0], "train_loss": [0], "val_loss": [0],
+                "rmse": [0], "mse": [0], "mae": [0], "r2": [0]
             }
-            print(f"⏩ Skipping CV for Round {self.current_round} (runs every 5 rounds)")
+            print(f"⏩ Skipping CV for Round {self.current_round}")
         
-        # Train on full training dataset for federated learning
+        # Train with early stopping
         self.set_parameters(parameters)
         
         epochs = config.get("local_epochs", self.hyperparams.local_epochs)
         batch_size = config.get("batch_size", self.hyperparams.batch_size)
         
-        # Training loop
+        # Reset early stopping for this round
+        epochs_without_improvement = 0
+        best_val_rmse_this_round = float('inf')
+        best_model_state = None
+        
         self.model.train()
         train_losses = []
+        val_rmses_per_epoch = []
+        
+        print(f"\n🔄 Starting local training (Round {self.current_round})...")
         
         for epoch in range(epochs):
             epoch_loss = 0
             num_batches = 0
             
+            # Training
             for i in range(0, len(self.X_train), batch_size):
                 batch_X = self.X_train[i:i+batch_size]
                 batch_y = self.y_train[i:i+batch_size]
@@ -781,12 +1074,56 @@ class NASAFlowerClient(fl.client.NumPyClient):
                 epoch_loss += loss.item()
                 num_batches += 1
             
-            if num_batches > 0:
-                train_losses.append(epoch_loss / num_batches)
-        
-        # Evaluate on validation set
-        with torch.no_grad():
+            avg_train_loss = epoch_loss / num_batches if num_batches > 0 else 0
+            train_losses.append(avg_train_loss)
+            
+            # Validation after each epoch for early stopping
             self.model.eval()
+            with torch.no_grad():
+                val_predictions = self.model(self.X_val)
+                val_loss = self.criterion(val_predictions, self.y_val).item()
+                val_metrics = self._calculate_metrics(self.y_val, val_predictions)
+                val_rmse = val_metrics["rmse"]
+                val_rmses_per_epoch.append(val_rmse)
+            
+            self.model.train()
+            
+            # Early stopping check
+            if self.hyperparams.early_stopping_enabled:
+                improvement = best_val_rmse_this_round - val_rmse
+                
+                if improvement > self.hyperparams.early_stopping_min_delta:
+                    best_val_rmse_this_round = val_rmse
+                    epochs_without_improvement = 0
+                    # Save best model state
+                    best_model_state = {k: v.cpu().clone() for k, v in self.model.state_dict().items()}
+                    print(f"   Epoch {epoch+1}/{epochs}: train_loss={avg_train_loss:.4f}, val_rmse={val_rmse:.4f} ⭐ (improved by {improvement:.4f})")
+                else:
+                    epochs_without_improvement += 1
+                    print(f"   Epoch {epoch+1}/{epochs}: train_loss={avg_train_loss:.4f}, val_rmse={val_rmse:.4f} (no improvement: {epochs_without_improvement}/{self.hyperparams.early_stopping_patience})")
+                
+                # Early stop if no improvement
+                if epochs_without_improvement >= self.hyperparams.early_stopping_patience:
+                    print(f"   🛑 Early stopping triggered after {epoch+1} epochs (no improvement for {self.hyperparams.early_stopping_patience} epochs)")
+                    self.total_early_stops += 1
+                    self.epochs_trained = epoch + 1
+                    # Restore best model
+                    if best_model_state is not None:
+                        self.model.load_state_dict({k: v.to(self.device) for k, v in best_model_state.items()})
+                        print(f"   ↩️  Restored best model (val_rmse={best_val_rmse_this_round:.4f})")
+                    break
+            else:
+                print(f"   Epoch {epoch+1}/{epochs}: train_loss={avg_train_loss:.4f}, val_rmse={val_rmse:.4f}")
+        else:
+            # Completed all epochs without early stopping
+            self.epochs_trained = epochs
+            if best_model_state is not None and self.hyperparams.early_stopping_enabled:
+                self.model.load_state_dict({k: v.to(self.device) for k, v in best_model_state.items()})
+                print(f"   ✅ Completed {epochs} epochs, using best model (val_rmse={best_val_rmse_this_round:.4f})")
+        
+        # Final evaluation on validation set
+        self.model.eval()
+        with torch.no_grad():
             train_predictions = self.model(self.X_train)
             train_loss = self.criterion(train_predictions, self.y_train).item()
             train_metrics = self._calculate_metrics(self.y_train, train_predictions)
@@ -795,13 +1132,16 @@ class NASAFlowerClient(fl.client.NumPyClient):
             val_loss = self.criterion(val_predictions, self.y_val).item()
             val_metrics = self._calculate_metrics(self.y_val, val_predictions)
         
-        # Reduced logging frequency
+        # Print summary
         if run_cv or self.current_round % 3 == 0 or self.current_round == self.total_rounds - 1:
-            print(f"\n🎯 Round {self.current_round} Training Results:")
-            print(f"   Training - Loss: {train_loss:.4f}, RMSE: {train_metrics['rmse']:.4f}, R²: {train_metrics['r2']:.4f}")
+            print(f"\n🎯 Round {self.current_round} Training Summary:")
+            print(f"   Epochs trained: {self.epochs_trained}/{epochs}")
+            if self.hyperparams.early_stopping_enabled:
+                print(f"   Total early stops so far: {self.total_early_stops}")
+            print(f"   Training   - Loss: {train_loss:.4f}, RMSE: {train_metrics['rmse']:.4f}, R²: {train_metrics['r2']:.4f}")
             print(f"   Validation - Loss: {val_loss:.4f}, RMSE: {val_metrics['rmse']:.4f}, R²: {val_metrics['r2']:.4f}")
         else:
-            print(f"Round {self.current_round}: train_loss={train_loss:.4f}, val_loss={val_loss:.4f}, val_r2={val_metrics['r2']:.4f}")
+            print(f"Round {self.current_round}: epochs={self.epochs_trained}, train_loss={train_loss:.4f}, val_rmse={val_metrics['rmse']:.4f}, val_r2={val_metrics['r2']:.4f}")
         
         # Prepare results
         results = {
@@ -817,14 +1157,16 @@ class NASAFlowerClient(fl.client.NumPyClient):
             "samples": len(self.X_train),
             "algorithm": self.algorithm,
             "avg_epoch_loss": float(np.mean(train_losses) if train_losses else train_loss),
+            "epochs_trained": self.epochs_trained,  # NEW
+            "early_stopped": self.epochs_trained < epochs if self.hyperparams.early_stopping_enabled else False  # NEW
         }
         
-        # Reduced CSV logging frequency
+        # Log metrics
         if run_cv or self.current_round % 2 == 0 or self.current_round == self.total_rounds - 1:
             self.metrics_logger.log_training_metrics(self.current_round, results, self.hyperparams)
         
         return self.get_parameters({}), len(self.X_train), results
-
+        
     def evaluate(self, parameters, config):
         """Evaluate the model on test set - FIXED AND COMPLETE VERSION"""
         # Set the received parameters
@@ -1065,7 +1407,20 @@ class NASAFlowerClient(fl.client.NumPyClient):
                 print(f"   Hidden Dims: {self.hyperparams.hidden_dims}")
             print(f"   Dropout: {self.hyperparams.dropout}")
             print(f"   Optimizer: {self.hyperparams.optimizer}")
-            
+
+            # Early stopping summary - NEW SECTION
+            if self.hyperparams.early_stopping_enabled:
+                print(f"\n🛑 EARLY STOPPING SUMMARY:")
+                print(f"   Enabled: Yes")
+                print(f"   Patience: {self.hyperparams.early_stopping_patience} epochs")
+                print(f"   Min delta: {self.hyperparams.early_stopping_min_delta}")
+                print(f"   Total early stops: {self.total_early_stops}/{self.total_rounds} rounds")
+                early_stop_rate = (self.total_early_stops / self.total_rounds) * 100
+                print(f"   Early stop rate: {early_stop_rate:.1f}%")
+            else:
+                print(f"\n🛑 EARLY STOPPING: Disabled")
+
+                        
             # Final Round Performance
             print(f"\n🏁 FINAL ROUND PERFORMANCE:")
             print(f"   Training   - Loss: {summary['final_train_loss']:8.2f} | RMSE: {summary['final_train_rmse']:6.2f} | R²: {summary['final_train_r2']:7.4f}")

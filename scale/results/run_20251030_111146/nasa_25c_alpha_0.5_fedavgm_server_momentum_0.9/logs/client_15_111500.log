@@ -1,0 +1,337 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4ebfc8cc-bc72-4ecb-89a4-a475218a1745
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9c278940-a78c-4d16-afa1-3faaf179eb8c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f2466431-5c61-46b0-8a84-93c585829a57
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ad945ba1-9acf-42e9-a272-b532b41075c2
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 84efcf76-7f8f-4caa-a053-fd44ad7936fb
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message e58f4804-da49-4717-a66c-b6420726de05
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message aba72c85-9f38-4853-953c-a591d0ad8597
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message e4799018-f2cf-4b17-88a2-24203327b7c5
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 9e29720a-03f1-40bb-bdbb-af9abebbe5a7
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ec1161bc-8b7f-435d-b224-e02d02785b1c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 33349d0b-6e13-4a61-8abb-44840f1c3392
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ae60047b-961c-4702-a14f-62ffce37afff
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 173416ac-c172-4133-91c7-1b6948bb4fc3
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 4c007702-aa12-48e6-b4ef-5e89ddde474c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 5632edd4-81a3-4ca3-83e3-91a4df5a8da5
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message bc778f17-39cc-4c17-b263-4a23b0963535
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message eea62411-92bd-4409-b0a2-b41c036b57e1
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 0df73496-a5d2-4505-a0aa-6eeb9a103aae
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4dd8d4de-8a8c-4fe1-9ba0-8a465bafd3df
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message fa701611-614e-4303-a876-ee60398e182f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: reconnect message 5fa6d370-2202-482e-922a-eb6c939798ea
+[92mINFO [0m:      Disconnect and shut down
+🚀 Starting NASA FL Client: client_15
+Algorithm: FEDAVGM
+Server: localhost:8688
+K-Folds: 5
+Log Directory: logs
+🔄 Using device: cuda
+🎯 GPU: NVIDIA A100-SXM4-80GB
+🛑 Early stopping enabled:
+   Patience: 3 epochs
+   Min delta: 0.001
+💾 Hyperparameters saved to: logs/client_15_hyperparams_20251030_111503.csv
+🔍 Looking for data at: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.5/client_15
+📊 Loaded 6193 total samples from /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.5/client_15
+🔢 Original feature dimension: 24
+🔍 Applying KernelPCA with 5 components, kernel=poly
+📊 Data shape - Before: (3715, 24), After: (3715, 5)
+🔄 Created sequences with length 10
+   Final dataset shape: X (3705, 10, 5), y (3705,)
+✅ Data split completed:
+   Training samples: 3705
+   Validation samples: 1229
+   Test samples: 1229
+   Model type: lstm
+   Final input dimension: 5
+✅ Client client_15 ready:
+   Model: LSTM
+   Training: 3705 samples
+   Device: cuda
+   Validation: 1229 samples
+   Test: 1229 samples
+   Algorithm: fedavgm
+   Total Rounds: 10
+   Learning Rate: 0.001
+   Batch Size: 32
+   Logging to: logs
+⏩ Skipping CV for Round 1
+
+🔄 Starting local training (Round 1)...
+   Epoch 1/1: train_loss=15432.2961, val_rmse=85.0937 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=85.0937)
+Round 1: epochs=1, train_loss=7450.7705, val_rmse=85.0937, val_r2=-0.3562
+
+🧪 Round 1 Evaluation Results:
+   Test Loss: 6598.0680
+   RMSE: 81.2285, MAE: 64.5151, R²: -0.2602
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 2
+
+🔄 Starting local training (Round 2)...
+   Epoch 1/1: train_loss=6469.0286, val_rmse=73.7986 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=73.7986)
+Round 2: epochs=1, train_loss=5559.8623, val_rmse=73.7986, val_r2=-0.0201
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 2 Evaluation Results:
+   Test Loss: 144755.7499
+   RMSE: 380.4678, MAE: 373.5239, R²: -26.6481
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 3
+
+🔄 Starting local training (Round 3)...
+   Epoch 1/1: train_loss=30826.5473, val_rmse=77.5589 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=77.5589)
+
+🎯 Round 3 Training Summary:
+   Epochs trained: 1/1
+   Total early stops so far: 0
+   Training   - Loss: 6023.8125, RMSE: 77.6132, R²: -0.1113
+   Validation - Loss: 6015.3906, RMSE: 77.5589, R²: -0.1267
+
+🧪 Round 3 Evaluation Results:
+   Test Loss: 304959.6597
+   RMSE: 552.2315, MAE: 547.4706, R²: -57.2467
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 4
+
+🔄 Starting local training (Round 4)...
+   Epoch 1/1: train_loss=70245.4198, val_rmse=105.2255 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=105.2255)
+Round 4: epochs=1, train_loss=10937.0068, val_rmse=105.2255, val_r2=-1.0739
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 4 Evaluation Results:
+   Test Loss: 35612.7780
+   RMSE: 188.7135, MAE: 174.8307, R²: -5.8020
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+
+🔍 Running 3-fold cross-validation (Round 5)
+
+🔍 Starting 3-fold cross-validation on TRAINING data for client client_15
+
+📊 Fold 1/3
+   Fold 1 Results:
+     Val Loss: 10585.9961
+     Val RMSE: 102.8883, Val R²: -0.8842
+
+📊 Fold 2/3
+   Fold 2 Results:
+     Val Loss: 10297.4375
+     Val RMSE: 101.4763, Val R²: -0.9134
+
+📊 Fold 3/3
+   Fold 3 Results:
+     Val Loss: 10832.3945
+     Val RMSE: 104.0788, Val R²: -1.0627
+💾 CV metrics saved to: logs/client_15_cv_metrics_20251030_111503.csv
+
+📈 3-Fold CV Summary (Training Data):
+   VAL_LOSS: 10571.9427 ± 218.6213
+   RMSE: 102.8145 ± 1.0637
+   R2: -0.9534 ± 0.0781
+
+🔄 Starting local training (Round 5)...
+   Epoch 1/1: train_loss=15649.8270, val_rmse=78.6382 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=78.6382)
+
+🎯 Round 5 Training Summary:
+   Epochs trained: 1/1
+   Total early stops so far: 0
+   Training   - Loss: 6183.5361, RMSE: 78.6355, R²: -0.1408
+   Validation - Loss: 6183.9692, RMSE: 78.6382, R²: -0.1583
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 5 Evaluation Results:
+   Test Loss: 9465.5304
+   RMSE: 97.2910, MAE: 76.2842, R²: -0.8079
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 6
+
+🔄 Starting local training (Round 6)...
+   Epoch 1/1: train_loss=9634.5765, val_rmse=91.2335 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=91.2335)
+
+🎯 Round 6 Training Summary:
+   Epochs trained: 1/1
+   Total early stops so far: 0
+   Training   - Loss: 8565.2627, RMSE: 92.5487, R²: -0.5801
+   Validation - Loss: 8323.5459, RMSE: 91.2335, R²: -0.5590
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 6 Evaluation Results:
+   Test Loss: 17536.4865
+   RMSE: 132.4254, MAE: 110.9238, R²: -2.3494
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 7
+
+🔄 Starting local training (Round 7)...
+   Epoch 1/1: train_loss=18383.5904, val_rmse=133.3616 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=133.3616)
+Round 7: epochs=1, train_loss=18191.7363, val_rmse=133.3616, val_r2=-2.3312
+
+🧪 Round 7 Evaluation Results:
+   Test Loss: 17896.3269
+   RMSE: 133.7772, MAE: 112.5196, R²: -2.4182
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+⏩ Skipping CV for Round 8
+
+🔄 Starting local training (Round 8)...
+   Epoch 1/1: train_loss=18927.9814, val_rmse=135.9525 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=135.9525)
+Round 8: epochs=1, train_loss=18898.4199, val_rmse=135.9525, val_r2=-2.4619
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 8 Evaluation Results:
+   Test Loss: 17864.2091
+   RMSE: 133.6571, MAE: 112.3770, R²: -2.4120
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+
+🔍 Running 3-fold cross-validation (Round 9)
+💾 CV metrics saved to: logs/client_15_cv_metrics_20251030_111503.csv
+
+🔄 Starting local training (Round 9)...
+   Epoch 1/1: train_loss=18894.6545, val_rmse=135.8311 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=135.8311)
+
+🎯 Round 9 Training Summary:
+   Epochs trained: 1/1
+   Total early stops so far: 0
+   Training   - Loss: 18865.0117, RMSE: 137.3500, R²: -2.4803
+   Validation - Loss: 18450.0820, RMSE: 135.8311, R²: -2.4557
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 9 Evaluation Results:
+   Test Loss: 17808.1310
+   RMSE: 133.4471, MAE: 112.1289, R²: -2.4013
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+
+🔍 Running 3-fold cross-validation (Round 10)
+💾 CV metrics saved to: logs/client_15_cv_metrics_20251030_111503.csv
+
+🔄 Starting local training (Round 10)...
+   Epoch 1/1: train_loss=18836.6636, val_rmse=135.6200 ⭐ (improved by inf)
+   ✅ Completed 1 epochs, using best model (val_rmse=135.6200)
+
+🎯 Round 10 Training Summary:
+   Epochs trained: 1/1
+   Total early stops so far: 0
+   Training   - Loss: 18807.0020, RMSE: 137.1386, R²: -2.4696
+   Validation - Loss: 18392.7949, RMSE: 135.6200, R²: -2.4450
+💾 Training metrics saved to: logs/client_15_training_metrics_20251030_111503.csv
+
+🧪 Round 10 Evaluation Results:
+   Test Loss: 17730.7022
+   RMSE: 133.1567, MAE: 111.7853, R²: -2.3865
+💾 Test metrics saved to: logs/client_15_test_metrics_20251030_111503.csv
+
+================================================================================
+🎯 FINAL COMPREHENSIVE REPORT
+================================================================================
+💾 Final summary saved to: logs/client_15_final_summary_20251030_111503.csv
+
+📊 CLIENT: client_15 | ALGORITHM: fedavgm | MODEL: LSTM
+📈 TOTAL ROUNDS: 10
+
+⚙️  HYPERPARAMETERS:
+   Learning Rate: 0.001
+   Batch Size: 32
+   Local Epochs: 1
+   Hidden Dim: 64
+   Num Layers: 2
+   Sequence Length: 10
+   Use Attention: False
+   Dropout: 0.3
+   Optimizer: adam
+
+🛑 EARLY STOPPING SUMMARY:
+   Enabled: Yes
+   Patience: 3 epochs
+   Min delta: 0.001
+   Total early stops: 0/10 rounds
+   Early stop rate: 0.0%
+
+🏁 FINAL ROUND PERFORMANCE:
+   Training   - Loss: 18807.00 | RMSE: 137.14 | R²: -2.4696
+   Validation - Loss: 18392.79 | RMSE: 135.62 | R²: -2.4450
+   Test       - Loss: 17730.70 | RMSE: 133.16 | R²: -2.3865
+
+📊 STATISTICS ACROSS ALL ROUNDS (Mean ± Std):
+   Training Loss:   12545.16 ± 5697.19
+   Validation Loss: 12336.01 ± 5540.32
+   Test Loss:       59022.76 ± 90607.73
+
+   Training RMSE:   108.90 ± 26.20
+   Validation RMSE: 108.04 ± 25.74
+   Test RMSE:       196.64 ± 142.67
+
+   Training R²:     -1.3144 ± 1.0510
+   Validation R²:   -1.3106 ± 1.0377
+   Test R²:         -10.2732 ± 17.3059
+
+⭐ BEST PERFORMANCE:
+   Best Round: 1 (Test R²: -0.2602)
+
+📋 DATA SUMMARY:
+   Training samples:   3705
+   Validation samples: 1229
+   Test samples:       1229
+   Total samples:      6163
+================================================================================
+✅ Client client_15 completed | Algorithm: FEDAVGM

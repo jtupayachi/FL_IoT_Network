@@ -15,19 +15,33 @@ BASE_PORT=8686
 TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
 RUN_ID="run_${TIMESTAMP}"
 
+# # Experiment parameters
+# declare -a STRATEGIES=("fedavg" "fedavgm" "fedopt" "qfedavg")
+
+# MODEL_PARAMS_FEDAVG=""
+# MODEL_PARAMS_FEDAVGM="server_momentum:0.5,0.9"
+# MODEL_PARAMS_FEDOPT="tau:0.001,0.01"
+# MODEL_PARAMS_QFEDAVG="q_param:0.1,0.5,1.0;qffl_learning_rate:0.01,0.1"
+
+# declare -a CLIENTS=(25)
+# declare -a ALPHAS=(0.01, 0.05, 0.1, 0.2, 0.5, 0.075, 1)
+
 # Experiment parameters
-declare -a STRATEGIES=("fedavg" "fedavgm" "fedopt" "qfedavg")
+declare -a STRATEGIES=("fedavg" "fedavgm" "fedopt" "qfedavg" "moon" "fedala") #
 
 MODEL_PARAMS_FEDAVG=""
-MODEL_PARAMS_FEDAVGM="server_momentum:0.5,0.9"
-MODEL_PARAMS_FEDOPT="tau:0.001,0.01"
+MODEL_PARAMS_FEDAVGM="server_momentum:0.3,0.6,0.9"
+MODEL_PARAMS_FEDOPT="tau:0.001,0.01,0.1,1"
 MODEL_PARAMS_QFEDAVG="q_param:0.1,0.5,1.0;qffl_learning_rate:0.01,0.1"
+MODEL_PARAMS_MOON="temperature:0.5,0.7;mu:1.0,5.0"
+MODEL_PARAMS_FEDALA="eta:0.5,1.0;eta_l:0.05,0.1"
 
 declare -a CLIENTS=(25)
-declare -a ALPHAS=(0.01, 0.05, 0.1, 0.2, 0.5, 0.075, 1)
+declare -a ALPHAS=(0.005 0.02 0.05 0.1 0.2 0.5 1.0) #0.01 0.05 0.1 0.2 0.5 0.075 1
+# 0.005, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0
 
 # Default values
-DEFAULT_ROUNDS=200
+DEFAULT_ROUNDS=300
 DEFAULT_MIN_CLIENTS=25
 EXPERIMENT_TIMEOUT=1800  # 30 minutes per experiment
 
@@ -40,11 +54,20 @@ get_param_combinations() {
     local strategy=$1
     local params_string=""
     
+    # case "$strategy" in
+    #     "fedavg") params_string="$MODEL_PARAMS_FEDAVG" ;;
+    #     "fedavgm") params_string="$MODEL_PARAMS_FEDAVGM" ;;
+    #     "fedopt") params_string="$MODEL_PARAMS_FEDOPT" ;;
+    #     "qfedavg") params_string="$MODEL_PARAMS_QFEDAVG" ;;
+    # esac
+
     case "$strategy" in
         "fedavg") params_string="$MODEL_PARAMS_FEDAVG" ;;
         "fedavgm") params_string="$MODEL_PARAMS_FEDAVGM" ;;
         "fedopt") params_string="$MODEL_PARAMS_FEDOPT" ;;
         "qfedavg") params_string="$MODEL_PARAMS_QFEDAVG" ;;
+        "moon") params_string="$MODEL_PARAMS_MOON" ;;
+        "fedala") params_string="$MODEL_PARAMS_FEDALA" ;;
     esac
     
     if [ -z "$params_string" ]; then

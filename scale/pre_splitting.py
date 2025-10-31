@@ -287,32 +287,143 @@ class NASA_CMAPS_PreSplitter:
                     unit_info = units_info[unit]
                     f.write(f"{client_id},{unit_info['unit_id']},{unit_info['fd_file']},{unit_info['size']},{unit_info['data']['original_file'].iloc[0]}\n")
     
+    # def _save_single_client_data(self, client_dir, units, units_info, client_id):
+    #     """Save data for a single client"""
+    #     client_data = []
+        
+    #     for unit in units:
+    #         unit_info = units_info[unit]
+    #         client_data.append(unit_info['data'])
+        
+    #     if client_data:
+    #         client_df = pd.concat(client_data, ignore_index=True)
+    #         # Save without the additional columns we added
+    #         data_columns = list(range(26))  # Original 26 columns
+    #         client_df[data_columns].to_csv(
+    #             os.path.join(client_dir, "train_data.txt"), 
+    #             sep=' ', 
+    #             header=False, 
+    #             index=False
+    #         )
+            
+    #         # Save client info
+    #         with open(os.path.join(client_dir, "client_info.txt"), 'w') as f:
+    #             f.write(f"client_id: {client_id}\n")
+    #             f.write(f"num_units: {len(units)}\n")
+    #             f.write(f"total_samples: {len(client_df)}\n")
+    #             f.write(f"units: {','.join([f'({u[0]},{u[1]})' for u in units])}\n")
+    
+    # def _save_single_client_data(self, client_dir, units, units_info, client_id):
+    #     """Save data for a single client"""
+    #     client_data = []
+        
+    #     for unit in units:
+    #         unit_info = units_info[unit]
+    #         client_data.append(unit_info['data'])
+        
+    #     if client_data:
+    #         client_df = pd.concat(client_data, ignore_index=True)
+            
+    #         # ✅ FIXED: Save ALL 26 original columns
+    #         # Do NOT include the metadata columns we added (unit_id, time_cycles, fd_file, original_file)
+    #         data_columns = list(range(26))  # Columns 0-25
+    #         client_df[data_columns].to_csv(
+    #             os.path.join(client_dir, "train_data.txt"), 
+    #             sep=' ', 
+    #             header=False, 
+    #             index=False,
+    #             float_format='%.4f'  # Match original precision
+    #         )
+            
+    #         # Save client info with RUL statistics
+    #         with open(os.path.join(client_dir, "client_info.txt"), 'w') as f:
+    #             f.write(f"client_id: {client_id}\n")
+    #             f.write(f"num_units: {len(units)}\n")
+    #             f.write(f"total_samples: {len(client_df)}\n")
+    #             f.write(f"units: {','.join([f'({u[0]},{u[1]})' for u in units])}\n")
+                
+    #             # Add RUL statistics
+    #             for unit in units:
+    #                 unit_info = units_info[unit]
+    #                 f.write(f"\nUnit ({unit[0]},{unit[1]}):\n")
+    #                 f.write(f"  max_cycle: {unit_info['max_cycle']}\n")
+    #                 f.write(f"  total_cycles: {unit_info['total_cycles']}\n")
+
+
     def _save_single_client_data(self, client_dir, units, units_info, client_id):
-        """Save data for a single client"""
+        """Save train/test split for a single client"""
         client_data = []
         
+        # Collect all data for this client's units
         for unit in units:
             unit_info = units_info[unit]
             client_data.append(unit_info['data'])
         
-        if client_data:
-            client_df = pd.concat(client_data, ignore_index=True)
-            # Save without the additional columns we added
-            data_columns = list(range(26))  # Original 26 columns
-            client_df[data_columns].to_csv(
-                os.path.join(client_dir, "train_data.txt"), 
-                sep=' ', 
-                header=False, 
-                index=False
-            )
-            
-            # Save client info
-            with open(os.path.join(client_dir, "client_info.txt"), 'w') as f:
-                f.write(f"client_id: {client_id}\n")
-                f.write(f"num_units: {len(units)}\n")
-                f.write(f"total_samples: {len(client_df)}\n")
-                f.write(f"units: {','.join([f'({u[0]},{u[1]})' for u in units])}\n")
-    
+        if not client_data:
+            return
+        
+        # Combine all units for this client
+        client_df = pd.concat(client_data, ignore_index=True)
+        
+        # Extract features (columns 2-25: settings + sensors)
+        # Column 0: unit_id, Column 1: cycle
+        feature_columns = list(range(2, 26))  # Settings + sensors
+        X = client_df[feature_columns].values
+        
+        # Calculate RUL (following notebook's approach)
+        unit_ids = client_df[0].values
+        time_cycles = client_df[1].values
+        y = self._calculate_rul(unit_ids, time_cycles)
+        
+        # ✅ Split into train (80%) and test (20%)
+        from sklearn.model_selection import train_test_split
+        
+        X_train, X_test, y_train, y_test = train_test_split(
+            X, y, 
+            test_size=0.2, 
+            random_state=42, 
+            shuffle=True
+        )
+        
+        # Save train data
+        train_file = os.path.join(client_dir, "train_data.txt")
+        np.savetxt(train_file, X_train, fmt='%.6f', delimiter=' ')
+        
+        train_labels_file = os.path.join(client_dir, "train_labels.txt")
+        np.savetxt(train_labels_file, y_train, fmt='%.6f')
+        
+        # Save test data
+        test_file = os.path.join(client_dir, "test_data.txt")
+        np.savetxt(test_file, X_test, fmt='%.6f', delimiter=' ')
+        
+        test_labels_file = os.path.join(client_dir, "test_labels.txt")
+        np.savetxt(test_labels_file, y_test, fmt='%.6f')
+        
+        # Save metadata
+        info_file = os.path.join(client_dir, "client_info.txt")
+        with open(info_file, 'w') as f:
+            f.write(f"Client ID: {client_id}\n")
+            f.write(f"Units assigned: {sorted(units)}\n")
+            f.write(f"Total samples: {len(client_df)}\n")
+            f.write(f"Train samples: {len(X_train)}\n")
+            f.write(f"Test samples: {len(X_test)}\n")
+            f.write(f"Features: {X_train.shape[1]}\n")
+        
+        print(f"  ✅ Client {client_id}: {len(units)} units, {len(X_train)} train, {len(X_test)} test samples")
+
+
+    def _calculate_rul(self, unit_ids, time_cycles):
+        """Calculate RUL following notebook's ratio approach"""
+        rul = np.zeros(len(unit_ids))
+        
+        for unit_id in np.unique(unit_ids):
+            mask = (unit_ids == unit_id)
+            max_cycle = time_cycles[mask].max()
+            # Ratio: current_cycle / max_cycle (matches notebook)
+            rul[mask] = time_cycles[mask] / max_cycle
+        
+        return rul
+        
     def create_experiment_scripts(self, directory_structures):
         """Create scripts to help with experiment execution"""
         scripts_dir = os.path.join(os.path.dirname(list(directory_structures.values())[0]), "experiment_scripts")

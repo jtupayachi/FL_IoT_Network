@@ -1,0 +1,230 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_numpy_client() is deprecated. 
+	Instead, use `flwr.client.start_client()` by ensuring you first call the `.to_client()` method as shown below: 
+	flwr.client.start_client(
+		server_address='<IP>:<PORT>',
+		client=FlowerClient().to_client(), # <-- where FlowerClient is of type flwr.client.NumPyClient object
+	)
+	Using `start_numpy_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 5b23e267-86b5-41ce-9111-d304b2bce6a2
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message d7ff3060-9210-432e-ab4b-9cd9b7ded19d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message fc3546fe-8e2a-475c-a5bc-a57a0d31eb17
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 1b04122c-ceda-4968-8023-4eeb2464d29d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 90d9c234-664d-44c4-85c6-c5dc51d9b1b9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 2bbafea9-19a9-4ad0-ac1e-39afa6d815a5
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 6f53404b-ecbe-46b9-901a-f7ddb899038e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 1520d91f-fdcf-4b79-8924-c8e02e3a41ff
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6c3a9aa2-73db-4ffb-afc7-0299cb4482e9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4d9d80bb-5d56-45cb-b3c2-c5aa440adcf6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message f3c23526-c15a-425b-abd4-d9bb9aab2d78
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4b09260e-da68-49dc-b834-5f362688ecdf
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 8d71f491-1266-4ffa-80e5-2858dc71454e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message d0a95326-a305-41af-a299-09a5040c2b68
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 5ce55540-1065-48c9-a0dd-afee71753559
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9658a2f8-e26f-4573-a0d0-c428141580ca
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message bd438805-a25b-4b58-840d-840d0c4bfa80
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b9efa26d-db27-4275-9820-f814202991bd
+[92mINFO [0m:      Sent reply
+Traceback (most recent call last):
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 922, in main
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 624, in start_numpy_client
+    start_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 962, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8686 {grpc_status:14, grpc_message:"Socket closed"}"
+>
+
+================================================================================
+🚀 NASA C-MAPSS Federated Learning Client
+================================================================================
+Client ID: client_3
+Server: localhost:8686
+Algorithm: FEDAVG
+================================================================================
+
+   🔧 LSTM config: hidden_dim=64, num_layers=2
+   ✅ Converted to hidden_dims=[64, 64]
+🖥️  Using device: cuda
+✅ Found client data directory with all required files
+
+📊 NASADataLoader initialized:
+   Data path: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.005/client_3
+   RUL mode: linear
+   RUL power: 1
+   Reduction: kpca
+
+📂 Loading data files:
+   Train data: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.005/client_3/train_data.txt
+   Train labels: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.005/client_3/train_labels.txt
+   Test data: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.005/client_3/test_data.txt
+   Test labels: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.005/client_3/test_labels.txt
+
+📊 Raw data loaded:
+   Train: X=(6092, 24), y=(6092,)
+   Test:  X=(1524, 24), y=(1524,)
+
+🔧 Applying StandardScaler...
+
+🔄 Creating LSTM sequences (length=10)...
+
+✅ Data loading complete!
+   Train: 6083 samples, 5 features
+   Test:  1515 samples, 5 features
+
+📊 Round 2 Training Metrics:
+   Train Loss: 0.0131, RMSE: 0.1147, R²: 0.8408
+   Val   Loss: 0.0805, RMSE: 0.2837, R²: 0.0135
+
+📊 Round 2 Test Metrics:
+   Test Loss: 0.0985, RMSE: 0.3139, MAE: 0.2630, R²: -0.1550
+
+📊 Round 3 Training Metrics:
+   Train Loss: 0.0051, RMSE: 0.0712, R²: 0.9386
+   Val   Loss: 0.0746, RMSE: 0.2731, R²: 0.0859
+
+📊 Round 4 Training Metrics:
+   Train Loss: 0.0070, RMSE: 0.0837, R²: 0.9143
+   Val   Loss: 0.0719, RMSE: 0.2682, R²: 0.1506
+
+📊 Round 4 Test Metrics:
+   Test Loss: 0.1037, RMSE: 0.3220, MAE: 0.2610, R²: -0.2156
+
+📊 Round 4 Test Metrics:
+   Test Loss: 0.0986, RMSE: 0.3140, MAE: 0.2525, R²: -0.1562
+
+📊 Round 6 Training Metrics:
+   Train Loss: 0.0026, RMSE: 0.0512, R²: 0.9683
+   Val   Loss: 0.0643, RMSE: 0.2537, R²: 0.1995
+
+📊 Round 8 Training Metrics:
+   Train Loss: 0.0020, RMSE: 0.0450, R²: 0.9755
+   Val   Loss: 0.0565, RMSE: 0.2377, R²: 0.2980
+
+📊 Round 8 Test Metrics:
+   Test Loss: 0.0907, RMSE: 0.3012, MAE: 0.2396, R²: -0.0636
+
+📊 Round 11 Training Metrics:
+   Train Loss: 0.0020, RMSE: 0.0442, R²: 0.9761
+   Val   Loss: 0.0597, RMSE: 0.2444, R²: 0.2884
+
+📊 Round 11 Test Metrics:
+   Test Loss: 0.0845, RMSE: 0.2907, MAE: 0.2346, R²: 0.0088
+
+📊 Round 12 Training Metrics:
+   Train Loss: 0.0015, RMSE: 0.0388, R²: 0.9816
+   Val   Loss: 0.0516, RMSE: 0.2271, R²: 0.3973
+
+📊 Round 12 Test Metrics:
+   Test Loss: 0.0837, RMSE: 0.2894, MAE: 0.2314, R²: 0.0180
+
+📊 Round 13 Training Metrics:
+   Train Loss: 0.0022, RMSE: 0.0467, R²: 0.9736
+   Val   Loss: 0.0516, RMSE: 0.2271, R²: 0.3643
+
+📊 Round 13 Test Metrics:
+   Test Loss: 0.1078, RMSE: 0.3283, MAE: 0.2663, R²: -0.2635
+
+📊 Round 13 Test Metrics:
+   Test Loss: 0.1000, RMSE: 0.3163, MAE: 0.2561, R²: -0.1727
+
+📊 Round 13 Test Metrics:
+   Test Loss: 0.0879, RMSE: 0.2964, MAE: 0.2369, R²: -0.0305
+
+📊 Round 22 Training Metrics:
+   Train Loss: 0.0012, RMSE: 0.0339, R²: 0.9861
+   Val   Loss: 0.0550, RMSE: 0.2344, R²: 0.3186
+
+❌ Client client_3 error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8686 {grpc_status:14, grpc_message:"Socket closed"}"
+>
+Traceback (most recent call last):
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 942, in <module>
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 922, in main
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 624, in start_numpy_client
+    start_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 962, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8686 {grpc_status:14, grpc_message:"Socket closed"}"
+>

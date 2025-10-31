@@ -29,19 +29,30 @@ RUN_ID="run_${TIMESTAMP}"
 # Experiment parameters
 declare -a STRATEGIES=("fedavg" "fedavgm" "fedopt" "qfedavg" "moon" "fedala") #
 
-MODEL_PARAMS_FEDAVG=""
-MODEL_PARAMS_FEDAVGM="server_momentum:0.3,0.6,0.9"
-MODEL_PARAMS_FEDOPT="tau:0.001,0.01,0.1,1"
-MODEL_PARAMS_QFEDAVG="q_param:0.1,0.5,1.0;qffl_learning_rate:0.01,0.1"
-MODEL_PARAMS_MOON="temperature:0.5,0.7;mu:1.0,5.0"
-MODEL_PARAMS_FEDALA="eta:0.5,1.0;eta_l:0.05,0.1"
+# MODEL_PARAMS_FEDAVG=""
+# MODEL_PARAMS_FEDAVGM="server_momentum:0.3,0.6,0.9"
+# MODEL_PARAMS_FEDOPT="tau:0.001,0.01,0.1,1"
+# MODEL_PARAMS_QFEDAVG="q_param:0.1,0.5,1.0;qffl_learning_rate:0.01,0.1"
+# MODEL_PARAMS_MOON="temperature:0.5,0.7;mu:1.0,5.0"
+# MODEL_PARAMS_FEDALA="eta:0.5,1.0;eta_l:0.05,0.1"
 
-declare -a CLIENTS=(25)
-declare -a ALPHAS=(0.005 0.02 0.05 0.1 0.2 0.5 1.0) #0.01 0.05 0.1 0.2 0.5 0.075 1
+MODEL_PARAMS_FEDAVG=""
+
+# ✅ Use the correct parameter names that your server expects:
+MODEL_PARAMS_FEDAVGM="server_momentum:0.7"          # Or "beta:0.7" if server uses "beta"
+MODEL_PARAMS_FEDOPT="tau:1e-8"                      # ✅ Correct
+MODEL_PARAMS_QFEDAVG="q_param:0.2"                  # Or "q:0.2" if server uses "q"
+MODEL_PARAMS_MOON="temperature:0.5;mu:1.0"                          # ✅ Correct  
+MODEL_PARAMS_FEDALA="eta:0.5;eta_l:0.05" 
+
+declare -a CLIENTS=(25 100)
+declare -a ALPHAS=(0.05) #0.01 0.02 0.1 0.2 0.5 0.075 1
+
+# 0.05 0.1 0.2 0.5 1.0 0.005 
 # 0.005, 0.02, 0.05, 0.1, 0.2, 0.5, 1.0
 
 # Default values
-DEFAULT_ROUNDS=300
+DEFAULT_ROUNDS=1000
 DEFAULT_MIN_CLIENTS=25
 EXPERIMENT_TIMEOUT=1800  # 30 minutes per experiment
 

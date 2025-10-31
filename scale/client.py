@@ -384,6 +384,81 @@ class NASADataLoader:
             y_seq.append(targets[i + seq_len - 1])
         return np.array(X_seq), np.array(y_seq)
 
+    # def load_data(self) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
+    #     """Load pre-split train/test data from client directory"""
+    #     try:
+    #         # ✅ Construct file paths
+    #         train_file = os.path.join(self.data_path, "train_data.txt")
+    #         train_labels_file = os.path.join(self.data_path, "train_labels.txt")
+    #         test_file = os.path.join(self.data_path, "test_data.txt")
+    #         test_labels_file = os.path.join(self.data_path, "test_labels.txt")
+            
+    #         print(f"\n📂 Loading data files:")
+    #         print(f"   Train data: {train_file}")
+    #         print(f"   Train labels: {train_labels_file}")
+    #         print(f"   Test data: {test_file}")
+    #         print(f"   Test labels: {test_labels_file}")
+            
+    #         # Load files
+    #         X_train = np.loadtxt(train_file, delimiter=' ')
+    #         y_train = np.loadtxt(train_labels_file)
+    #         X_test = np.loadtxt(test_file, delimiter=' ')
+    #         y_test = np.loadtxt(test_labels_file)
+            
+    #         print(f"\n📊 Raw data loaded:")
+    #         print(f"   Train: X={X_train.shape}, y={y_train.shape}")
+    #         print(f"   Test:  X={X_test.shape}, y={y_test.shape}")
+            
+    #         # Apply RUL transformation if needed
+    #         if self.rul_power != 1:
+    #             print(f"\n🔧 Applying RUL transformation: y^{self.rul_power}")
+    #             print(f"   Before - Train: min={y_train.min():.4f}, max={y_train.max():.4f}")
+    #             y_train = np.power(y_train, self.rul_power)
+    #             y_test = np.power(y_test, self.rul_power)
+    #             print(f"   After  - Train: min={y_train.min():.4f}, max={y_train.max():.4f}")
+            
+    #         # Apply StandardScaler
+    #         print(f"\n🔧 Applying StandardScaler...")
+    #         self.scaler = StandardScaler()
+    #         X_train = self.scaler.fit_transform(X_train)
+    #         X_test = self.scaler.transform(X_test)
+            
+    #         # Apply dimensionality reduction if specified
+    #         if self.reduction_type != 'none':
+    #             X_train, X_test = self.apply_dimensionality_reduction(X_train, X_test)
+            
+    #         # Create sequences for LSTM if needed
+    #         if self.hyperparams.model_type == "lstm":
+    #             print(f"\n🔄 Creating LSTM sequences (length={self.hyperparams.sequence_length})...")
+    #             X_train, y_train = self.create_sequences(X_train, y_train)
+    #             X_test, y_test = self.create_sequences(X_test, y_test)
+            
+    #         # Convert to PyTorch tensors
+    #         X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+    #         y_train_tensor = torch.tensor(y_train, dtype=torch.float32)
+    #         X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
+    #         y_test_tensor = torch.tensor(y_test, dtype=torch.float32)
+            
+    #         # Ensure y has correct shape
+    #         if len(y_train_tensor.shape) == 1:
+    #             y_train_tensor = y_train_tensor.unsqueeze(1)
+    #         if len(y_test_tensor.shape) == 1:
+    #             y_test_tensor = y_test_tensor.unsqueeze(1)
+            
+    #         print(f"\n✅ Data loading complete!")
+    #         print(f"   Train: {X_train_tensor.shape[0]} samples, {X_train_tensor.shape[-1]} features")
+    #         print(f"   Test:  {X_test_tensor.shape[0]} samples, {X_test_tensor.shape[-1]} features")
+            
+    #         return X_train_tensor, y_train_tensor, X_test_tensor, y_test_tensor
+            
+    #     except Exception as e:
+    #         print(f"\n❌ Error loading data: {e}")
+    #         import traceback
+    #         traceback.print_exc()
+    #         raise
+    
+
+
     def load_data(self) -> Tuple[torch.Tensor, torch.Tensor, torch.Tensor, torch.Tensor]:
         """Load pre-split train/test data from client directory"""
         try:
@@ -408,6 +483,18 @@ class NASADataLoader:
             print(f"\n📊 Raw data loaded:")
             print(f"   Train: X={X_train.shape}, y={y_train.shape}")
             print(f"   Test:  X={X_test.shape}, y={y_test.shape}")
+            
+            # ✅ Hardcoded limit to 800 samples maximum
+            MAX_SAMPLES = 800
+            if len(X_train) > MAX_SAMPLES:
+                print(f"\n⚠️  Limiting training data: {len(X_train)} → {MAX_SAMPLES} samples")
+                X_train = X_train[:MAX_SAMPLES]
+                y_train = y_train[:MAX_SAMPLES]
+            
+            if len(X_test) > MAX_SAMPLES:
+                print(f"⚠️  Limiting test data: {len(X_test)} → {MAX_SAMPLES} samples")
+                X_test = X_test[:MAX_SAMPLES]
+                y_test = y_test[:MAX_SAMPLES]
             
             # Apply RUL transformation if needed
             if self.rul_power != 1:
@@ -456,7 +543,7 @@ class NASADataLoader:
             import traceback
             traceback.print_exc()
             raise
-    
+
 
 # class NASAFlowerClient(fl.client.NumPyClient):
 #     def __init__(self, client_id: str, config: Dict):
@@ -471,75 +558,443 @@ class NASADataLoader:
 #         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 #         print(f"🖥️  Using device: {self.device}")
         
-#         # ✅ FIX: Construct correct data path
+#         # Construct data path
 #         data_path = self._get_data_path(config, client_id)
-#         print(f"📂 Client data path: {data_path}")
         
 #         # Load data
 #         self.data_loader = NASADataLoader(data_path, self.hyperparams)
 #         self.X_train, self.y_train, self.X_test, self.y_test = self.data_loader.load_data()
         
-#         # ... rest of __init__ ...
+#         # Move data to device
+#         self.X_train = self.X_train.to(self.device)
+#         self.y_train = self.y_train.to(self.device)
+#         self.X_test = self.X_test.to(self.device)
+#         self.y_test = self.y_test.to(self.device)
+        
+#         # Determine input dimension
+#         input_dim = self.X_train.shape[-1]
+        
+#         # Create model
+#         self.model = ModelFactory.create_model(
+#             self.hyperparams.model_type,
+#             input_dim,
+#             self.hyperparams.hidden_dims,
+#             self.hyperparams.dropout
+#         ).to(self.device)
+        
+#         # Setup optimizer and loss
+#         self.optimizer = torch.optim.Adam(
+#             self.model.parameters(),
+#             lr=self.hyperparams.learning_rate
+#         )
+#         self.criterion = nn.MSELoss()
+        
+#         # Metrics logger
+#         log_dir = config.get("log_dir", "logs")
+#         self.metrics_logger = MetricsLogger(client_id, log_dir)
+        
+#         # Training state
+#         self.current_round = 0
+#         self.total_rounds = config.get("server", {}).get("num_rounds", 100)
+#         self.best_val_rmse = float('inf')
+#         self.epochs_trained = 0
+#         self.total_early_stops = 0
     
 #     def _get_data_path(self, config: Dict, client_id: str) -> str:
-#         """
-#         Construct data path from configuration.
-        
-#         Expected structure from pre_splitting.py:
-#         {base_path}/{num_clients}_clients/alpha_{alpha}/client_{N}/
-        
-#         Example:
-#         /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/25_clients/alpha_0.1/client_0/
-#         """
-#         # Extract configuration
+#         """Construct data path from configuration"""
 #         base_path = config.get("data", {}).get("base_path", "")
 #         num_clients = config.get("data", {}).get("num_clients", 25)
 #         alpha = config.get("data", {}).get("alpha", 0.1)
         
-#         # Extract client number from client_id
 #         if client_id.startswith("client_"):
 #             client_num = int(client_id.split("_")[1])
 #         else:
 #             try:
 #                 client_num = int(client_id)
 #             except ValueError:
-#                 raise ValueError(f"Invalid client_id format: {client_id}. Expected 'client_N' or 'N'")
+#                 raise ValueError(f"Invalid client_id format: {client_id}")
         
-#         # ✅ Construct path matching pre_splitting.py structure
 #         data_path = os.path.join(
-#             base_path,                      # /mnt/ceph_drive/.../pre_split_data
-#             f"{num_clients}_clients",       # /25_clients
-#             f"alpha_{alpha}",                # /alpha_0.1
-#             f"client_{client_num}"          # /client_0
+#             base_path,
+#             f"{num_clients}_clients",
+#             f"alpha_{alpha}",
+#             f"client_{client_num}"
 #         )
         
-#         # Verify path exists
 #         if not os.path.exists(data_path):
-#             raise FileNotFoundError(
-#                 f"❌ Client data directory not found: {data_path}\n"
-#                 f"   Expected structure: {base_path}/{num_clients}_clients/alpha_{alpha}/client_{client_num}/\n"
-#                 f"   💡 Run 'python pre_splitting.py' first to generate pre-split data!"
-#             )
-        
-#         # Verify required files exist
-#         required_files = ["train_data.txt", "train_labels.txt", "test_data.txt", "test_labels.txt"]
-#         missing_files = []
-        
-#         for file_name in required_files:
-#             file_path = os.path.join(data_path, file_name)
-#             if not os.path.exists(file_path):
-#                 missing_files.append(file_name)
-        
-#         if missing_files:
-#             raise FileNotFoundError(
-#                 f"❌ Missing required files in {data_path}:\n"
-#                 f"   {', '.join(missing_files)}\n"
-#                 f"   💡 Run 'python pre_splitting.py' to create these files!"
-#             )
+#             raise FileNotFoundError(f"Client data directory not found: {data_path}")
         
 #         print(f"✅ Found client data directory with all required files")
 #         return data_path
+    
+#     def get_parameters(self, config: Dict[str, Scalar]) -> NDArrays:
+#         """Return model parameters"""
+#         return [val.cpu().numpy() for _, val in self.model.state_dict().items()]
+    
+#     def set_parameters(self, parameters: NDArrays) -> None:
+#         """Set model parameters"""
+#         params_dict = zip(self.model.state_dict().keys(), parameters)
+#         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
+#         self.model.load_state_dict(state_dict, strict=True)
+    
+#     # def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
+#     #     """Train the model (simplified version)"""
+#     #     self.set_parameters(parameters)
+#     #     self.current_round = config.get("current_round", 0)
+        
+#     #     # Simple training loop
+#     #     self.model.train()
+#     #     epochs = config.get("local_epochs", self.hyperparams.local_epochs)
+#     #     batch_size = config.get("batch_size", self.hyperparams.batch_size)
+        
+#     #     for epoch in range(epochs):
+#     #         for i in range(0, len(self.X_train), batch_size):
+#     #             batch_X = self.X_train[i:i+batch_size]
+#     #             batch_y = self.y_train[i:i+batch_size]
+                
+#     #             self.optimizer.zero_grad()
+#     #             outputs = self.model(batch_X)
+#     #             loss = self.criterion(outputs, batch_y)
+#     #             loss.backward()
+#     #             self.optimizer.step()
+        
+#     #     # Return results
+#     #     return self.get_parameters({}), len(self.X_train), {"loss": float(loss.item())}
+    
 
+
+
+#     # def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
+#     #     """Train the model with comprehensive metrics"""
+#     #     self.set_parameters(parameters)
+#     #     self.current_round = config.get("current_round", 0)
+        
+#     #     # Training parameters
+#     #     epochs = config.get("local_epochs", self.hyperparams.local_epochs)
+#     #     batch_size = config.get("batch_size", self.hyperparams.batch_size)
+        
+#     #     # Split training data into train/val
+#     #     val_size = int(0.2 * len(self.X_train))
+#     #     indices = torch.randperm(len(self.X_train))
+        
+#     #     train_indices = indices[val_size:]
+#     #     val_indices = indices[:val_size]
+        
+#     #     X_train_split = self.X_train[train_indices]
+#     #     y_train_split = self.y_train[train_indices]
+#     #     X_val_split = self.X_train[val_indices]
+#     #     y_val_split = self.y_train[val_indices]
+        
+#     #     # Training loop
+#     #     self.model.train()
+#     #     epoch_losses = []
+        
+#     #     for epoch in range(epochs):
+#     #         epoch_loss = 0.0
+#     #         num_batches = 0
+            
+#     #         for i in range(0, len(X_train_split), batch_size):
+#     #             batch_X = X_train_split[i:i+batch_size]
+#     #             batch_y = y_train_split[i:i+batch_size]
+                
+#     #             self.optimizer.zero_grad()
+#     #             outputs = self.model(batch_X)
+#     #             loss = self.criterion(outputs, batch_y)
+#     #             loss.backward()
+#     #             self.optimizer.step()
+                
+#     #             epoch_loss += loss.item()
+#     #             num_batches += 1
+            
+#     #         avg_epoch_loss = epoch_loss / num_batches if num_batches > 0 else 0
+#     #         epoch_losses.append(avg_epoch_loss)
+        
+#     #     # ✅ Calculate comprehensive training metrics
+#     #     self.model.eval()
+#     #     with torch.no_grad():
+#     #         # Training set metrics
+#     #         train_pred = self.model(X_train_split)
+#     #         train_loss = self.criterion(train_pred, y_train_split).item()
+            
+#     #         train_pred_np = train_pred.cpu().numpy().flatten()
+#     #         train_true_np = y_train_split.cpu().numpy().flatten()
+            
+#     #         train_mse = mean_squared_error(train_true_np, train_pred_np)
+#     #         train_rmse = np.sqrt(train_mse)
+#     #         train_mae = mean_absolute_error(train_true_np, train_pred_np)
+#     #         train_r2 = r2_score(train_true_np, train_pred_np)
+            
+#     #         # Validation set metrics
+#     #         val_pred = self.model(X_val_split)
+#     #         val_loss = self.criterion(val_pred, y_val_split).item()
+            
+#     #         val_pred_np = val_pred.cpu().numpy().flatten()
+#     #         val_true_np = y_val_split.cpu().numpy().flatten()
+            
+#     #         val_mse = mean_squared_error(val_true_np, val_pred_np)
+#     #         val_rmse = np.sqrt(val_mse)
+#     #         val_mae = mean_absolute_error(val_true_np, val_pred_np)
+#     #         val_r2 = r2_score(val_true_np, val_pred_np)
+        
+#     #     # ✅ Return comprehensive metrics
+#     #     metrics = {
+#     #         "client_id": self.client_id,
+#     #         "algorithm": self.algorithm,
+#     #         "loss": train_loss,
+#     #         "mae": train_mae,
+#     #         "train_loss": train_loss,
+#     #         "val_loss": val_loss,
+#     #         "train_rmse": train_rmse,
+#     #         "val_rmse": val_rmse,
+#     #         "train_mse": train_mse,
+#     #         "val_mse": val_mse,
+#     #         "train_mae": train_mae,
+#     #         "val_mae": val_mae,
+#     #         "train_r2": train_r2,
+#     #         "val_r2": val_r2,
+#     #         "avg_epoch_loss": np.mean(epoch_losses) if epoch_losses else 0.0,
+#     #         "samples": len(X_train_split)
+#     #     }
+        
+#     #     # Log metrics
+#     #     self.metrics_logger.log_training_metrics(
+#     #         self.current_round, 
+#     #         metrics, 
+#     #         self.hyperparams
+#     #     )
+        
+#     #     print(f"\n📊 Round {self.current_round} Training Metrics:")
+#     #     print(f"   Train Loss: {train_loss:.4f}, RMSE: {train_rmse:.4f}, R²: {train_r2:.4f}")
+#     #     print(f"   Val   Loss: {val_loss:.4f}, RMSE: {val_rmse:.4f}, R²: {val_r2:.4f}")
+        
+#     #     return self.get_parameters({}), len(self.X_train), metrics
+
+
+
+# def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
+#     """Train the model with comprehensive metrics and early stopping"""
+#     self.set_parameters(parameters)
+#     self.current_round = config.get("current_round", 0)
+    
+#     # Training parameters
+#     epochs = config.get("local_epochs", self.hyperparams.local_epochs)
+#     batch_size = config.get("batch_size", self.hyperparams.batch_size)
+    
+#     # Split training data into train/val
+#     val_size = int(0.2 * len(self.X_train))
+#     indices = torch.randperm(len(self.X_train))
+    
+#     train_indices = indices[val_size:]
+#     val_indices = indices[:val_size]
+    
+#     X_train_split = self.X_train[train_indices]
+#     y_train_split = self.y_train[train_indices]
+#     X_val_split = self.X_train[val_indices]
+#     y_val_split = self.y_train[val_indices]
+    
+#     # ✅ Early stopping setup
+#     best_val_loss = float('inf')
+#     patience_counter = 0
+#     best_model_state = None
+#     actual_epochs = 0
+    
+#     # Training loop
+#     self.model.train()
+#     epoch_losses = []
+    
+#     for epoch in range(epochs):
+#         # Training phase
+#         epoch_loss = 0.0
+#         num_batches = 0
+        
+#         for i in range(0, len(X_train_split), batch_size):
+#             batch_X = X_train_split[i:i+batch_size]
+#             batch_y = y_train_split[i:i+batch_size]
+            
+#             self.optimizer.zero_grad()
+#             outputs = self.model(batch_X)
+#             loss = self.criterion(outputs, batch_y)
+#             loss.backward()
+#             self.optimizer.step()
+            
+#             epoch_loss += loss.item()
+#             num_batches += 1
+        
+#         avg_epoch_loss = epoch_loss / num_batches if num_batches > 0 else 0
+#         epoch_losses.append(avg_epoch_loss)
+#         actual_epochs = epoch + 1
+        
+#         # ✅ Validation phase for early stopping
+#         if self.hyperparams.early_stopping_enabled:
+#             self.model.eval()
+#             with torch.no_grad():
+#                 val_pred = self.model(X_val_split)
+#                 val_loss = self.criterion(val_pred, y_val_split).item()
+#             self.model.train()
+            
+#             # Check for improvement
+#             if val_loss < (best_val_loss - self.hyperparams.early_stopping_min_delta):
+#                 best_val_loss = val_loss
+#                 patience_counter = 0
+#                 # Save best model state
+#                 best_model_state = {k: v.cpu().clone() for k, v in self.model.state_dict().items()}
+#                 print(f"   Epoch {epoch+1}/{epochs}: Val loss improved to {val_loss:.4f}")
+#             else:
+#                 patience_counter += 1
+#                 print(f"   Epoch {epoch+1}/{epochs}: Val loss {val_loss:.4f}, patience {patience_counter}/{self.hyperparams.early_stopping_patience}")
+            
+#             # Early stopping triggered
+#             if patience_counter >= self.hyperparams.early_stopping_patience:
+#                 print(f"   ⚠️  Early stopping triggered at epoch {epoch+1}/{epochs}")
+#                 self.total_early_stops += 1
+#                 # Restore best model
+#                 if best_model_state is not None:
+#                     self.model.load_state_dict(best_model_state)
+#                     print(f"   ✅ Restored best model from epoch {epoch+1-patience_counter}")
+#                 break
+    
+#     self.epochs_trained += actual_epochs
+    
+#     # Calculate comprehensive training metrics
+#     self.model.eval()
+#     with torch.no_grad():
+#         # Training set metrics
+#         train_pred = self.model(X_train_split)
+#         train_loss = self.criterion(train_pred, y_train_split).item()
+        
+#         train_pred_np = train_pred.cpu().numpy().flatten()
+#         train_true_np = y_train_split.cpu().numpy().flatten()
+        
+#         train_mse = mean_squared_error(train_true_np, train_pred_np)
+#         train_rmse = np.sqrt(train_mse)
+#         train_mae = mean_absolute_error(train_true_np, train_pred_np)
+#         train_r2 = r2_score(train_true_np, train_pred_np)
+        
+#         # Validation set metrics
+#         val_pred = self.model(X_val_split)
+#         val_loss = self.criterion(val_pred, y_val_split).item()
+        
+#         val_pred_np = val_pred.cpu().numpy().flatten()
+#         val_true_np = y_val_split.cpu().numpy().flatten()
+        
+#         val_mse = mean_squared_error(val_true_np, val_pred_np)
+#         val_rmse = np.sqrt(val_mse)
+#         val_mae = mean_absolute_error(val_true_np, val_pred_np)
+#         val_r2 = r2_score(val_true_np, val_pred_np)
+    
+#     # Return comprehensive metrics
+#     metrics = {
+#         "client_id": self.client_id,
+#         "algorithm": self.algorithm,
+#         "loss": train_loss,
+#         "mae": train_mae,
+#         "train_loss": train_loss,
+#         "val_loss": val_loss,
+#         "train_rmse": train_rmse,
+#         "val_rmse": val_rmse,
+#         "train_mse": train_mse,
+#         "val_mse": val_mse,
+#         "train_mae": train_mae,
+#         "val_mae": val_mae,
+#         "train_r2": train_r2,
+#         "val_r2": val_r2,
+#         "avg_epoch_loss": np.mean(epoch_losses) if epoch_losses else 0.0,
+#         "samples": len(X_train_split),
+#         "actual_epochs": actual_epochs,  # ✅ Track actual epochs trained
+#         "early_stopped": actual_epochs < epochs  # ✅ Flag if early stopping occurred
+#     }
+    
+#     # Log metrics
+#     self.metrics_logger.log_training_metrics(
+#         self.current_round, 
+#         metrics, 
+#         self.hyperparams
+#     )
+    
+#     print(f"\n📊 Round {self.current_round} Training Metrics:")
+#     print(f"   Epochs: {actual_epochs}/{epochs}" + (" (early stopped)" if actual_epochs < epochs else ""))
+#     print(f"   Train Loss: {train_loss:.4f}, RMSE: {train_rmse:.4f}, R²: {train_r2:.4f}")
+#     print(f"   Val   Loss: {val_loss:.4f}, RMSE: {val_rmse:.4f}, R²: {val_r2:.4f}")
+    
+#     return self.get_parameters({}), len(self.X_train), metrics
+
+    
+
+#     # def evaluate(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[float, int, Dict[str, Scalar]]:
+#     #     """Evaluate the model"""
+#     #     self.set_parameters(parameters)
+#     #     self.model.eval()
+        
+#     #     with torch.no_grad():
+#     #         outputs = self.model(self.X_test)
+#     #         loss = self.criterion(outputs, self.y_test)
+        
+#     #     return float(loss.item()), len(self.X_test), {}
+    
+#     def evaluate(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[float, int, Dict[str, Scalar]]:
+#         """Evaluate the model with comprehensive metrics"""
+#         self.set_parameters(parameters)
+#         self.model.eval()
+        
+#         with torch.no_grad():
+#             predictions = self.model(self.X_test)
+#             loss = self.criterion(predictions, self.y_test).item()
+            
+#             # ✅ Calculate comprehensive test metrics
+#             pred_np = predictions.cpu().numpy().flatten()
+#             true_np = self.y_test.cpu().numpy().flatten()
+            
+#             mse = mean_squared_error(true_np, pred_np)
+#             rmse = np.sqrt(mse)
+#             mae = mean_absolute_error(true_np, pred_np)
+#             r2 = r2_score(true_np, pred_np)
+        
+#         # ✅ Return comprehensive metrics
+#         metrics = {
+#             "client_id": self.client_id,
+#             "algorithm": self.algorithm,
+#             "test_loss": loss,
+#             "test_rmse": rmse,
+#             "test_mse": mse,
+#             "test_mae": mae,
+#             "test_r2": r2
+#         }
+        
+#         # Log metrics
+#         self.metrics_logger.log_test_metrics(
+#             self.current_round,
+#             metrics,
+#             self.hyperparams.model_type
+#         )
+        
+#         print(f"\n📊 Round {self.current_round} Test Metrics:")
+#         print(f"   Test Loss: {loss:.4f}, RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")
+        
+#         return loss, len(self.X_test), metrics
+
+
+#     def generate_final_report(self):
+#         """Generate final training report"""
+#         print("\n" + "="*80)
+#         print("🎯 FINAL TRAINING REPORT")
+#         print("="*80)
+#         print(f"Client ID: {self.client_id}")
+#         print(f"Algorithm: {self.algorithm.upper()}")
+#         print(f"Total Rounds: {self.total_rounds}")
+#         print(f"Training Samples: {len(self.X_train)}")
+#         print(f"Test Samples: {len(self.X_test)}")
+#         print("="*80)
+        
+#         summary = self.metrics_logger.generate_final_summary(
+#             self.total_rounds, self.algorithm, self.hyperparams
+#         )
+        
+#         if summary:
+#             print(f"\n📊 Performance Summary:")
+#             print(f"   Final Train Loss: {summary.get('final_train_loss', 0):.4f}")
+#             print(f"   Final Test Loss: {summary.get('final_test_loss', 0):.4f}")
+#             print(f"   Final RMSE: {summary.get('final_test_rmse', 0):.4f}")
+#             print(f"   Final R²: {summary.get('final_test_r2', 0):.4f}")
 
 
 
@@ -587,6 +1042,18 @@ class NASAFlowerClient(fl.client.NumPyClient):
         )
         self.criterion = nn.MSELoss()
         
+        # ✅ Setup learning rate scheduler with ReduceLROnPlateau
+        model_config = config.get("model", {})
+        self.scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(
+            self.optimizer,
+            mode='min',
+            factor=model_config.get("scheduler_factor", 0.5),
+            patience=model_config.get("scheduler_patience", 5),
+            threshold=model_config.get("scheduler_threshold", 0.0001),
+            min_lr=model_config.get("scheduler_min_lr", 1e-6),
+            cooldown=2
+        )
+        
         # Metrics logger
         log_dir = config.get("log_dir", "logs")
         self.metrics_logger = MetricsLogger(client_id, log_dir)
@@ -597,6 +1064,11 @@ class NASAFlowerClient(fl.client.NumPyClient):
         self.best_val_rmse = float('inf')
         self.epochs_trained = 0
         self.total_early_stops = 0
+        self.total_lr_reductions = 0
+        
+        print(f"✅ Client {client_id} initialized with ReduceLROnPlateau scheduler")
+        print(f"   Initial LR: {self.hyperparams.learning_rate}")
+        print(f"   Scheduler patience: {model_config.get('scheduler_patience', 5)}")
     
     def _get_data_path(self, config: Dict, client_id: str) -> str:
         """Construct data path from configuration"""
@@ -635,41 +1107,16 @@ class NASAFlowerClient(fl.client.NumPyClient):
         state_dict = OrderedDict({k: torch.tensor(v) for k, v in params_dict})
         self.model.load_state_dict(state_dict, strict=True)
     
-    # def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
-    #     """Train the model (simplified version)"""
-    #     self.set_parameters(parameters)
-    #     self.current_round = config.get("current_round", 0)
-        
-    #     # Simple training loop
-    #     self.model.train()
-    #     epochs = config.get("local_epochs", self.hyperparams.local_epochs)
-    #     batch_size = config.get("batch_size", self.hyperparams.batch_size)
-        
-    #     for epoch in range(epochs):
-    #         for i in range(0, len(self.X_train), batch_size):
-    #             batch_X = self.X_train[i:i+batch_size]
-    #             batch_y = self.y_train[i:i+batch_size]
-                
-    #             self.optimizer.zero_grad()
-    #             outputs = self.model(batch_X)
-    #             loss = self.criterion(outputs, batch_y)
-    #             loss.backward()
-    #             self.optimizer.step()
-        
-    #     # Return results
-    #     return self.get_parameters({}), len(self.X_train), {"loss": float(loss.item())}
-    
-
-
-
     def fit(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[NDArrays, int, Dict[str, Scalar]]:
-        """Train the model with comprehensive metrics"""
+        """Train with early stopping and learning rate scheduling"""
         self.set_parameters(parameters)
         self.current_round = config.get("current_round", 0)
         
         # Training parameters
         epochs = config.get("local_epochs", self.hyperparams.local_epochs)
         batch_size = config.get("batch_size", self.hyperparams.batch_size)
+        patience = config.get("patience", self.hyperparams.early_stopping_patience)
+        min_delta = config.get("min_delta", self.hyperparams.early_stopping_min_delta)
         
         # Split training data into train/val
         val_size = int(0.2 * len(self.X_train))
@@ -683,11 +1130,26 @@ class NASAFlowerClient(fl.client.NumPyClient):
         X_val_split = self.X_train[val_indices]
         y_val_split = self.y_train[val_indices]
         
+        # ✅ Early stopping and LR tracking
+        best_val_loss = float('inf')
+        patience_counter = 0
+        best_model_state = None
+        actual_epochs = 0
+        initial_lr = self.optimizer.param_groups[0]['lr']
+        lr_reductions_this_fit = 0
+        
+        print(f"\n{'='*60}")
+        print(f"🔄 Round {self.current_round} - Client {self.client_id}")
+        print(f"   Epochs: {epochs}, Batch: {batch_size}, LR: {initial_lr:.6f}")
+        print(f"   Early Stop Patience: {patience}, Min Delta: {min_delta}")
+        print(f"{'='*60}")
+        
         # Training loop
         self.model.train()
         epoch_losses = []
         
         for epoch in range(epochs):
+            # Training phase
             epoch_loss = 0.0
             num_batches = 0
             
@@ -704,37 +1166,88 @@ class NASAFlowerClient(fl.client.NumPyClient):
                 epoch_loss += loss.item()
                 num_batches += 1
             
-            avg_epoch_loss = epoch_loss / num_batches if num_batches > 0 else 0
-            epoch_losses.append(avg_epoch_loss)
+            avg_train_loss = epoch_loss / num_batches if num_batches > 0 else 0
+            epoch_losses.append(avg_train_loss)
+            actual_epochs = epoch + 1
+            
+            # ✅ Validation phase
+            self.model.eval()
+            with torch.no_grad():
+                val_pred = self.model(X_val_split)
+                val_loss = self.criterion(val_pred, y_val_split).item()
+            self.model.train()
+            
+            # ✅ Step scheduler with validation loss
+            prev_lr = self.optimizer.param_groups[0]['lr']
+            self.scheduler.step(val_loss)
+            current_lr = self.optimizer.param_groups[0]['lr']
+            
+            # Track LR reductions
+            if current_lr < prev_lr:
+                lr_reductions_this_fit += 1
+                self.total_lr_reductions += 1
+                print(f"   📉 Epoch {epoch+1}: LR reduced {prev_lr:.6f} → {current_lr:.6f}")
+            
+            # ✅ Early stopping check
+            if self.hyperparams.early_stopping_enabled:
+                if val_loss < (best_val_loss - min_delta):
+                    best_val_loss = val_loss
+                    patience_counter = 0
+                    best_model_state = {k: v.cpu().clone() for k, v in self.model.state_dict().items()}
+                    if epoch % 10 == 0 or epoch < 5:
+                        print(f"   ✓ Epoch {epoch+1:3d}/{epochs}: train={avg_train_loss:.4f}, "
+                              f"val={val_loss:.4f} (↓), lr={current_lr:.6f}")
+                else:
+                    patience_counter += 1
+                    if epoch % 10 == 0 or epoch < 5:
+                        print(f"   • Epoch {epoch+1:3d}/{epochs}: train={avg_train_loss:.4f}, "
+                              f"val={val_loss:.4f}, patience={patience_counter}/{patience}, lr={current_lr:.6f}")
+                
+                # Early stopping condition 1: Patience exceeded
+                if patience_counter >= patience:
+                    print(f"\n   ⚠️  Early stopping: No improvement for {patience} epochs")
+                    if best_model_state is not None:
+                        self.model.load_state_dict(best_model_state)
+                        print(f"   ✅ Restored best model (val_loss={best_val_loss:.4f})")
+                    self.total_early_stops += 1
+                    break
+                
+                # Early stopping condition 2: LR too small
+                if current_lr < 1e-6:
+                    print(f"\n   ⚠️  Early stopping: LR too small ({current_lr:.2e})")
+                    if best_model_state is not None:
+                        self.model.load_state_dict(best_model_state)
+                        print(f"   ✅ Restored best model (val_loss={best_val_loss:.4f})")
+                    self.total_early_stops += 1
+                    break
         
-        # ✅ Calculate comprehensive training metrics
+        self.epochs_trained += actual_epochs
+        
+        # Calculate final metrics
         self.model.eval()
         with torch.no_grad():
-            # Training set metrics
             train_pred = self.model(X_train_split)
             train_loss = self.criterion(train_pred, y_train_split).item()
-            
             train_pred_np = train_pred.cpu().numpy().flatten()
             train_true_np = y_train_split.cpu().numpy().flatten()
             
-            train_mse = mean_squared_error(train_true_np, train_pred_np)
-            train_rmse = np.sqrt(train_mse)
-            train_mae = mean_absolute_error(train_true_np, train_pred_np)
-            train_r2 = r2_score(train_true_np, train_pred_np)
-            
-            # Validation set metrics
             val_pred = self.model(X_val_split)
             val_loss = self.criterion(val_pred, y_val_split).item()
-            
             val_pred_np = val_pred.cpu().numpy().flatten()
             val_true_np = y_val_split.cpu().numpy().flatten()
-            
-            val_mse = mean_squared_error(val_true_np, val_pred_np)
-            val_rmse = np.sqrt(val_mse)
-            val_mae = mean_absolute_error(val_true_np, val_pred_np)
-            val_r2 = r2_score(val_true_np, val_pred_np)
         
-        # ✅ Return comprehensive metrics
+        train_mse = mean_squared_error(train_true_np, train_pred_np)
+        train_rmse = np.sqrt(train_mse)
+        train_mae = mean_absolute_error(train_true_np, train_pred_np)
+        train_r2 = r2_score(train_true_np, train_pred_np)
+        
+        val_mse = mean_squared_error(val_true_np, val_pred_np)
+        val_rmse = np.sqrt(val_mse)
+        val_mae = mean_absolute_error(val_true_np, val_pred_np)
+        val_r2 = r2_score(val_true_np, val_pred_np)
+        
+        final_lr = self.optimizer.param_groups[0]['lr']
+        
         metrics = {
             "client_id": self.client_id,
             "algorithm": self.algorithm,
@@ -751,34 +1264,27 @@ class NASAFlowerClient(fl.client.NumPyClient):
             "train_r2": train_r2,
             "val_r2": val_r2,
             "avg_epoch_loss": np.mean(epoch_losses) if epoch_losses else 0.0,
-            "samples": len(X_train_split)
+            "samples": len(X_train_split),
+            "actual_epochs": actual_epochs,
+            "early_stopped": actual_epochs < epochs,
+            "best_val_loss": best_val_loss,
+            "initial_lr": initial_lr,
+            "final_lr": final_lr,
+            "lr_reductions": lr_reductions_this_fit
         }
         
-        # Log metrics
-        self.metrics_logger.log_training_metrics(
-            self.current_round, 
-            metrics, 
-            self.hyperparams
-        )
+        self.metrics_logger.log_training_metrics(self.current_round, metrics, self.hyperparams)
         
-        print(f"\n📊 Round {self.current_round} Training Metrics:")
-        print(f"   Train Loss: {train_loss:.4f}, RMSE: {train_rmse:.4f}, R²: {train_r2:.4f}")
-        print(f"   Val   Loss: {val_loss:.4f}, RMSE: {val_rmse:.4f}, R²: {val_r2:.4f}")
+        print(f"\n{'='*60}")
+        print(f"📊 Round {self.current_round} Summary - Client {self.client_id}")
+        print(f"   Epochs: {actual_epochs}/{epochs}" + 
+              (" (early stopped)" if actual_epochs < epochs else ""))
+        print(f"   LR: {initial_lr:.6f} → {final_lr:.6f} ({lr_reductions_this_fit} reductions)")
+        print(f"   Train: Loss={train_loss:.4f}, RMSE={train_rmse:.4f}, R²={train_r2:.4f}")
+        print(f"   Val:   Loss={val_loss:.4f}, RMSE={val_rmse:.4f}, R²={val_r2:.4f}")
+        print(f"{'='*60}\n")
         
         return self.get_parameters({}), len(self.X_train), metrics
-
-
-
-    # def evaluate(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[float, int, Dict[str, Scalar]]:
-    #     """Evaluate the model"""
-    #     self.set_parameters(parameters)
-    #     self.model.eval()
-        
-    #     with torch.no_grad():
-    #         outputs = self.model(self.X_test)
-    #         loss = self.criterion(outputs, self.y_test)
-        
-    #     return float(loss.item()), len(self.X_test), {}
     
     def evaluate(self, parameters: NDArrays, config: Dict[str, Scalar]) -> Tuple[float, int, Dict[str, Scalar]]:
         """Evaluate the model with comprehensive metrics"""
@@ -789,7 +1295,6 @@ class NASAFlowerClient(fl.client.NumPyClient):
             predictions = self.model(self.X_test)
             loss = self.criterion(predictions, self.y_test).item()
             
-            # ✅ Calculate comprehensive test metrics
             pred_np = predictions.cpu().numpy().flatten()
             true_np = self.y_test.cpu().numpy().flatten()
             
@@ -798,7 +1303,6 @@ class NASAFlowerClient(fl.client.NumPyClient):
             mae = mean_absolute_error(true_np, pred_np)
             r2 = r2_score(true_np, pred_np)
         
-        # ✅ Return comprehensive metrics
         metrics = {
             "client_id": self.client_id,
             "algorithm": self.algorithm,
@@ -809,7 +1313,6 @@ class NASAFlowerClient(fl.client.NumPyClient):
             "test_r2": r2
         }
         
-        # Log metrics
         self.metrics_logger.log_test_metrics(
             self.current_round,
             metrics,
@@ -817,10 +1320,9 @@ class NASAFlowerClient(fl.client.NumPyClient):
         )
         
         print(f"\n📊 Round {self.current_round} Test Metrics:")
-        print(f"   Test Loss: {loss:.4f}, RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")
+        print(f"   Loss: {loss:.4f}, RMSE: {rmse:.4f}, MAE: {mae:.4f}, R²: {r2:.4f}")
         
         return loss, len(self.X_test), metrics
-
 
     def generate_final_report(self):
         """Generate final training report"""
@@ -832,6 +1334,10 @@ class NASAFlowerClient(fl.client.NumPyClient):
         print(f"Total Rounds: {self.total_rounds}")
         print(f"Training Samples: {len(self.X_train)}")
         print(f"Test Samples: {len(self.X_test)}")
+        print(f"Total Epochs Trained: {self.epochs_trained}")
+        print(f"Early Stops: {self.total_early_stops}")
+        print(f"Learning Rate Reductions: {self.total_lr_reductions}")
+        print(f"Final Learning Rate: {self.optimizer.param_groups[0]['lr']:.6f}")
         print("="*80)
         
         summary = self.metrics_logger.generate_final_summary(
@@ -844,8 +1350,6 @@ class NASAFlowerClient(fl.client.NumPyClient):
             print(f"   Final Test Loss: {summary.get('final_test_loss', 0):.4f}")
             print(f"   Final RMSE: {summary.get('final_test_rmse', 0):.4f}")
             print(f"   Final R²: {summary.get('final_test_r2', 0):.4f}")
-
-
 
 
 

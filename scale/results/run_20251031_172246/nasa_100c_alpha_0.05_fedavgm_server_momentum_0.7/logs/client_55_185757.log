@@ -1,0 +1,2581 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_numpy_client() is deprecated. 
+	Instead, use `flwr.client.start_client()` by ensuring you first call the `.to_client()` method as shown below: 
+	flwr.client.start_client(
+		server_address='<IP>:<PORT>',
+		client=FlowerClient().to_client(), # <-- where FlowerClient is of type flwr.client.NumPyClient object
+	)
+	Using `start_numpy_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[93mWARNING [0m:   DEPRECATED FEATURE: flwr.client.start_client() is deprecated.
+	Instead, use the `flower-supernode` CLI command to start a SuperNode as shown below:
+
+		$ flower-supernode --insecure --superlink='<IP>:<PORT>'
+
+	To view all available options, run:
+
+		$ flower-supernode --help
+
+	Using `start_client()` is deprecated.
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 035ca069-0f34-4247-9889-d120e119d09c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e3c9367c-4ea4-4e89-8111-962f2c3c874a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message b1427155-b26a-42a8-ae3e-6db9761003e6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 9d7f5b43-9caf-46d9-8eee-a74c27a864f4
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message df30f2df-c9b2-4711-b403-ed6333f6ac8f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 084885ab-6098-46a0-b6c3-6be132da4f5c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 2416d16d-f6c9-4a56-ad80-1b858ac3af01
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message d10e5396-76d5-44d5-b90b-0e413eaddb07
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 68a23fda-ca6e-4c31-a7ab-93bd58e53d32
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message c45a2919-53d2-4dc1-8bf1-d4d6847da39f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6c812f56-6628-486e-849e-ae88d2684aa6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a92f8f99-68c8-4785-b8f1-8c7cfc53f651
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 469bb438-2855-4808-b804-9a7ce4e97816
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 70bbd9f8-fa36-43f2-8c43-90ef4119335e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6d2aeff0-2364-47d3-9498-ee9d27c80f6f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 9f047b6c-7dd6-4f24-8608-82dbf1df1f97
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a0ecab08-6a8a-4212-becf-0824d192937c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ab0a239d-83ee-44da-9e8d-e01d0bd38084
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 2c5f3386-c1c8-4efa-8503-6f46ef4fc352
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a397e938-716c-49a3-89db-646c2a898c76
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 64d66a7b-5260-447b-a43b-8018f0c8cdd1
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message a95d70f2-7e16-44fb-85a9-4123082eedc9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 562c3ada-ca77-4545-b462-acf8d97018fd
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 1b0a1eed-6f5e-48fd-9a41-debdf81fbd29
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 886abf55-28e7-45d2-9173-802a4301affd
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message f35e041b-80a2-499c-a868-f03257b8fc2f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message c1320506-4ae5-4428-9e7b-290e07bf52f9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a41d241f-9d7a-43cc-8de1-49d3c35f07c2
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f3da71e5-fcc9-4cd3-a234-49b50e543ef1
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 8578cbd4-c086-463f-b0e0-43da50967680
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message f1ec66e1-ecd8-4681-bd48-61fce2be6844
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 0c8be46d-ced0-4579-9779-9c1df08c0ab6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 841d8940-5fdb-420c-b145-d1474f8833e6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 18af97a9-ef00-48a1-8242-cb53e27eb04a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 22f8dea1-932e-48c7-b685-44f5d4cb82a2
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message db104c7b-8f23-46bc-af8a-19e0c3e6e00a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 736e0e6a-3b60-4285-99d3-459ee5a09b7f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 131dbb19-a2b9-4681-8fb5-d46aa18b8df8
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message ae236211-7030-4c45-bfb5-bf1cb2988d1d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message e70c3729-1ea1-4c76-93fe-9faf64a11d5c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message eb729647-7fdf-49d5-82a6-6af9fa937150
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 8baf9843-518c-4c79-9af5-d56231fed48b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message df7239ef-a093-40ff-a5a4-05dc33bfb915
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4aafbfe6-12ff-4ac6-a06f-5d9258815730
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 419046c6-1eb2-4f7c-8fcd-50e8c8e33967
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message bd13b5c5-d3a0-4dd8-9197-0898e61ec3fc
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9057708f-dd04-41e6-97b1-80be8cb5778d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 0d23abea-5073-4969-b642-759fc35d632d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 36bba264-39a1-4de8-8184-827d8aff7da8
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f9e87125-70ff-4b16-b31f-36a660082d84
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 81a56f3a-4eb4-477e-8d80-a3ac8a10d054
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 0bca4a0c-2dd1-4d98-b780-6f28d2c70778
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message fd538320-01d5-4972-bdf8-55ce2aabefd6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 42f66f4b-a4c3-4bee-8aa4-c1c520f2a12f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message dc3ac2d5-e419-491b-a0b1-b5e9b78608de
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e164f84e-a1ed-4bc0-8a74-6833f8d92049
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 98fbd67b-d616-4c0e-b9cb-b83aa1386e21
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message e339f403-5db4-45e2-b58c-5b8de58200d2
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a7e18ba9-c160-46d6-a65b-661f45901315
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 045d99de-cd5f-489a-b6b8-0d58e304b6cd
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message fc2a4c08-5cb6-46c4-93a2-465a4590ce1f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message c55db818-295b-43d2-81c9-92af1d0d3bda
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message a3e7fb65-4e7e-4775-9c1f-0b2e98eb6d02
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 99a468c8-ace6-4bfe-aa0b-5b6091d144b9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message dfbca8ff-7d9b-44f8-8fa0-8482ccfb9188
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6ddbfde1-ebe5-4d2f-bf10-6fcc28dbb4e0
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message d7b21242-a9ae-45b7-86c7-ba632fa17f12
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 29f69479-ff9b-4f2f-8c3e-f5c5f0445e08
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 68b52689-67f9-4c4c-a7f2-b359642f754b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 8ec27fc4-3e6b-48f0-b209-abce1ff07ef6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 29002040-a6c7-4c42-b7cd-8040d54faa83
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message b16ecead-1ce9-45c5-b5fc-a89e1582b252
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 6f7e75bb-2435-446c-a44d-82cc9207821a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 0402c1bd-3c59-4135-9906-28221ec5cc7c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 8def5b07-bd23-42d6-9291-dc9fecca1d96
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ee972ffc-48bf-455d-abca-163f54ecc9d7
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 58ad988d-f109-4872-9673-3d9c3d84a8e8
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message ef3fcb8e-997b-492f-94cc-77ea73e79ce0
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 67cf7250-797a-43e4-9fb0-440abe56aaa0
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 2fe35f39-e56e-4235-a601-c1b13afc3b3d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 478bd829-b144-4e5c-903d-ad6565200d6b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6090f467-6a65-40d0-8811-eafc6932a278
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 66bab139-bf99-4f9d-9e93-d7c1ad87b7d8
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 2d42114a-7880-439d-8b2d-cbfe0e327dd7
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 3e06a7b8-6216-486d-a7e7-0748551ad985
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 523f36f7-e1c1-4434-9c1c-b06adbe485af
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 096b309f-9a8f-431e-b5ca-7343a7966e17
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4ae5f1c8-2049-47e9-95c6-d4d32b7620df
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 6513d659-aace-499d-b0be-99159bec723d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message c75b4cc0-7e4e-4851-bc08-c5113a88148a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f0f384ed-1060-4a6d-8fb1-a6286c78abd9
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b4cbd5d1-a8b6-44b2-9fb2-c6f56a605846
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 456913a6-4719-4f24-a69d-02e6176fd758
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f19b4c79-ecc1-49cf-a5da-d95d7079dd95
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message d6f7c602-20a2-4705-9190-99264f68c35c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 42f162b5-8ac3-4ae0-b558-94c8a7705d2b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message ac7adbca-c446-4566-8ff3-a7db4640dc49
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message cfee6376-4ecd-4dd2-8aa7-22f0eac1dfbf
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 5e6cbdb9-afba-44cc-b30a-335df9a68ee3
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 6084e842-9949-489b-9567-a825f2318e0b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9475a679-a133-4dc8-b09a-45f5209f49fc
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 60691713-ab19-4d57-8d9d-b16fd7ea088f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 22b20c57-14cc-48d5-8909-e1a45cb8066c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 5c985bb9-464c-407a-8055-dd25f205ca64
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 5e66c920-afe4-4cb1-b30f-cfb7c0086fa1
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message a500b023-c623-426a-a26a-ed8b2eaf9753
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 152e621f-0094-49e7-b148-1f9cd28e492d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message c60fa866-a95f-4a36-9a0c-bd391329a910
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e91b449c-3347-4ae9-9f6e-afc8bda1fc56
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 2a57ecd3-710b-4ace-b42c-0035c6b5e9b4
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 42b8a4c5-a23d-41f4-8b19-e50a4c7949d0
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 8ff0bfed-06cd-4eee-ab26-930a43f1e65e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 64e446ff-fc52-4334-b26a-8b4c87ee5361
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 11536cc9-1da4-4e0e-a999-d5c5ad4be71a
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message c1d7d71a-9170-496e-b710-8094300a1b7c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message add281db-12e5-4ba6-93ad-5c08c854ff72
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message dc9fed7e-f0a0-4828-9637-531c46bdf742
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message a7050942-bf7b-4063-aa9b-cab8e55652a8
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 31fbce44-67b6-4b02-86f8-b665d7624f0c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 23a954a2-84a3-4f13-b7de-5720226e186f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message be11cca5-c4bf-4391-bf39-a789809ebc1e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message e5a7d926-f69d-4736-b02a-38fc983280ee
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message d20f4a26-98f2-4599-97a4-e5080496edc0
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 9fecabb2-57ca-4054-b55a-e82363bbce0d
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message d4b18c5c-bbeb-4227-89f9-067cdfcaac6e
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 4e834229-ffad-4ad2-bc49-e809230ba863
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b8374f48-37ff-4460-a37f-c65b60254545
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b3c3ce8a-214a-40d2-905e-cb832e7dc0e4
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message cbc16a51-d874-4364-baf2-623cffc665d7
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 28202a81-6a2e-4d14-8e5d-c1954025af8b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 3a28d89d-fcbc-4cd6-98f4-007b083fb881
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message 16c6d4a7-4917-4f78-8fb2-b4640854ca81
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message db8cba70-e290-405a-95ff-8d99898c2b82
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message f6bb0358-67f2-4543-aef8-2073a3d65ca7
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message c3623bbb-34f4-4b12-8efd-e03f43f6a7b6
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message b3e52c33-272c-488d-82fb-8e8356bd49ed
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 51c530d8-556d-43b5-9444-6f3c140f0a8f
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message c5d10de5-b4a8-4451-8b62-ca123413d897
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message d0bde7b8-3817-4273-9ffd-1e571443e26c
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: evaluate message 4cd8b1fb-506e-46fc-94c5-3975d0238d0b
+[92mINFO [0m:      Sent reply
+[92mINFO [0m:      
+[92mINFO [0m:      Received: train message e00b512f-6e7d-45fe-9b13-e3fcb7cd2426
+[92mINFO [0m:      Sent reply
+Traceback (most recent call last):
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 1390, in main
+    fl.client.start_numpy_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 624, in start_numpy_client
+    start_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 945, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8689 {grpc_status:14, grpc_message:"Socket closed"}"
+>
+
+================================================================================
+🚀 NASA C-MAPSS Federated Learning Client
+================================================================================
+Client ID: client_55
+Server: localhost:8689
+Algorithm: FEDAVGM
+================================================================================
+
+   🔧 LSTM config: hidden_dim=64, num_layers=2
+   ✅ Converted to hidden_dims=[64, 64]
+🖥️  Using device: cuda
+✅ Found client data directory with all required files
+
+📊 NASADataLoader initialized:
+   Data path: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/100_clients/alpha_0.05/client_55
+   RUL mode: linear
+   RUL power: 1
+   Reduction: kpca
+
+📂 Loading data files:
+   Train data: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/100_clients/alpha_0.05/client_55/train_data.txt
+   Train labels: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/100_clients/alpha_0.05/client_55/train_labels.txt
+   Test data: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/100_clients/alpha_0.05/client_55/test_data.txt
+   Test labels: /mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data/100_clients/alpha_0.05/client_55/test_labels.txt
+
+📊 Raw data loaded:
+   Train: X=(1940, 24), y=(1940,)
+   Test:  X=(486, 24), y=(486,)
+
+⚠️  Limiting training data: 1940 → 800 samples
+
+🔧 Applying StandardScaler...
+
+🔄 Creating LSTM sequences (length=10)...
+
+✅ Data loading complete!
+   Train: 791 samples, 5 features
+   Test:  477 samples, 5 features
+✅ Client client_55 initialized with ReduceLROnPlateau scheduler
+   Initial LR: 0.001
+   Scheduler patience: 5
+
+============================================================
+🔄 Round 12 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.001000
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0813, val=0.0874 (↓), lr=0.001000
+   • Epoch   2/100: train=0.0794, val=0.0871, patience=1/15, lr=0.001000
+   • Epoch   3/100: train=0.0786, val=0.0874, patience=2/15, lr=0.001000
+   • Epoch   4/100: train=0.0778, val=0.0880, patience=3/15, lr=0.001000
+   • Epoch   5/100: train=0.0768, val=0.0883, patience=4/15, lr=0.001000
+   📉 Epoch 8: LR reduced 0.001000 → 0.000500
+   • Epoch  11/100: train=0.0695, val=0.0904, patience=10/15, lr=0.000500
+   📉 Epoch 16: LR reduced 0.000500 → 0.000250
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0874)
+
+============================================================
+📊 Round 12 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.001000 → 0.000250 (2 reductions)
+   Train: Loss=0.0795, RMSE=0.2820, R²=0.0163
+   Val:   Loss=0.0874, RMSE=0.2956, R²=-0.0356
+============================================================
+
+
+============================================================
+🔄 Round 13 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000250
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0859, val=0.0685 (↓), lr=0.000250
+   • Epoch   2/100: train=0.0846, val=0.0687, patience=1/15, lr=0.000250
+   • Epoch   3/100: train=0.0840, val=0.0685, patience=2/15, lr=0.000250
+   • Epoch   4/100: train=0.0837, val=0.0685, patience=3/15, lr=0.000250
+   • Epoch   5/100: train=0.0834, val=0.0685, patience=4/15, lr=0.000250
+   • Epoch  11/100: train=0.0821, val=0.0683, patience=10/15, lr=0.000250
+   • Epoch  21/100: train=0.0797, val=0.0675, patience=5/15, lr=0.000250
+   ✓ Epoch  31/100: train=0.0763, val=0.0663 (↓), lr=0.000250
+   • Epoch  41/100: train=0.0722, val=0.0649, patience=2/15, lr=0.000250
+   ✓ Epoch  51/100: train=0.0677, val=0.0635 (↓), lr=0.000250
+   • Epoch  61/100: train=0.0627, val=0.0616, patience=1/15, lr=0.000250
+   ✓ Epoch  71/100: train=0.0573, val=0.0601 (↓), lr=0.000250
+   • Epoch  81/100: train=0.0519, val=0.0604, patience=10/15, lr=0.000250
+   📉 Epoch 82: LR reduced 0.000250 → 0.000125
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0601)
+
+============================================================
+📊 Round 13 Summary - Client client_55
+   Epochs: 86/100 (early stopped)
+   LR: 0.000250 → 0.000125 (1 reductions)
+   Train: Loss=0.0558, RMSE=0.2362, R²=0.3427
+   Val:   Loss=0.0601, RMSE=0.2452, R²=0.1343
+============================================================
+
+
+📊 Round 13 Test Metrics:
+   Loss: 0.0842, RMSE: 0.2902, MAE: 0.2535, R²: 0.0155
+
+============================================================
+🔄 Round 14 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000125
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0804, val=0.0843 (↓), lr=0.000125
+   • Epoch   2/100: train=0.0801, val=0.0841, patience=1/15, lr=0.000125
+   • Epoch   3/100: train=0.0798, val=0.0840, patience=2/15, lr=0.000125
+   📉 Epoch 4: LR reduced 0.000125 → 0.000063
+   • Epoch   4/100: train=0.0796, val=0.0840, patience=3/15, lr=0.000063
+   • Epoch   5/100: train=0.0795, val=0.0839, patience=4/15, lr=0.000063
+   • Epoch  11/100: train=0.0790, val=0.0837, patience=2/15, lr=0.000063
+   📉 Epoch 12: LR reduced 0.000063 → 0.000031
+   📉 Epoch 20: LR reduced 0.000031 → 0.000016
+   • Epoch  21/100: train=0.0786, val=0.0835, patience=12/15, lr=0.000016
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0837)
+
+============================================================
+📊 Round 14 Summary - Client client_55
+   Epochs: 24/100 (early stopped)
+   LR: 0.000125 → 0.000016 (3 reductions)
+   Train: Loss=0.0792, RMSE=0.2814, R²=0.0257
+   Val:   Loss=0.0837, RMSE=0.2894, R²=0.0035
+============================================================
+
+
+📊 Round 14 Test Metrics:
+   Loss: 0.0834, RMSE: 0.2888, MAE: 0.2507, R²: 0.0245
+
+============================================================
+🔄 Round 16 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000016
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0818, val=0.0783 (↓), lr=0.000016
+   • Epoch   2/100: train=0.0815, val=0.0784, patience=1/15, lr=0.000016
+   • Epoch   3/100: train=0.0812, val=0.0784, patience=2/15, lr=0.000016
+   📉 Epoch 4: LR reduced 0.000016 → 0.000008
+   • Epoch   4/100: train=0.0810, val=0.0784, patience=3/15, lr=0.000008
+   • Epoch   5/100: train=0.0808, val=0.0785, patience=4/15, lr=0.000008
+   • Epoch  11/100: train=0.0803, val=0.0786, patience=10/15, lr=0.000008
+   📉 Epoch 12: LR reduced 0.000008 → 0.000004
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0783)
+
+============================================================
+📊 Round 16 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000016 → 0.000004 (2 reductions)
+   Train: Loss=0.0816, RMSE=0.2857, R²=0.0103
+   Val:   Loss=0.0783, RMSE=0.2799, R²=0.0057
+============================================================
+
+
+📊 Round 16 Test Metrics:
+   Loss: 0.0835, RMSE: 0.2890, MAE: 0.2517, R²: 0.0236
+
+📊 Round 16 Test Metrics:
+   Loss: 0.0851, RMSE: 0.2918, MAE: 0.2547, R²: 0.0044
+
+📊 Round 16 Test Metrics:
+   Loss: 0.0857, RMSE: 0.2928, MAE: 0.2554, R²: -0.0027
+
+============================================================
+🔄 Round 20 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000004
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0798, val=0.0845 (↓), lr=0.000004
+   • Epoch   2/100: train=0.0798, val=0.0845, patience=1/15, lr=0.000004
+   • Epoch   3/100: train=0.0798, val=0.0844, patience=2/15, lr=0.000004
+   📉 Epoch 4: LR reduced 0.000004 → 0.000002
+   • Epoch   4/100: train=0.0798, val=0.0844, patience=3/15, lr=0.000002
+   • Epoch   5/100: train=0.0797, val=0.0844, patience=4/15, lr=0.000002
+   • Epoch  11/100: train=0.0797, val=0.0843, patience=10/15, lr=0.000002
+   📉 Epoch 12: LR reduced 0.000002 → 0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0845)
+
+============================================================
+📊 Round 20 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000004 → 0.000001 (2 reductions)
+   Train: Loss=0.0797, RMSE=0.2823, R²=0.0081
+   Val:   Loss=0.0845, RMSE=0.2907, R²=0.0254
+============================================================
+
+
+📊 Round 20 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2532, R²: 0.0116
+
+============================================================
+🔄 Round 22 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0790, val=0.0838 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0790, val=0.0838, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0790, val=0.0838, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0790, val=0.0838, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0790, val=0.0838, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0789, val=0.0838, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0838)
+
+============================================================
+📊 Round 22 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0791, RMSE=0.2812, R²=0.0309
+   Val:   Loss=0.0838, RMSE=0.2896, R²=-0.0189
+============================================================
+
+
+============================================================
+🔄 Round 23 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0800, val=0.0792 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0800, val=0.0792, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0800, val=0.0792, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0800, val=0.0792, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0800, val=0.0792, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0799, val=0.0791, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0792)
+
+============================================================
+📊 Round 23 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0801, RMSE=0.2830, R²=0.0052
+   Val:   Loss=0.0792, RMSE=0.2815, R²=0.0897
+============================================================
+
+
+📊 Round 23 Test Metrics:
+   Loss: 0.0842, RMSE: 0.2901, MAE: 0.2530, R²: 0.0160
+
+📊 Round 23 Test Metrics:
+   Loss: 0.0844, RMSE: 0.2905, MAE: 0.2534, R²: 0.0132
+
+============================================================
+🔄 Round 27 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0803, val=0.0790 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0803, val=0.0790, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0803, val=0.0790, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0803, val=0.0790, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0803, val=0.0790, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0802, val=0.0789, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0790)
+
+============================================================
+📊 Round 27 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0803, RMSE=0.2834, R²=0.0162
+   Val:   Loss=0.0790, RMSE=0.2811, R²=0.0416
+============================================================
+
+
+============================================================
+🔄 Round 32 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0812, val=0.0774 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0812, val=0.0774, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0811, val=0.0774, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0811, val=0.0774, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0811, val=0.0774, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0811, val=0.0774, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0774)
+
+============================================================
+📊 Round 32 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0811, RMSE=0.2848, R²=0.0137
+   Val:   Loss=0.0774, RMSE=0.2782, R²=0.0308
+============================================================
+
+
+📊 Round 32 Test Metrics:
+   Loss: 0.0848, RMSE: 0.2913, MAE: 0.2542, R²: 0.0080
+
+============================================================
+🔄 Round 33 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0782, val=0.0888 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0782, val=0.0888, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0782, val=0.0888, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0782, val=0.0888, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0782, val=0.0888, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0781, val=0.0887, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0888)
+
+============================================================
+📊 Round 33 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0783, RMSE=0.2798, R²=0.0231
+   Val:   Loss=0.0888, RMSE=0.2980, R²=-0.0017
+============================================================
+
+
+============================================================
+🔄 Round 38 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0787, val=0.0873 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0787, val=0.0873, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0787, val=0.0873, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0787, val=0.0873, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0787, val=0.0873, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0786, val=0.0873, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0873)
+
+============================================================
+📊 Round 38 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0787, RMSE=0.2806, R²=0.0214
+   Val:   Loss=0.0873, RMSE=0.2955, R²=-0.0071
+============================================================
+
+
+============================================================
+🔄 Round 39 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0831, val=0.0705 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0831, val=0.0705, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0830, val=0.0705, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0830, val=0.0705, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0830, val=0.0705, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0830, val=0.0704, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0705)
+
+============================================================
+📊 Round 39 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0829, RMSE=0.2880, R²=0.0194
+   Val:   Loss=0.0705, RMSE=0.2655, R²=0.0053
+============================================================
+
+
+📊 Round 39 Test Metrics:
+   Loss: 0.0848, RMSE: 0.2913, MAE: 0.2542, R²: 0.0081
+
+📊 Round 39 Test Metrics:
+   Loss: 0.0848, RMSE: 0.2912, MAE: 0.2542, R²: 0.0083
+
+============================================================
+🔄 Round 43 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0805, val=0.0791 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0805, val=0.0791, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0805, val=0.0791, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0805, val=0.0791, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0805, val=0.0791, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0804, val=0.0791, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0791)
+
+============================================================
+📊 Round 43 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0807, RMSE=0.2842, R²=0.0147
+   Val:   Loss=0.0791, RMSE=0.2813, R²=0.0157
+============================================================
+
+
+📊 Round 43 Test Metrics:
+   Loss: 0.0848, RMSE: 0.2912, MAE: 0.2542, R²: 0.0084
+
+📊 Round 43 Test Metrics:
+   Loss: 0.0848, RMSE: 0.2912, MAE: 0.2542, R²: 0.0086
+
+============================================================
+🔄 Round 47 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0789, val=0.0862 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0789, val=0.0862, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0789, val=0.0862, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0789, val=0.0862, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0789, val=0.0862, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0789, val=0.0861, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0862)
+
+============================================================
+📊 Round 47 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0790, RMSE=0.2810, R²=0.0211
+   Val:   Loss=0.0862, RMSE=0.2936, R²=0.0023
+============================================================
+
+
+============================================================
+🔄 Round 50 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0790, val=0.0858 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0789, val=0.0858, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0789, val=0.0858, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0789, val=0.0858, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0789, val=0.0858, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0788, val=0.0858, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0858)
+
+============================================================
+📊 Round 50 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0790, RMSE=0.2811, R²=0.0228
+   Val:   Loss=0.0858, RMSE=0.2930, R²=-0.0125
+============================================================
+
+
+============================================================
+🔄 Round 51 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0791, val=0.0860 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0791, val=0.0860, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0791, val=0.0860, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0791, val=0.0860, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0791, val=0.0860, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0790, val=0.0859, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0860)
+
+============================================================
+📊 Round 51 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0790, RMSE=0.2811, R²=0.0162
+   Val:   Loss=0.0860, RMSE=0.2932, R²=0.0223
+============================================================
+
+
+============================================================
+🔄 Round 52 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0814, val=0.0777 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0814, val=0.0777, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0777, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0813, val=0.0776, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0813, val=0.0776, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0813, val=0.0776, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0777)
+
+============================================================
+📊 Round 52 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0811, RMSE=0.2847, R²=0.0144
+   Val:   Loss=0.0777, RMSE=0.2787, R²=0.0255
+============================================================
+
+
+📊 Round 52 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2911, MAE: 0.2541, R²: 0.0094
+
+============================================================
+🔄 Round 55 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0794, val=0.0843 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0794, val=0.0843, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0794, val=0.0843, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0794, val=0.0843, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0794, val=0.0843, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0793, val=0.0843, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0843)
+
+============================================================
+📊 Round 55 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0794, RMSE=0.2818, R²=0.0191
+   Val:   Loss=0.0843, RMSE=0.2904, R²=0.0093
+============================================================
+
+
+============================================================
+🔄 Round 56 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0827, val=0.0708 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0827, val=0.0708, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0827, val=0.0708, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0827, val=0.0708, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0827, val=0.0708, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0826, val=0.0708, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0708)
+
+============================================================
+📊 Round 56 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0828, RMSE=0.2877, R²=0.0212
+   Val:   Loss=0.0708, RMSE=0.2660, R²=-0.0075
+============================================================
+
+
+============================================================
+🔄 Round 58 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0814, val=0.0761 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0814, val=0.0761, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0761, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0814, val=0.0761, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0813, val=0.0761, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0813, val=0.0760, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0761)
+
+============================================================
+📊 Round 58 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0814, RMSE=0.2854, R²=0.0168
+   Val:   Loss=0.0761, RMSE=0.2758, R²=0.0179
+============================================================
+
+
+📊 Round 58 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0099
+
+📊 Round 58 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0100
+
+📊 Round 58 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2911, MAE: 0.2541, R²: 0.0094
+
+📊 Round 58 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2911, MAE: 0.2541, R²: 0.0091
+
+============================================================
+🔄 Round 70 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0795, val=0.0842 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0795, val=0.0842, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0795, val=0.0842, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0795, val=0.0842, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0795, val=0.0842, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0794, val=0.0842, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0842)
+
+============================================================
+📊 Round 70 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0794, RMSE=0.2819, R²=0.0201
+   Val:   Loss=0.0842, RMSE=0.2901, R²=-0.0068
+============================================================
+
+
+📊 Round 70 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0098
+
+============================================================
+🔄 Round 71 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0818, val=0.0757 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0818, val=0.0757, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0818, val=0.0757, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0817, val=0.0757, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0817, val=0.0757, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0817, val=0.0757, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0757)
+
+============================================================
+📊 Round 71 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0815, RMSE=0.2856, R²=0.0127
+   Val:   Loss=0.0757, RMSE=0.2751, R²=0.0357
+============================================================
+
+
+============================================================
+🔄 Round 72 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0809, val=0.0783 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0809, val=0.0783, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0809, val=0.0783, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0809, val=0.0783, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0809, val=0.0783, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0809, val=0.0783, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0783)
+
+============================================================
+📊 Round 72 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0809, RMSE=0.2844, R²=0.0172
+   Val:   Loss=0.0783, RMSE=0.2799, R²=0.0203
+============================================================
+
+
+📊 Round 72 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2539, R²: 0.0104
+
+============================================================
+🔄 Round 77 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0801, val=0.0815 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0801, val=0.0815, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0801, val=0.0815, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0801, val=0.0815, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0801, val=0.0815, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0800, val=0.0814, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0815)
+
+============================================================
+📊 Round 77 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0801, RMSE=0.2830, R²=0.0183
+   Val:   Loss=0.0815, RMSE=0.2854, R²=0.0067
+============================================================
+
+
+📊 Round 77 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0103
+
+============================================================
+🔄 Round 78 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0805, val=0.0799 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0805, val=0.0798, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0804, val=0.0798, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0804, val=0.0798, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0804, val=0.0798, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0804, val=0.0798, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0799)
+
+============================================================
+📊 Round 78 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0805, RMSE=0.2837, R²=0.0177
+   Val:   Loss=0.0799, RMSE=0.2826, R²=0.0184
+============================================================
+
+
+📊 Round 78 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0100
+
+============================================================
+🔄 Round 83 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0817, val=0.0773 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0817, val=0.0772, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0817, val=0.0772, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0817, val=0.0772, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0817, val=0.0772, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0816, val=0.0772, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0773)
+
+============================================================
+📊 Round 83 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0812, RMSE=0.2850, R²=0.0159
+   Val:   Loss=0.0773, RMSE=0.2779, R²=0.0230
+============================================================
+
+
+============================================================
+🔄 Round 84 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0783, val=0.0896 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0783, val=0.0896, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0783, val=0.0896, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0783, val=0.0896, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0783, val=0.0896, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0782, val=0.0895, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0896)
+
+============================================================
+📊 Round 84 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0781, RMSE=0.2795, R²=0.0173
+   Val:   Loss=0.0896, RMSE=0.2993, R²=0.0141
+============================================================
+
+
+============================================================
+🔄 Round 87 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0799, val=0.0823 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0799, val=0.0823, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0799, val=0.0823, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0799, val=0.0823, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0799, val=0.0823, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0798, val=0.0823, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0823)
+
+============================================================
+📊 Round 87 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0799, RMSE=0.2827, R²=0.0191
+   Val:   Loss=0.0823, RMSE=0.2870, R²=-0.0045
+============================================================
+
+
+============================================================
+🔄 Round 88 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0790, val=0.0851 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0790, val=0.0851, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0790, val=0.0851, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0790, val=0.0851, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0790, val=0.0851, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0789, val=0.0850, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0851)
+
+============================================================
+📊 Round 88 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0792, RMSE=0.2814, R²=0.0232
+   Val:   Loss=0.0851, RMSE=0.2917, R²=-0.0037
+============================================================
+
+
+📊 Round 88 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0103
+
+📊 Round 88 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2539, R²: 0.0107
+
+============================================================
+🔄 Round 91 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0810, val=0.0784 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0810, val=0.0784, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0809, val=0.0784, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0809, val=0.0784, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0809, val=0.0783, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0809, val=0.0783, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0784)
+
+============================================================
+📊 Round 91 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0809, RMSE=0.2843, R²=0.0166
+   Val:   Loss=0.0784, RMSE=0.2799, R²=0.0120
+============================================================
+
+
+📊 Round 91 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0111
+
+============================================================
+🔄 Round 93 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0795, val=0.0836 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0795, val=0.0836, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0795, val=0.0835, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0795, val=0.0835, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0795, val=0.0835, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0795, val=0.0835, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0836)
+
+============================================================
+📊 Round 93 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0795, RMSE=0.2820, R²=0.0145
+   Val:   Loss=0.0836, RMSE=0.2891, R²=0.0277
+============================================================
+
+
+============================================================
+🔄 Round 95 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0821, val=0.0734 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0821, val=0.0734, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0821, val=0.0734, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0821, val=0.0734, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0821, val=0.0734, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0820, val=0.0734, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0734)
+
+============================================================
+📊 Round 95 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0821, RMSE=0.2864, R²=0.0172
+   Val:   Loss=0.0734, RMSE=0.2709, R²=0.0232
+============================================================
+
+
+📊 Round 95 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2908, MAE: 0.2538, R²: 0.0115
+
+============================================================
+🔄 Round 97 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0818, val=0.0744 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0818, val=0.0744, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0818, val=0.0744, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0818, val=0.0744, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0818, val=0.0744, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0817, val=0.0743, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0744)
+
+============================================================
+📊 Round 97 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0818, RMSE=0.2860, R²=0.0168
+   Val:   Loss=0.0744, RMSE=0.2727, R²=0.0184
+============================================================
+
+
+============================================================
+🔄 Round 98 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0781, val=0.0899 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0781, val=0.0899, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0781, val=0.0899, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0781, val=0.0899, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0781, val=0.0899, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0780, val=0.0899, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0899)
+
+============================================================
+📊 Round 98 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0779, RMSE=0.2792, R²=0.0243
+   Val:   Loss=0.0899, RMSE=0.2999, R²=-0.0070
+============================================================
+
+
+============================================================
+🔄 Round 99 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0802, val=0.0809 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0802, val=0.0809, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0802, val=0.0809, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0801, val=0.0809, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0801, val=0.0809, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0801, val=0.0809, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0809)
+
+============================================================
+📊 Round 99 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0802, RMSE=0.2832, R²=0.0217
+   Val:   Loss=0.0809, RMSE=0.2844, R²=-0.0133
+============================================================
+
+
+📊 Round 99 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0113
+
+============================================================
+🔄 Round 100 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0793, val=0.0837 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0793, val=0.0837, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0793, val=0.0837, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0793, val=0.0837, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0793, val=0.0837, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0792, val=0.0837, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0837)
+
+============================================================
+📊 Round 100 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0795, RMSE=0.2819, R²=0.0243
+   Val:   Loss=0.0837, RMSE=0.2893, R²=-0.0100
+============================================================
+
+
+============================================================
+🔄 Round 101 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0783, val=0.0878 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0783, val=0.0878, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0783, val=0.0878, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0783, val=0.0878, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0783, val=0.0878, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0782, val=0.0878, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0878)
+
+============================================================
+📊 Round 101 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0785, RMSE=0.2801, R²=0.0216
+   Val:   Loss=0.0878, RMSE=0.2964, R²=0.0061
+============================================================
+
+
+============================================================
+🔄 Round 103 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0811, val=0.0772 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0811, val=0.0772, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0811, val=0.0772, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0811, val=0.0772, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0811, val=0.0772, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0810, val=0.0772, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0772)
+
+============================================================
+📊 Round 103 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0811, RMSE=0.2848, R²=0.0187
+   Val:   Loss=0.0772, RMSE=0.2779, R²=0.0098
+============================================================
+
+
+📊 Round 103 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0112
+
+============================================================
+🔄 Round 104 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0818, val=0.0748 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0818, val=0.0748, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0818, val=0.0748, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0818, val=0.0748, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0817, val=0.0748, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0817, val=0.0748, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0748)
+
+============================================================
+📊 Round 104 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0817, RMSE=0.2859, R²=0.0148
+   Val:   Loss=0.0748, RMSE=0.2735, R²=0.0329
+============================================================
+
+
+📊 Round 104 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0113
+
+============================================================
+🔄 Round 108 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0798, val=0.0822 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0798, val=0.0822, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0798, val=0.0822, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0798, val=0.0822, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0798, val=0.0822, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0797, val=0.0821, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0822)
+
+============================================================
+📊 Round 108 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0799, RMSE=0.2826, R²=0.0176
+   Val:   Loss=0.0822, RMSE=0.2866, R²=0.0116
+============================================================
+
+
+📊 Round 108 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2538, R²: 0.0116
+
+📊 Round 108 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2538, R²: 0.0117
+
+📊 Round 108 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2538, R²: 0.0117
+
+============================================================
+🔄 Round 111 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0823, val=0.0719 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0823, val=0.0719, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0823, val=0.0718, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0823, val=0.0718, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0823, val=0.0718, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0822, val=0.0718, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0719)
+
+============================================================
+📊 Round 111 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0824, RMSE=0.2871, R²=0.0241
+   Val:   Loss=0.0719, RMSE=0.2681, R²=-0.0097
+============================================================
+
+
+📊 Round 111 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2908, MAE: 0.2538, R²: 0.0115
+
+📊 Round 111 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0113
+
+📊 Round 111 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0113
+
+============================================================
+🔄 Round 118 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0810, val=0.0768 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0810, val=0.0768, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0810, val=0.0768, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0810, val=0.0768, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0810, val=0.0768, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0809, val=0.0768, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0768)
+
+============================================================
+📊 Round 118 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0812, RMSE=0.2850, R²=0.0201
+   Val:   Loss=0.0768, RMSE=0.2772, R²=0.0093
+============================================================
+
+
+📊 Round 118 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0112
+
+📊 Round 118 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0110
+
+============================================================
+🔄 Round 121 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0807, val=0.0806 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0807, val=0.0805, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0807, val=0.0805, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0807, val=0.0805, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0807, val=0.0805, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0806, val=0.0805, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0806)
+
+============================================================
+📊 Round 121 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0803, RMSE=0.2834, R²=0.0194
+   Val:   Loss=0.0806, RMSE=0.2838, R²=0.0098
+============================================================
+
+
+============================================================
+🔄 Round 122 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0795, val=0.0842 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0795, val=0.0842, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0795, val=0.0842, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0795, val=0.0842, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0795, val=0.0842, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0794, val=0.0841, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0842)
+
+============================================================
+📊 Round 122 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0794, RMSE=0.2818, R²=0.0163
+   Val:   Loss=0.0842, RMSE=0.2902, R²=0.0227
+============================================================
+
+
+📊 Round 122 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2539, R²: 0.0106
+
+📊 Round 122 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0105
+
+============================================================
+🔄 Round 124 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0805, val=0.0801 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0805, val=0.0801, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0805, val=0.0801, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0804, val=0.0801, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0804, val=0.0801, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0804, val=0.0802, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0801)
+
+============================================================
+📊 Round 124 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0805, RMSE=0.2836, R²=0.0183
+   Val:   Loss=0.0801, RMSE=0.2831, R²=-0.0046
+============================================================
+
+
+============================================================
+🔄 Round 126 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0797, val=0.0831 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0797, val=0.0830, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0797, val=0.0830, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0797, val=0.0830, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0797, val=0.0830, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0797, val=0.0829, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0831)
+
+============================================================
+📊 Round 126 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0797, RMSE=0.2824, R²=0.0134
+   Val:   Loss=0.0831, RMSE=0.2882, R²=0.0333
+============================================================
+
+
+============================================================
+🔄 Round 127 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0804, val=0.0812 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0804, val=0.0812, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0804, val=0.0811, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0804, val=0.0811, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0803, val=0.0811, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0803, val=0.0811, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0812)
+
+============================================================
+📊 Round 127 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0802, RMSE=0.2832, R²=0.0171
+   Val:   Loss=0.0812, RMSE=0.2849, R²=0.0193
+============================================================
+
+
+📊 Round 127 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0105
+
+============================================================
+🔄 Round 129 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0799, val=0.0832 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0799, val=0.0832, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0798, val=0.0832, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0798, val=0.0832, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0798, val=0.0832, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0797, val=0.0832, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0832)
+
+============================================================
+📊 Round 129 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0797, RMSE=0.2823, R²=0.0201
+   Val:   Loss=0.0832, RMSE=0.2884, R²=0.0008
+============================================================
+
+
+============================================================
+🔄 Round 130 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0792, val=0.0863 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0792, val=0.0863, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0792, val=0.0863, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0791, val=0.0863, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0791, val=0.0863, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0791, val=0.0863, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0863)
+
+============================================================
+📊 Round 130 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0789, RMSE=0.2809, R²=0.0250
+   Val:   Loss=0.0863, RMSE=0.2938, R²=-0.0106
+============================================================
+
+
+📊 Round 130 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2539, R²: 0.0106
+
+============================================================
+🔄 Round 134 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0788, val=0.0866 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0788, val=0.0866, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0788, val=0.0866, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0788, val=0.0866, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0788, val=0.0866, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0787, val=0.0866, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0866)
+
+============================================================
+📊 Round 134 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0789, RMSE=0.2808, R²=0.0212
+   Val:   Loss=0.0866, RMSE=0.2943, R²=0.0008
+============================================================
+
+
+============================================================
+🔄 Round 135 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0809, val=0.0776 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0809, val=0.0776, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0808, val=0.0776, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0808, val=0.0776, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0808, val=0.0776, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0808, val=0.0776, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0776)
+
+============================================================
+📊 Round 135 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0811, RMSE=0.2848, R²=0.0154
+   Val:   Loss=0.0776, RMSE=0.2786, R²=0.0257
+============================================================
+
+
+📊 Round 135 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0103
+
+============================================================
+🔄 Round 136 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0814, val=0.0773 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0814, val=0.0773, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0773, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0814, val=0.0773, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0813, val=0.0773, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0813, val=0.0773, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0773)
+
+============================================================
+📊 Round 136 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0812, RMSE=0.2850, R²=0.0120
+   Val:   Loss=0.0773, RMSE=0.2780, R²=0.0388
+============================================================
+
+
+📊 Round 136 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0102
+
+============================================================
+🔄 Round 137 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0817, val=0.0751 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0817, val=0.0750, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0817, val=0.0750, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0817, val=0.0750, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0817, val=0.0750, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0816, val=0.0750, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0751)
+
+============================================================
+📊 Round 137 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0818, RMSE=0.2859, R²=0.0188
+   Val:   Loss=0.0751, RMSE=0.2740, R²=0.0084
+============================================================
+
+
+============================================================
+🔄 Round 139 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0819, val=0.0746 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0819, val=0.0746, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0819, val=0.0746, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0819, val=0.0746, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0818, val=0.0746, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0818, val=0.0746, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0746)
+
+============================================================
+📊 Round 139 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0819, RMSE=0.2862, R²=0.0164
+   Val:   Loss=0.0746, RMSE=0.2731, R²=0.0139
+============================================================
+
+
+📊 Round 139 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0099
+
+============================================================
+🔄 Round 142 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0780, val=0.0903 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0780, val=0.0903, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0780, val=0.0903, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0780, val=0.0903, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0780, val=0.0903, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0780, val=0.0903, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0903)
+
+============================================================
+📊 Round 142 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0780, RMSE=0.2793, R²=0.0189
+   Val:   Loss=0.0903, RMSE=0.3005, R²=-0.0034
+============================================================
+
+
+📊 Round 142 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0100
+
+📊 Round 142 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0101
+
+============================================================
+🔄 Round 144 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0802, val=0.0811 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0802, val=0.0811, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0802, val=0.0811, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0801, val=0.0810, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0801, val=0.0810, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0801, val=0.0810, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0811)
+
+============================================================
+📊 Round 144 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0803, RMSE=0.2834, R²=0.0159
+   Val:   Loss=0.0811, RMSE=0.2847, R²=0.0191
+============================================================
+
+
+📊 Round 144 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0101
+
+============================================================
+🔄 Round 145 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0797, val=0.0830 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0797, val=0.0830, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0797, val=0.0830, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0797, val=0.0830, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0797, val=0.0830, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0796, val=0.0830, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0830)
+
+============================================================
+📊 Round 145 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0798, RMSE=0.2825, R²=0.0243
+   Val:   Loss=0.0830, RMSE=0.2881, R²=-0.0127
+============================================================
+
+
+📊 Round 145 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0103
+
+📊 Round 145 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0104
+
+📊 Round 145 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0104
+
+============================================================
+🔄 Round 149 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0828, val=0.0710 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0828, val=0.0710, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0828, val=0.0710, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0828, val=0.0710, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0828, val=0.0710, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0827, val=0.0709, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0710)
+
+============================================================
+📊 Round 149 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0828, RMSE=0.2878, R²=0.0144
+   Val:   Loss=0.0710, RMSE=0.2664, R²=0.0275
+============================================================
+
+
+============================================================
+🔄 Round 151 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0814, val=0.0769 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0814, val=0.0769, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0769, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0814, val=0.0769, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0813, val=0.0769, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0813, val=0.0770, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0769)
+
+============================================================
+📊 Round 151 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0814, RMSE=0.2852, R²=0.0165
+   Val:   Loss=0.0769, RMSE=0.2773, R²=-0.0034
+============================================================
+
+
+📊 Round 151 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0101
+
+============================================================
+🔄 Round 155 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0789, val=0.0866 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0789, val=0.0866, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0789, val=0.0866, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0789, val=0.0866, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0789, val=0.0866, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0788, val=0.0865, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0866)
+
+============================================================
+📊 Round 155 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0789, RMSE=0.2810, R²=0.0191
+   Val:   Loss=0.0866, RMSE=0.2943, R²=0.0073
+============================================================
+
+
+📊 Round 155 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2909, MAE: 0.2540, R²: 0.0102
+
+============================================================
+🔄 Round 160 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0814, val=0.0767 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0814, val=0.0767, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0767, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0814, val=0.0767, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0814, val=0.0766, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0813, val=0.0766, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0767)
+
+============================================================
+📊 Round 160 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0815, RMSE=0.2854, R²=0.0103
+   Val:   Loss=0.0767, RMSE=0.2769, R²=0.0370
+============================================================
+
+
+📊 Round 160 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0099
+
+📊 Round 160 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0099
+
+============================================================
+🔄 Round 163 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0799, val=0.0834 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0799, val=0.0833, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0799, val=0.0833, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0798, val=0.0833, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0798, val=0.0833, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0798, val=0.0833, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0834)
+
+============================================================
+📊 Round 163 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0798, RMSE=0.2825, R²=0.0153
+   Val:   Loss=0.0834, RMSE=0.2887, R²=0.0184
+============================================================
+
+
+📊 Round 163 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2541, R²: 0.0097
+
+📊 Round 163 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2910, MAE: 0.2540, R²: 0.0099
+
+📊 Round 163 Test Metrics:
+   Loss: 0.0847, RMSE: 0.2909, MAE: 0.2540, R²: 0.0102
+
+============================================================
+🔄 Round 172 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0825, val=0.0710 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0825, val=0.0710, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0824, val=0.0710, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0824, val=0.0710, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0824, val=0.0710, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0823, val=0.0710, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0710)
+
+============================================================
+📊 Round 172 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0829, RMSE=0.2878, R²=0.0162
+   Val:   Loss=0.0710, RMSE=0.2665, R²=0.0011
+============================================================
+
+
+============================================================
+🔄 Round 174 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0790, val=0.0878 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0790, val=0.0878, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0790, val=0.0878, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0790, val=0.0878, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0790, val=0.0878, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0789, val=0.0878, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0878)
+
+============================================================
+📊 Round 174 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0786, RMSE=0.2804, R²=0.0214
+   Val:   Loss=0.0878, RMSE=0.2963, R²=-0.0108
+============================================================
+
+
+📊 Round 174 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2540, R²: 0.0106
+
+============================================================
+🔄 Round 175 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0810, val=0.0784 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0810, val=0.0784, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0810, val=0.0784, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0810, val=0.0784, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0810, val=0.0784, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0809, val=0.0784, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0784)
+
+============================================================
+📊 Round 175 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0810, RMSE=0.2846, R²=0.0115
+   Val:   Loss=0.0784, RMSE=0.2800, R²=0.0118
+============================================================
+
+
+📊 Round 175 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2909, MAE: 0.2539, R²: 0.0107
+
+============================================================
+🔄 Round 177 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0815, val=0.0760 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0815, val=0.0760, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0814, val=0.0760, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0814, val=0.0760, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0814, val=0.0760, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0814, val=0.0759, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0760)
+
+============================================================
+📊 Round 177 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0816, RMSE=0.2856, R²=0.0142
+   Val:   Loss=0.0760, RMSE=0.2757, R²=0.0240
+============================================================
+
+
+============================================================
+🔄 Round 180 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0796, val=0.0851 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0795, val=0.0851, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0795, val=0.0851, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0795, val=0.0851, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0795, val=0.0851, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0794, val=0.0850, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0851)
+
+============================================================
+📊 Round 180 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0793, RMSE=0.2816, R²=0.0216
+   Val:   Loss=0.0851, RMSE=0.2917, R²=-0.0163
+============================================================
+
+
+============================================================
+🔄 Round 181 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0783, val=0.0900 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0783, val=0.0900, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0783, val=0.0900, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0783, val=0.0900, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0782, val=0.0900, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0782, val=0.0900, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0900)
+
+============================================================
+📊 Round 181 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0781, RMSE=0.2794, R²=0.0183
+   Val:   Loss=0.0900, RMSE=0.3000, R²=0.0092
+============================================================
+
+
+============================================================
+🔄 Round 182 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0801, val=0.0808 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0801, val=0.0808, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0801, val=0.0808, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0801, val=0.0808, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0801, val=0.0808, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0800, val=0.0808, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0808)
+
+============================================================
+📊 Round 182 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0803, RMSE=0.2835, R²=0.0136
+   Val:   Loss=0.0808, RMSE=0.2843, R²=0.0277
+============================================================
+
+
+📊 Round 182 Test Metrics:
+   Loss: 0.0846, RMSE: 0.2908, MAE: 0.2539, R²: 0.0112
+
+📊 Round 182 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2908, MAE: 0.2539, R²: 0.0114
+
+📊 Round 182 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2908, MAE: 0.2539, R²: 0.0114
+
+============================================================
+🔄 Round 191 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0820, val=0.0738 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0820, val=0.0738, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0820, val=0.0737, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0820, val=0.0737, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0820, val=0.0737, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0819, val=0.0737, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0738)
+
+============================================================
+📊 Round 191 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0821, RMSE=0.2865, R²=0.0192
+   Val:   Loss=0.0738, RMSE=0.2716, R²=0.0082
+============================================================
+
+
+============================================================
+🔄 Round 194 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0821, val=0.0732 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0821, val=0.0732, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0820, val=0.0732, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0820, val=0.0732, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0820, val=0.0732, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0820, val=0.0732, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0732)
+
+============================================================
+📊 Round 194 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0822, RMSE=0.2867, R²=0.0167
+   Val:   Loss=0.0732, RMSE=0.2706, R²=0.0194
+============================================================
+
+
+============================================================
+🔄 Round 200 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0802, val=0.0812 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0801, val=0.0812, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0801, val=0.0812, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0801, val=0.0812, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0801, val=0.0812, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0800, val=0.0812, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0812)
+
+============================================================
+📊 Round 200 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0802, RMSE=0.2831, R²=0.0264
+   Val:   Loss=0.0812, RMSE=0.2850, R²=-0.0184
+============================================================
+
+
+📊 Round 200 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2538, R²: 0.0117
+
+============================================================
+🔄 Round 202 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0786, val=0.0868 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0786, val=0.0868, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0786, val=0.0867, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0786, val=0.0867, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0786, val=0.0867, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0785, val=0.0867, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0868)
+
+============================================================
+📊 Round 202 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0788, RMSE=0.2808, R²=0.0151
+   Val:   Loss=0.0868, RMSE=0.2945, R²=0.0198
+============================================================
+
+
+📊 Round 202 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2538, R²: 0.0117
+
+============================================================
+🔄 Round 205 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0819, val=0.0744 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0819, val=0.0744, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0819, val=0.0744, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0819, val=0.0744, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0819, val=0.0744, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0818, val=0.0743, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0744)
+
+============================================================
+📊 Round 205 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0819, RMSE=0.2862, R²=0.0240
+   Val:   Loss=0.0744, RMSE=0.2727, R²=-0.0138
+============================================================
+
+
+============================================================
+🔄 Round 208 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0807, val=0.0792 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0807, val=0.0792, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0807, val=0.0792, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0807, val=0.0792, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0807, val=0.0792, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0806, val=0.0792, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0792)
+
+============================================================
+📊 Round 208 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0807, RMSE=0.2841, R²=0.0166
+   Val:   Loss=0.0792, RMSE=0.2814, R²=0.0184
+============================================================
+
+
+📊 Round 208 Test Metrics:
+   Loss: 0.0845, RMSE: 0.2907, MAE: 0.2539, R²: 0.0116
+
+============================================================
+🔄 Round 211 - Client client_55
+   Epochs: 100, Batch: 32, LR: 0.000001
+   Early Stop Patience: 15, Min Delta: 0.0005
+============================================================
+   ✓ Epoch   1/100: train=0.0809, val=0.0789 (↓), lr=0.000001
+   • Epoch   2/100: train=0.0809, val=0.0789, patience=1/15, lr=0.000001
+   • Epoch   3/100: train=0.0808, val=0.0789, patience=2/15, lr=0.000001
+   • Epoch   4/100: train=0.0808, val=0.0789, patience=3/15, lr=0.000001
+   • Epoch   5/100: train=0.0808, val=0.0789, patience=4/15, lr=0.000001
+   • Epoch  11/100: train=0.0808, val=0.0789, patience=10/15, lr=0.000001
+
+   ⚠️  Early stopping: No improvement for 15 epochs
+   ✅ Restored best model (val_loss=0.0789)
+
+============================================================
+📊 Round 211 Summary - Client client_55
+   Epochs: 16/100 (early stopped)
+   LR: 0.000001 → 0.000001 (0 reductions)
+   Train: Loss=0.0808, RMSE=0.2843, R²=0.0066
+   Val:   Loss=0.0789, RMSE=0.2809, R²=0.0442
+============================================================
+
+
+❌ Client client_55 error: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8689 {grpc_status:14, grpc_message:"Socket closed"}"
+>
+Traceback (most recent call last):
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 1410, in <module>
+    main()
+  File "/mnt/ceph_drive/FL_IoT_Network/scale/client.py", line 1390, in main
+    fl.client.start_numpy_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 624, in start_numpy_client
+    start_client(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 183, in start_client
+    start_client_internal(
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/app.py", line 394, in start_client_internal
+    message = receive()
+              ^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/flwr/compat/client/grpc_client/connection.py", line 142, in receive
+    proto = next(server_message_iterator)
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 538, in __next__
+    return self._next()
+           ^^^^^^^^^^^^
+  File "/mnt/ceph_drive/FL_IoT_Network/flwr-nasa/lib/python3.11/site-packages/grpc/_channel.py", line 945, in _next
+    raise self
+grpc._channel._MultiThreadedRendezvous: <_MultiThreadedRendezvous of RPC that terminated with:
+	status = StatusCode.UNAVAILABLE
+	details = "Socket closed"
+	debug_error_string = "UNKNOWN:Error received from peer ipv6:%5B::1%5D:8689 {grpc_status:14, grpc_message:"Socket closed"}"
+>

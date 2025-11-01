@@ -1,0 +1,52 @@
+{
+  "experiment_id": "nasa_25c_alpha_0.05_fedavgm_server_momentum_0.7",
+  "algorithm": "fedavgm",
+  "description": "NASA CMAPs FL Experiment",
+  "run_id": "run_20251031_172246",
+  "timestamp": "20251031_172246",
+  "server": {
+    "host": "localhost",
+    "port": 8688,
+    "num_rounds": 1000
+  },
+  "strategy": {
+    "name": "fedavgm",
+    "fraction_fit": 0.4,
+    "fraction_evaluate": 0.4,
+    "min_fit_clients": 8,
+    "min_evaluate_clients": 8,
+    "min_available_clients": 20,
+    "params": {
+      "server_momentum": 0.7
+    }
+  },
+  "data": {
+    "base_path": "/mnt/ceph_drive/FL_IoT_Network/scale/data/nasa_cmaps/pre_split_data",
+    "num_clients": 25,
+    "alpha": 0.05
+  },
+  "model": {
+    "model_type": "lstm",
+    "reduction_type": "kpca",
+    "n_components": 5,
+    "kernel": "poly",
+    "learning_rate": 0.001,
+    "batch_size": 32,
+    "local_epochs": 100,
+    "hidden_dim": 64,
+    "num_layers": 2,
+    "dropout": 0.3,
+    "sequence_length": 10,
+    "use_attention": false,
+    "optimizer": "adam",
+    "weight_decay": 0.0,
+    "k_folds": 3,
+    "early_stopping_enabled": true,
+    "early_stopping_patience": 15,
+    "early_stopping_min_delta": 0.0005,
+    "scheduler_factor": 0.5,
+    "scheduler_patience": 5,
+    "scheduler_min_lr": 1e-06,
+    "scheduler_threshold": 0.0001
+  }
+}

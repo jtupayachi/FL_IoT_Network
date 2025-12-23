@@ -1,13 +1,7 @@
 # syntax=docker/dockerfile:1
-FROM tensorflow/tensorflow:2.12.0rc0
-# tensorflow/tensorflow:latest
-
-#-gpu
-RUN apt-get update && apt-get install -y git
-RUN pip3 install --no-cache-dir --upgrade pip
-RUN pip3 install flwr
-RUN pip3 install pandas
-RUN pip3 install numpy matplotlib scikit-learn
+FROM tensorflow/tensorflow:2.15.0-gpu
+RUN apt-get update && apt-get install -y git curl
+RUN pip3 install flwr pandas numpy matplotlib scikit-learn
 RUN yes |  apt update
 
 

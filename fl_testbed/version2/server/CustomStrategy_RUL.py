@@ -691,7 +691,7 @@ class CustomFedAvg(Strategy):
 
         
 
-        self.model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+        self.model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
         #PASSING VALUES TO THE OTHER FUNCTION!
 

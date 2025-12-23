@@ -583,7 +583,7 @@ class NumPyClient(ABC):
 
         
 
-        self.model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+        self.model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
         #PASSING VALUES TO THE OTHER FUNCTION!
 
@@ -601,7 +601,7 @@ class NumPyClient(ABC):
 
         lr = tf.keras.callbacks.LearningRateScheduler(lambda epoch: 10**-7 * 10**(epoch/3))
 
-        # model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+        # model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
 
         #FAST AI SEE IF TRIANING IMPROVES !

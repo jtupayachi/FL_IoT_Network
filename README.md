@@ -1,6 +1,45 @@
 ## FL_AM_Defect-Detection
 <!-- File Structure -->
 
+
+
+# Run ONCE for MLP data
+docker exec -it fl_mlp_server bash -c "cd /workspace && python3 fl_testbed/version2/client/centralized.py -ml 1 -cm 15 -cn 15 -e 30 -dfn 'combined_offset_misalignment_M3.csv' -ip 172.18.0.8"
+
+# Run ONCE for LSTM data
+docker exec -it fl_server bash -c "cd /workspace && python3 fl_testbed/version2/client/centralized.py -ml 2 -cm 15 -cn 15 -e 100 -dfn 'combined_offset_misalignment_M3.csv' -ip 172.18.0.2"
+
+
+# Experiments FULL AUTONOMUS ORCHESTRATION
+
+```
+# First run LSTM
+./run_4methods_simple.sh
+# Wait for completion, then run MLP
+./run_4methods_simple_MLP.sh
+
+```
+
+
+```
+$ docker compose -f docker-compose-4methods.yml down
+
+$ docker compose -f docker-compose-4methods.yml up -d
+
+```
+
+```
+docker stop $(docker ps -q) && docker rm $(docker ps -aq)
+
+```
+```
+sudo ./run_4methods_simple.sh 2>&1 | tee lstm_experiments.log
+sudo ./run_4methods_simple_MLP.sh 2>&1 | tee mlp_experiments.log
+```
+
+
+
+
 <h2>Abstract:</h2>
 
 Internet of Things (IoT) sensors play a crucial role in collecting data and capturing patterns that enable health status evaluation of internal components in industrial machinery. These devices can actively collect signals to obtain multivariate temporal data. Machine learning fault detection methods rely on the availability of substantial quantities of high-quality information. In settings where collaborative data efforts face data sensitivity and computational workload challenges, federated learning (FL) can offer significant benefits. This new approach can greatly enhance fault detection capabilities in complex environments, promoting predictive maintenance plans to ensure the proper functioning of critical machinery. We present an innovative decentralized federated learning framework designed for fault detection in the context of condition-based monitoring. In-node local learning and a master-averaged weighted model effectively learn under isolated conditions. We implement and benchmark federated classification and regression models based on the remaining useful life (RUL) prediction and offset-type detection. A Dirichlet distribution generates non-identically and independently distributed data sets representing offset errors and use conditions. Computational results demonstrate a favorable performance in models based on q-Fair Federated Averaging (Q-FedAvg) and Federated Optimization (FedOpt) for multi-layer perceptron (MLP) based models, and Q-FedAvg and Federated Averaging with Momentum (FedAvgM) for long short-term memory (LSTM) models.

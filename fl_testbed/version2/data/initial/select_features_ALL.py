@@ -28,7 +28,8 @@ DIRECTORY='/home/jose/FL_AM_Defect-Detection/'
 
 
 
-df=pd.read_csv(DIRECTORY+'fl_testbed/version2/data/initial/original_combined_offset_misalignment.csv',index_col=None)#[lists]
+# df=pd.read_csv(DIRECTORY+'fl_testbed/version2/data/initial/original_combined_offset_misalignment.csv',index_col=None)#[lists]
+df=pd.read_csv(DIRECTORY+'fl_testbed/version2/data/initial/combined_offset_misalignment.csv',index_col=None)#[lists]
 
 print(df.columns)
 

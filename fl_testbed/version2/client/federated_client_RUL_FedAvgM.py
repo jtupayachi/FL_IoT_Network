@@ -351,7 +351,7 @@ def model_definition(df,test_inputs,test_out,RNDSEED):
 
     
 
-    model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+    model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
     # JT CHANGES
     # X_train=train_inputs
@@ -383,7 +383,7 @@ def modeling(model, train_inputs,train_out,vals_inputs,vals_out,batch_size,epoch
 
     # lr = tf.keras.callbacks.LearningRateScheduler(lambda epoch: 10**-7 * 10**(epoch/3))
 
-    # model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+    # model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
 
     #FAST AI SEE IF TRIANING IMPROVES !

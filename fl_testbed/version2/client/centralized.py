@@ -593,11 +593,11 @@ class Centralized:
 
         # set aside 20% of train and test data for evaluation
         X_train, X_test, y_train, y_test = train_test_split(X, y,
-            test_size=0.001, shuffle = True, random_state = RNDSEED,stratify=True)
+            test_size=0.001, shuffle = True, random_state = RNDSEED,stratify=None)
 
         # Use the same function above for the validation set
         X_train, X_vals, y_train, y_vals = train_test_split(X_train, y_train, 
-            test_size=0.001, random_state= RNDSEED,shuffle=True,stratify=True) # 0.25 x 0.8 = 0.2
+            test_size=0.001, random_state= RNDSEED,shuffle=True,stratify=None) # 0.25 x 0.8 = 0.2
 
 
         #CREATING ys UNDER FAKE DATA CONDITIONS
@@ -675,43 +675,95 @@ class Centralized:
 
         # INPUTS
     
-        #Dynamic SPlit!
-
-        seq_length=80
+        #Dynamic Split!
+        
+        # Simple sequential validation to find optimal sequence length
+        print("Finding optimal sequence length...")
+        
+        seq_length = 80
+        print(f"Using sequence length: {seq_length}")
+        
         worked = False
         while not worked:
             try:
-                train_inputs = np.concatenate(np.array([gen_seq(X_train[X_train['status'] == id], seq_length, columns)
-                    for id in X_train['status'].unique()]))
+                # Generate sequences with error handling per status ID
+                train_sequences = []
+                for status_id in X_train['status'].unique():
+                    try:
+                        seq = gen_seq(X_train[X_train['status'] == status_id], seq_length, columns)
+                        if len(seq) > 0:
+                            train_sequences.append(np.array(seq))
+                    except Exception as e:
+                        print(f"Warning: Failed to generate train sequences for status {status_id}: {e}")
+                        continue
                 
-
-
-
-                test_inputs = np.concatenate(np.array([gen_seq(X_test[X_test['status'] == id], seq_length, columns)
-                                    for id in X_test['status'].unique()]))
+                train_inputs = np.concatenate(train_sequences, axis=0)
                 
-            
-
-                vals_inputs = np.concatenate(np.array([gen_seq(X_vals[X_vals['status'] == id], seq_length, columns)
-                                    for id in X_vals['status'].unique()]))
+                test_sequences = []
+                for status_id in X_test['status'].unique():
+                    try:
+                        seq = gen_seq(X_test[X_test['status'] == status_id], seq_length, columns)
+                        if len(seq) > 0:
+                            test_sequences.append(np.array(seq))
+                    except Exception as e:
+                        print(f"Warning: Failed to generate test sequences for status {status_id}: {e}")
+                        continue
                 
-
+                test_inputs = np.concatenate(test_sequences, axis=0)
+                
+                vals_sequences = []
+                for status_id in X_vals['status'].unique():
+                    try:
+                        seq = gen_seq(X_vals[X_vals['status'] == status_id], seq_length, columns)
+                        if len(seq) > 0:
+                            vals_sequences.append(np.array(seq))
+                    except Exception as e:
+                        print(f"Warning: Failed to generate val sequences for status {status_id}: {e}")
+                        continue
+                
+                vals_inputs = np.concatenate(vals_sequences, axis=0)
+                
                 #OUTPUTS
                 def gen_labels(id_df, seq_length, label):
                     data_array = id_df[label].values
                     num_elements = data_array.shape[0]
                     return data_array[seq_length:num_elements]
                 
-
-
-                train_out = np.concatenate(np.array([gen_labels(y_train[y_train['status'] == id], seq_length, [target])
-                                    for id in y_train['status'].unique()]))
-
-                test_out = np.concatenate(np.array([gen_labels(y_test[y_test['status'] == id], seq_length, [target])
-                                    for id in y_test['status'].unique()]))
+                train_out_list = []
+                for status_id in y_train['status'].unique():
+                    try:
+                        labels = gen_labels(y_train[y_train['status'] == status_id], seq_length, [target])
+                        if len(labels) > 0:
+                            train_out_list.append(labels)
+                    except Exception as e:
+                        print(f"Warning: Failed to generate train labels for status {status_id}: {e}")
+                        continue
                 
-                vals_out = np.concatenate(np.array([gen_labels(y_vals[y_vals['status'] == id], seq_length, [target])
-                                    for id in y_vals['status'].unique()]))
+                train_out = np.concatenate(train_out_list, axis=0)
+                
+                test_out_list = []
+                for status_id in y_test['status'].unique():
+                    try:
+                        labels = gen_labels(y_test[y_test['status'] == status_id], seq_length, [target])
+                        if len(labels) > 0:
+                            test_out_list.append(labels)
+                    except Exception as e:
+                        print(f"Warning: Failed to generate test labels for status {status_id}: {e}")
+                        continue
+                
+                test_out = np.concatenate(test_out_list, axis=0)
+                
+                vals_out_list = []
+                for status_id in y_vals['status'].unique():
+                    try:
+                        labels = gen_labels(y_vals[y_vals['status'] == status_id], seq_length, [target])
+                        if len(labels) > 0:
+                            vals_out_list.append(labels)
+                    except Exception as e:
+                        print(f"Warning: Failed to generate val labels for status {status_id}: {e}")
+                        continue
+                
+                vals_out = np.concatenate(vals_out_list, axis=0)
 
 
                 #NEW SPLITTING!!!
@@ -929,7 +981,7 @@ class Centralized:
 
         lr = tf.keras.callbacks.LearningRateScheduler(lambda epoch: 10**-7 * 10**(epoch/3))
 
-        model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(lr = 10**-7), metrics =['mse','mae'])
+        model.compile(loss=tf.keras.losses.Huber(), optimizer = tf.keras.optimizers.Adam(learning_rate = 10**-7), metrics =['mse','mae'])
 
 
         #FAST AI SEE IF TRIANING IMPROVES !

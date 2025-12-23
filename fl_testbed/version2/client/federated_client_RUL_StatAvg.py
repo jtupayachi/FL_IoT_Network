@@ -179,11 +179,21 @@ import pickle
 
 # Configure GPU memory growth to prevent OOM errors in parallel execution
 import tensorflow as tf
+import os
+
+# Allow GPU selection via environment variable (for multi-GPU systems)
+gpu_id = os.environ.get('GPU_ID', None)
+if gpu_id is not None:
+    # Set specific GPU for this process
+    os.environ['CUDA_VISIBLE_DEVICES'] = str(gpu_id)
+    print(f"Using GPU {gpu_id}")
+
 gpus = tf.config.experimental.list_physical_devices('GPU')
 if gpus:
     try:
         for gpu in gpus:
             tf.config.experimental.set_memory_growth(gpu, True)
+        print(f"Configured {len(gpus)} GPU(s) with memory growth")
     except RuntimeError as e:
         print(f"GPU memory growth config error: {e}")
 

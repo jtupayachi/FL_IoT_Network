@@ -35,11 +35,16 @@ docker stop $(docker ps -q) && docker rm $(docker ps -aq)
 ```
 sudo ./run_experiments.sh --model LSTM MOON FedALA 2>&1 | tee lstm_experiments.log
 sudo ./run_experiments.sh --model MLP --dual-gpu MOON 2>&1 | tee lstm_experiments.log
-sudo ./run_experiments.sh --model BOTH --dual-gpu MOON FedALA StatAvg DASHA 2>&1 | tee lstm_experiments.log
+
+
+
+sudo ./run_experiments.sh --model LSTM --dual-gpu MOON FedALA StatAvg DASHA 2>&1 | tee lstm_experiments.log
 ```
 
 ```
 sudo pkill -f python3 
+
+sudo pkill -9 python3
 ```
 
 

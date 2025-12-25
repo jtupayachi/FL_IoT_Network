@@ -447,7 +447,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # Define Flower client
 class FlowerClient(fl.client.NumPyClient):
 
-    def __init__(self, model, X_train, y_train, X_test, y_test,X_vals,y_vals,epochs):
+    def __init__(self, model, X_train, y_train, X_test, y_test,X_vals,y_vals,epochs,client_id):
         #LOAD DATA!
         # self.df,self.X_test,self.y_test
         #LOAD MODEL "MODEL DEFINITION FUNCTION" UP TO COMPILE
@@ -457,6 +457,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.X_test, self.y_test = X_test, y_test
         self.X_vals, self.y_vals = X_vals, y_vals
         self.epochs=epochs
+        self.client_id=client_id
 
         
 
@@ -534,19 +535,26 @@ class FlowerClient(fl.client.NumPyClient):
         # JT CHANGES _test_inputs=self.X_test[0:]
         # _test_out=self.y_test[0:]
 
-
+        # Clear GPU cache before prediction to prevent memory fragmentation
+        tf.keras.backend.clear_session()
+        
         y_pred = self.model.predict(self.X_test[0:],verbose=0) ## using the untinted dataset!
     
-        print('R^2:', metrics.r2_score(self.y_test[0:], y_pred))
-        print('Mean Absolute Error (MAE):', metrics.mean_absolute_error(self.y_test[0:], y_pred))
-        print('Mean Squared Error (MSE):', metrics.mean_squared_error(self.y_test[0:], y_pred))
-        print('Mean Absolute Percentage Error (MAPE):', metrics.mean_absolute_percentage_error(self.y_test[0:], y_pred))
-        print('Root Mean Squared Error (RMSE):', np.sqrt(metrics.mean_squared_error(self.y_test[0:], y_pred))) # np.sqrt
-
-        print('Explained Variance Score:', metrics.explained_variance_score(self.y_test[0:], y_pred))
-        print('Max Error:', metrics.max_error(self.y_test[0:], y_pred))
-        print('Mean Squared Log Error:', metrics.mean_squared_log_error(self.y_test[0:], y_pred))
-        print('Median Absolute Error:', metrics.median_absolute_error(self.y_test[0:], y_pred))
+        # Calculate and store metrics (no need to print all every time)
+        r2 = metrics.r2_score(self.y_test[0:], y_pred)
+        mae = metrics.mean_absolute_error(self.y_test[0:], y_pred)
+        mse_metric = metrics.mean_squared_error(self.y_test[0:], y_pred)
+        rmse = np.sqrt(mse_metric)
+        
+        print(f'[Client {self.client_id}] R^2: {r2:.6f}, MAE: {mae:.6f}, MSE: {mse_metric:.6f}, RMSE: {rmse:.6f}', flush=True)
+        
+        # Delete prediction array to free memory
+        del y_pred
+        
+        # Force garbage collection and clear GPU memory
+        import gc
+        gc.collect()
+        tf.keras.backend.clear_session()
 
         return loss, num_examples_test, {"mse": mse}
 
@@ -647,6 +655,7 @@ def main() -> None:
         X_vals=X_vals,
         y_vals=y_vals,
         epochs=epochs,
+        client_id=clients_number,
 
            
            

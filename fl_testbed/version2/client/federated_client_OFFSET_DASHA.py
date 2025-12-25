@@ -364,7 +364,7 @@ os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 # Define Flower client
 class FlowerClient(fl.client.NumPyClient):
 
-    def __init__(self, model, X_train, y_train, X_test, y_test,X_vals,y_vals,epochs):
+    def __init__(self, model, X_train, y_train, X_test, y_test,X_vals,y_vals,epochs,client_id):
         #LOAD DATA!
         # self.df,self.X_test,self.y_test
         #LOAD MODEL "MODEL DEFINITION FUNCTION" UP TO COMPILE
@@ -374,6 +374,7 @@ class FlowerClient(fl.client.NumPyClient):
         self.X_test, self.y_test = X_test, y_test
         self.X_vals, self.y_vals = X_vals, y_vals
         self.epochs=epochs
+        self.client_id=client_id
 
         
 
@@ -485,15 +486,16 @@ class FlowerClient(fl.client.NumPyClient):
             y_test, y_prob, multi_class="ovr", average="weighted"
         )
         print(
-            "One-vs-One ROC AUC scores:\n{:.6f} (macro),\n{:.6f} "
-            "(ovo weighted by prevalence)".format(macro_roc_auc_ovo, weighted_roc_auc_ovo)
+            f"[Client {self.client_id}] One-vs-One ROC AUC scores:\n{macro_roc_auc_ovo:.6f} (macro),\n{weighted_roc_auc_ovo:.6f} "
+            "(ovo weighted by prevalence)", flush=True
         )
         print(
-            "One-vs-Rest ROC AUC scores:\n{:.6f} (macro),\n{:.6f} "
-            "(ovr weighted by prevalence)".format(macro_roc_auc_ovr, weighted_roc_auc_ovr)
+            f"[Client {self.client_id}] One-vs-Rest ROC AUC scores:\n{macro_roc_auc_ovr:.6f} (macro),\n{weighted_roc_auc_ovr:.6f} "
+            "(ovr weighted by prevalence)", flush=True
         )
+        print(f"[Client {self.client_id}] Classification Report:", flush=True)
         print(classification_report(y_test_am,y_prob_am ))
-        print("MCS", matthews_corrcoef(y_test_am,y_prob_am ))
+        print(f"[Client {self.client_id}] MCS: {matthews_corrcoef(y_test_am,y_prob_am):.6f}", flush=True)
 
         return loss, num_examples_test, {"accuracy": accuracy}
 
@@ -590,6 +592,7 @@ def main() -> None:
         X_vals=X_vals,
         y_vals=y_vals,
         epochs=epochs,
+        client_id=clients_number,
             # data_file_name=data_file_name,
             # dfn_test_x=dfn_test_x,
             # dfn_test_y=dfn_test_y,

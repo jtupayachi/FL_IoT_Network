@@ -41,8 +41,8 @@ LOG_DIR="/home/jose/FL_IoT_Network/logs/${EXPERIMENT_NAME}"
 mkdir -p "${LOG_DIR}"
 
 echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
-echo -e "${BLUE}  4-Method Sequential FL Experiments (Simplified)${NC}"
-echo -e "${BLUE}  1 varying parameter per method${NC}"
+echo -e "${BLUE}  4-Method Sequential FL Experiments (Fixed Params)${NC}"
+echo -e "${BLUE}  Fixed parameters, varying only alpha (4 runs/method)${NC}"
 echo -e "${BLUE}  Methods run ONE AT A TIME to avoid GPU OOM${NC}"
 echo -e "${BLUE}  Running: ${METHODS_TO_RUN}${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
@@ -108,16 +108,16 @@ fi
 
 # Clean up old result files
 echo -e "${YELLOW}Cleaning up old result files...${NC}"
-sudo docker exec fl_moon_server bash -c "cd /workspace && rm -f LSTM_*.txt *.log"
-sudo docker exec fl_fedala_server bash -c "cd /workspace && rm -f LSTM_*.txt *.log"
-sudo docker exec fl_statavg_server bash -c "cd /workspace && rm -f LSTM_*.txt *.log"
-sudo docker exec fl_dasha_server bash -c "cd /workspace && rm -f LSTM_*.txt *.log"
+sudo docker exec fl_moon_server bash -c "cd /workspace && rm -f LSTM_*.txt"
+sudo docker exec fl_fedala_server bash -c "cd /workspace && rm -f LSTM_*.txt"
+sudo docker exec fl_statavg_server bash -c "cd /workspace && rm -f LSTM_*.txt"
+sudo docker exec fl_dasha_server bash -c "cd /workspace && rm -f LSTM_*.txt"
 echo -e "${GREEN}✓ Old files cleaned${NC}\n"
 
 echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
 echo -e "${BLUE}  LAUNCHING ALL 4 METHODS SEQUENTIALLY${NC}"
-echo -e "${BLUE}  Each method runs 12 experiments (4 alphas × 3 params)${NC}"
-echo -e "${BLUE}  Total: 48 experiments${NC}"
+echo -e "${BLUE}  Each method runs 4 experiments (4 alphas, fixed params)${NC}"
+echo -e "${BLUE}  Total: 16 experiments${NC}"
 echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
 
 # Function to run MOON experiment
@@ -138,7 +138,7 @@ run_moon_experiment() {
     # Start server in background
     sudo docker exec -d fl_moon_server bash -c "cd /workspace && \
         python3 fl_testbed/version2/server/federated_server_RUL_MOON.py \
-        -mu 1.0 -temperature 0.5 -tau ${tau_val} -slr 0.01 -cm 5 -e 1 --rounds 100 \
+        -mu 1.0 -temperature 0.5 -tau ${tau_val} -slr 0.01 -cm 5 -e 1 --rounds 1000 \
         -ip 172.18.1.10:$port \
         -dfn_test_x '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' \
         -dfn_test_y '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' \
@@ -183,7 +183,7 @@ run_fedala_experiment() {
     
     sudo docker exec -d fl_fedala_server bash -c "cd /workspace && \
         python3 fl_testbed/version2/server/federated_server_RUL_FedALA.py \
-        -tau ${tau_val} -slr 0.01 -cm 5 -e 1 --rounds 100 \
+        -tau ${tau_val} -slr 0.01 -cm 5 -e 1 --rounds 1000 \
         -ip 172.18.2.10:$port \
         -dfn_test_x '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' \
         -dfn_test_y '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' \
@@ -226,7 +226,7 @@ run_statavg_experiment() {
     
     sudo docker exec -d fl_statavg_server bash -c "cd /workspace && \
         python3 fl_testbed/version2/server/federated_server_RUL_StatAvg.py \
-        -tau 1.0 -slr ${slr_val} -cm 5 -e 1 --rounds 100 \
+        -tau 1.0 -slr ${slr_val} -cm 5 -e 1 --rounds 1000 \
         -ip 172.18.3.10:$port \
         -dfn_test_x '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' \
         -dfn_test_y '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' \
@@ -269,7 +269,7 @@ run_dasha_experiment() {
     
     sudo docker exec -d fl_dasha_server bash -c "cd /workspace && \
         python3 fl_testbed/version2/server/federated_server_RUL_DASHA.py \
-        -tau 1.0 -slr ${slr_val} -cm 5 -e 1 --rounds 100 \
+        -tau 1.0 -slr ${slr_val} -cm 5 -e 1 --rounds 1000 \
         -ip 172.18.4.10:$port \
         -dfn_test_x '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_inputs.pkl' \
         -dfn_test_y '100_2_15_15_combined_offset_misalignment_M3.csv__client_centralizedtest_out.pkl' \
@@ -297,8 +297,10 @@ run_dasha_experiment() {
 
 # Run experiments SEQUENTIALLY (one method at a time to avoid GPU OOM)
 alphas="0.001 0.01 0.1 1.0"
-tau_values="0.01 0.1 1.0"
-slr_values="0.001 0.01 0.1"
+
+# Fixed parameters for faster runs
+FIXED_TAU=0.1
+FIXED_SLR=0.01
 
 PORT_MOON=8080
 PORT_FEDALA=9000
@@ -307,73 +309,163 @@ PORT_DASHA=11000
 
 TOTAL_COMPLETED=0
 TOTAL_EXPERIMENTS=$(echo "$METHODS_TO_RUN" | wc -w)
-TOTAL_EXPERIMENTS=$((TOTAL_EXPERIMENTS * 12))
+TOTAL_EXPERIMENTS=$((TOTAL_EXPERIMENTS * 4))
 
-# Method 1: MOON (12 experiments)
-if echo "$METHODS_TO_RUN" | grep -q "\<MOON\>"; then
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}  METHOD: MOON (tau varied)${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
-    for alpha in $alphas; do
-        for idx in 1 2 3; do
-            tau_val=$(echo $tau_values | cut -d' ' -f$idx)
-            run_moon_experiment $alpha $tau_val $PORT_MOON
+NUM_METHODS=$(echo "$METHODS_TO_RUN" | wc -w)
+
+# Determine execution mode: parallel (2 methods) or sequential (1, 3, or 4 methods)
+if [ $NUM_METHODS -eq 2 ]; then
+    echo -e "${GREEN}Running 2 methods in PARALLEL (faster, uses more GPU memory)${NC}\n"
+    
+    # Convert methods to array
+    methods_array=($METHODS_TO_RUN)
+    method1=${methods_array[0]}
+    method2=${methods_array[1]}
+    
+    # Run first method in background
+    (
+        if [ "$method1" = "MOON" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: MOON (tau=$FIXED_TAU fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_moon_experiment $alpha $FIXED_TAU $PORT_MOON
+                PORT_MOON=$((PORT_MOON + 1))
+            done
+            echo -e "${GREEN}✓ MOON complete${NC}\n"
+        elif [ "$method1" = "FedALA" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: FedALA (tau=$FIXED_TAU fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_fedala_experiment $alpha $FIXED_TAU $PORT_FEDALA
+                PORT_FEDALA=$((PORT_FEDALA + 1))
+            done
+            echo -e "${GREEN}✓ FedALA complete${NC}\n"
+        elif [ "$method1" = "StatAvg" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: StatAvg (slr=$FIXED_SLR fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_statavg_experiment $alpha $FIXED_SLR $PORT_STATAVG
+                PORT_STATAVG=$((PORT_STATAVG + 1))
+            done
+            echo -e "${GREEN}✓ StatAvg complete${NC}\n"
+        elif [ "$method1" = "DASHA" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: DASHA (slr=$FIXED_SLR fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_dasha_experiment $alpha $FIXED_SLR $PORT_DASHA
+                PORT_DASHA=$((PORT_DASHA + 1))
+            done
+            echo -e "${GREEN}✓ DASHA complete${NC}\n"
+        fi
+    ) &
+    
+    # Run second method in background
+    (
+        if [ "$method2" = "MOON" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: MOON (tau=$FIXED_TAU fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_moon_experiment $alpha $FIXED_TAU $PORT_MOON
+                PORT_MOON=$((PORT_MOON + 1))
+            done
+            echo -e "${GREEN}✓ MOON complete${NC}\n"
+        elif [ "$method2" = "FedALA" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: FedALA (tau=$FIXED_TAU fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_fedala_experiment $alpha $FIXED_TAU $PORT_FEDALA
+                PORT_FEDALA=$((PORT_FEDALA + 1))
+            done
+            echo -e "${GREEN}✓ FedALA complete${NC}\n"
+        elif [ "$method2" = "StatAvg" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: StatAvg (slr=$FIXED_SLR fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_statavg_experiment $alpha $FIXED_SLR $PORT_STATAVG
+                PORT_STATAVG=$((PORT_STATAVG + 1))
+            done
+            echo -e "${GREEN}✓ StatAvg complete${NC}\n"
+        elif [ "$method2" = "DASHA" ]; then
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+            echo -e "${BLUE}  METHOD: DASHA (slr=$FIXED_SLR fixed)${NC}"
+            echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+            for alpha in $alphas; do
+                run_dasha_experiment $alpha $FIXED_SLR $PORT_DASHA
+                PORT_DASHA=$((PORT_DASHA + 1))
+            done
+            echo -e "${GREEN}✓ DASHA complete${NC}\n"
+        fi
+    ) &
+    
+    # Wait for both methods to complete
+    wait
+    TOTAL_COMPLETED=$TOTAL_EXPERIMENTS
+    
+else
+    # Sequential execution (1, 3, or 4 methods)
+    echo -e "${YELLOW}Running methods SEQUENTIALLY (safer, less GPU memory)${NC}\n"
+    
+    # Method 1: MOON (4 experiments)
+    if echo "$METHODS_TO_RUN" | grep -q "\<MOON\>"; then
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+        echo -e "${BLUE}  METHOD: MOON (tau=$FIXED_TAU fixed)${NC}"
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+        for alpha in $alphas; do
+            run_moon_experiment $alpha $FIXED_TAU $PORT_MOON
             PORT_MOON=$((PORT_MOON + 1))
             TOTAL_COMPLETED=$((TOTAL_COMPLETED + 1))
         done
-    done
-    echo -e "${GREEN}✓ MOON complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
-    sleep 5
-fi
+        echo -e "${GREEN}✓ MOON complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
+        sleep 5
+    fi
 
-# Method 2: FedALA (12 experiments)
-if echo "$METHODS_TO_RUN" | grep -q "\<FedALA\>"; then
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}  METHOD: FedALA (tau varied)${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
-    for alpha in $alphas; do
-        for idx in 1 2 3; do
-            tau_val=$(echo $tau_values | cut -d' ' -f$idx)
-            run_fedala_experiment $alpha $tau_val $PORT_FEDALA
+    # Method 2: FedALA (4 experiments)
+    if echo "$METHODS_TO_RUN" | grep -q "\<FedALA\>"; then
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+        echo -e "${BLUE}  METHOD: FedALA (tau=$FIXED_TAU fixed)${NC}"
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+        for alpha in $alphas; do
+            run_fedala_experiment $alpha $FIXED_TAU $PORT_FEDALA
             PORT_FEDALA=$((PORT_FEDALA + 1))
             TOTAL_COMPLETED=$((TOTAL_COMPLETED + 1))
         done
-    done
-    echo -e "${GREEN}✓ FedALA complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
-    sleep 5
-fi
+        echo -e "${GREEN}✓ FedALA complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
+        sleep 5
+    fi
 
-# Method 3: StatAvg (12 experiments)
-if echo "$METHODS_TO_RUN" | grep -q "\<StatAvg\>"; then
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}  METHOD: StatAvg (slr varied)${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
-    for alpha in $alphas; do
-        for idx in 1 2 3; do
-            slr_val=$(echo $slr_values | cut -d' ' -f$idx)
-            run_statavg_experiment $alpha $slr_val $PORT_STATAVG
+    # Method 3: StatAvg (4 experiments)
+    if echo "$METHODS_TO_RUN" | grep -q "\<StatAvg\>"; then
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+        echo -e "${BLUE}  METHOD: StatAvg (slr=$FIXED_SLR fixed)${NC}"
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+        for alpha in $alphas; do
+            run_statavg_experiment $alpha $FIXED_SLR $PORT_STATAVG
             PORT_STATAVG=$((PORT_STATAVG + 1))
             TOTAL_COMPLETED=$((TOTAL_COMPLETED + 1))
         done
-    done
-    echo -e "${GREEN}✓ StatAvg complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
-    sleep 5
-fi
+        echo -e "${GREEN}✓ StatAvg complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
+        sleep 5
+    fi
 
-# Method 4: DASHA (12 experiments)
-if echo "$METHODS_TO_RUN" | grep -q "\<DASHA\>"; then
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
-    echo -e "${BLUE}  METHOD: DASHA (slr varied)${NC}"
-    echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
-    for alpha in $alphas; do
-        for idx in 1 2 3; do
-            slr_val=$(echo $slr_values | cut -d' ' -f$idx)
-            run_dasha_experiment $alpha $slr_val $PORT_DASHA
+    # Method 4: DASHA (4 experiments)
+    if echo "$METHODS_TO_RUN" | grep -q "\<DASHA\>"; then
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}"
+        echo -e "${BLUE}  METHOD: DASHA (slr=$FIXED_SLR fixed)${NC}"
+        echo -e "${BLUE}═══════════════════════════════════════════════════${NC}\n"
+        for alpha in $alphas; do
+            run_dasha_experiment $alpha $FIXED_SLR $PORT_DASHA
             PORT_DASHA=$((PORT_DASHA + 1))
             TOTAL_COMPLETED=$((TOTAL_COMPLETED + 1))
         done
-    done
-    echo -e "${GREEN}✓ DASHA complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
+        echo -e "${GREEN}✓ DASHA complete ($TOTAL_COMPLETED/$TOTAL_EXPERIMENTS)${NC}\n"
+    fi
 fi
 
 echo -e "${GREEN}═══════════════════════════════════════════════════${NC}"

@@ -33,19 +33,15 @@ docker stop $(docker ps -q) && docker rm $(docker ps -aq)
 
 ```
 ```
-<!-- sudo ./run_4methods_simple.sh 2>&1 | tee lstm_experiments.log
-sudo ./run_4methods_simple_MLP.sh 2>&1 | tee mlp_experiments.log -->
 
 
-sudo ./run_4methods_simple.sh MOON FedALA 2>&1 | tee lstm_experiments_moon_fedala.log
+sudo ./run_4methods_simple.sh MOON FedALA 2>&1 | tee lstm_experiments_moon_fedala.log && 
 sudo ./run_4methods_simple.sh DASHA StatAvg 2>&1 | tee lstm_experiments_dasha_statavg.log
 
+```
 
-<!-- sudo ./run_4methods_simple_MLP.sh 2>&1 | tee mlp_experiments.log -->
-
-
-
-
+```
+sudo bash -c './run_4methods_simple_MLP.sh MOON FedALA 2>&1 | tee lstm_experiments_moon_fedala_MLP.log && ./run_4methods_simple_MLP.sh DASHA StatAvg 2>&1 | tee lstm_experiments_dasha_statavg_MLP.log'
 
 ```
 

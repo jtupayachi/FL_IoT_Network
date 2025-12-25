@@ -914,7 +914,7 @@ def main() -> None:
         min_fit_clients=2,
         min_evaluate_clients=2,
         min_available_clients=5, #DEFAULT 10
-        evaluate_fn=get_evaluate_fn(model,X_test,y_test),
+        evaluate_fn=None,  # DISABLED: Server-side evaluation removed to save GPU memory
         on_fit_config_fn=fit_config,
         on_evaluate_config_fn=evaluate_config,
         initial_parameters=fl.common.ndarrays_to_parameters(model.get_weights()),
